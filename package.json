@@ -12,7 +12,8 @@
     "ethers": "^5.4.7",
     "vue": "^3.2.16",
     "vue-dapp": "^0.4.2",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.2",

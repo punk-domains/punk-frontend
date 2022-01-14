@@ -14,9 +14,12 @@
         
         <div class="d-flex ms-auto">
           <div v-if="isActivated" class="">
-            <!-- Account -->
+            <button class="btn btn-primary mx-2">
+              {{ getNetworkName }}
+            </button>
+
             <button class="btn btn-primary" @click="this.$router.push('profile')">
-              {{ shortenAddress(address) }}
+              {{ getUserShortAddress }}
             </button>
           </div>
 
@@ -29,17 +32,23 @@
 </template>
 
 <script lang="ts">
-import { useBoard, useEthers, shortenAddress } from 'vue-dapp'
+import { mapGetters } from 'vuex';
+import { useBoard, useEthers } from 'vue-dapp'
 
 export default {
   name: "Navbar",
+
+  computed: {
+    ...mapGetters("user", ["getUserShortAddress"]),
+    ...mapGetters("network", ["getNetworkName"])
+  },
   
   setup() {
     const { open } = useBoard()
-    const { address, isActivated } = useEthers()
+    const { isActivated } = useEthers()
 
     return {
-      address, isActivated, open, shortenAddress
+      isActivated, open
     }
   }
 }
