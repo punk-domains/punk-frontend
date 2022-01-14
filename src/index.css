@@ -1,0 +1,41 @@
+a {
+  color: #DBDFEA;
+}
+
+a:hover {
+  color: #ffffff;
+}
+
+body {
+  background-color: #1D1E2C;
+  color: #DBDFEA;
+}
+
+.btn-primary, .btn-primary:active, .btn-primary:focus {
+  background-color: #24263A;
+  border-color: #DBDFEA;
+  box-shadow: none;
+  color: #DBDFEA;
+}
+
+.btn-primary:hover {
+  background-color: #1D1E2C;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.container {
+  background-color: #24263A;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.modal-content {
+  color: black;
+}
+
+@media only screen and (max-width: 767px) {
+  #sidebar-container {
+    display: none;
+  }
+}
