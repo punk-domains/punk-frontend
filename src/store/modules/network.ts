@@ -8,6 +8,7 @@ export default {
   state: () => ({
     networkCurrency: "ETH",
     networkName: "Unsupported Network",
+    supportedNetworks: ["Mumbai", "Ropsten"]
   }),
 
   getters: { 
@@ -21,6 +22,10 @@ export default {
 
     getNetworkName(state) {
       return state.networkName;
+    },
+
+    getSupportedNetworks(state) {
+      return state.supportedNetworks;
     }
   },
 

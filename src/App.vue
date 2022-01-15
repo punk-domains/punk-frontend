@@ -13,7 +13,7 @@
 <script lang="ts">
 import { onMounted } from "vue"
 import { useEthers, useWallet } from 'vue-dapp';
-import { mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 
@@ -24,8 +24,16 @@ export default {
   },
 
   methods: {
+    ...mapActions("web3panda", ["fetchTlds"]),
+
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
+
+    fetchAllData() {
+      this.setUserData();
+      this.setNetworkData();
+      this.fetchTlds();
+    }
   },
 
   setup() {
@@ -40,7 +48,7 @@ export default {
     })
 
     return {
-      address, chainId, isActivated
+      address, chainId, connect, isActivated
     }
   },
 
@@ -48,23 +56,20 @@ export default {
     address(newVal, oldVal) {
       if (newVal) {
         this.setUserData();
-        this.setNetworkData();
       }
     },
 
     chainId(newVal, oldVal) {
+      if (!this.isActivated && localStorage.getItem("connected") == "metamask") {
+        this.connect("metamask");
+      }
+
       if (this.chainId >= 1) {
-        this.setUserData();
-        this.setNetworkData();
+        this.fetchAllData();
       }
     },
 
     isActivated(newVal, oldVal) {
-      if (newVal) {
-        this.setUserData();
-        this.setNetworkData();
-      }
-
       if (!localStorage.getItem("connected")) {
         // set this to auto-connect on next visit
         localStorage.setItem("connected", "metamask");

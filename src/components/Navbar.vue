@@ -14,9 +14,20 @@
         
         <div class="d-flex ms-auto">
           <div v-if="isActivated" class="">
-            <button class="btn btn-primary mx-2">
-              {{ getNetworkName }}
-            </button>
+            <div class="btn-group mx-2">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                {{getNetworkName}}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <span 
+                    class="dropdown-item" 
+                    v-for="network in getSupportedNetworks"
+                    @click="changeNetwork(network)"
+                  >{{network}}</span>
+                </li>
+              </ul>
+            </div>
 
             <button class="btn btn-primary" @click="this.$router.push('profile')">
               {{ getUserShortAddress }}
@@ -40,7 +51,33 @@ export default {
 
   computed: {
     ...mapGetters("user", ["getUserShortAddress"]),
-    ...mapGetters("network", ["getNetworkName"])
+    ...mapGetters("network", ["getNetworkName", "getSupportedNetworks"])
+  },
+
+  methods: {
+    changeNetwork(networkName) {
+      let method;
+      let params;
+
+      if (networkName == "Ropsten") {
+        method = "wallet_switchEthereumChain"
+        params = [{ chainId: "0x3" }] 
+      } else if (networkName == "Mumbai") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://mumbai.polygonscan.com" ],
+          chainId: "0x13881",
+          chainName: "Mumbai Testnet",
+          nativeCurrency: { decimals: 18, name: "Matic", symbol: "MATIC" }, 
+          rpcUrls: ["https://matic-mumbai.chainstacklabs.com"]
+        }] 
+      }
+
+      window.ethereum.request({ 
+        method: method, 
+        params: params
+      });
+    }
   },
   
   setup() {
@@ -55,6 +92,10 @@ export default {
 </script>
 
 <style scoped>
+.dropdown-item {
+  cursor: pointer;
+}
+
 .navbar-dark .navbar-brand {
   color: #DBDFEA;
 }
