@@ -5,6 +5,8 @@ export default {
   namespaced: true,
   
   state: () => ({ 
+    defaultNames: [],
+    selectedName: [], // domain name that appears as the main profile name
     userAddress: null,
     userShortAddress: null,
     userBalanceWei: 0,
