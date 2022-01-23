@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
         <img src="../assets/logo.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
-        Web3Panda
+        Panda.web3
       </router-link>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

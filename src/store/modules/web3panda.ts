@@ -11,12 +11,16 @@ export default {
   state: () => ({ 
     factoryAddress: null,
     factoryContract: null,
-    tlds: [], // object of key/value pairs where key is TLD name and value is TLD address
+    tlds: [],
+    tldAddresses: {}, // object of key/value pairs where key is TLD name and value is TLD address
   }),
 
   getters: { 
     getTlds(state) {
       return state.tlds;
+    },
+    getTldAddresses(state) {
+      return state.tldAddresses;
     }
   },
 
@@ -31,15 +35,37 @@ export default {
 
   actions: { 
     async fetchTlds({ commit, state }) {
-      console.log(chainId.value);
-
       commit("setFactoryContract");
-
-      
 
       state.tlds = await state.factoryContract.getTldsArray();
 
-      console.log(state.tlds);
+      // fetch TLDs array from local storage
+      let lsTlds = JSON.parse(localStorage.getItem("tlds"));
+
+      if (!lsTlds) {
+        lsTlds = [];
+      }
+
+      // if length in local storage is less than what was just fetched from blockchain, do these:
+      if (lsTlds.length < state.tlds.length) {
+        localStorage.setItem("tlds", JSON.stringify(state.tlds));
+
+        // fetch TLD addresses from blockchain and update local storage
+        for (let tldName of state.tlds) {
+          let tldAddress = await state.factoryContract.tldNamesAddresses(tldName);
+          state.tldAddresses[tldName] = tldAddress;
+        }
+
+        localStorage.setItem("tldAddresses", JSON.stringify(state.tldAddresses));
+      } else {
+
+        try {
+          state.tldAddresses = JSON.parse(localStorage.getItem("tldAddresses"));
+        } catch {
+          console.log("Error getting tldAddresses from local storage.")
+        }
+      }
+
     }
   }
 };

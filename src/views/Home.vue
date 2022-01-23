@@ -33,6 +33,8 @@
       </div>
     </div>
 
+    <p>{{getTldAddresses}}</p>
+
   </div>
   
 </template>
@@ -45,7 +47,7 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getNetworkName", "getSupportedNetworks"]),
-    ...mapGetters("web3panda", ["getTlds"]),
+    ...mapGetters("web3panda", ["getTlds", "getTldAddresses"]),
   },
 
   methods: {
