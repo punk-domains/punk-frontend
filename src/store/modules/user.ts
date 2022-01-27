@@ -10,6 +10,8 @@ export default {
   state: () => ({ 
     defaultNames: [],
     selectedName: [], // domain name that appears as the main profile name
+    selectedNameData: null,
+    selectedNameImageSvg: null,
     userAddress: null,
     userShortAddress: null,
     userBalanceWei: 0,
@@ -33,6 +35,12 @@ export default {
     getUserSelectedName(state) {
       return state.selectedName;
     },
+    getUserSelectedNameData(state) {
+      return state.selectedNameData;
+    },
+    getUserSelectedNameImageSvg(state) {
+      return state.selectedNameImageSvg;
+    },
     getUserShortAddress(state) {
       return state.userShortAddress;
     },
@@ -48,20 +56,23 @@ export default {
 
     setDefaultNames(state, defNames) {
       state.defaultNames = defNames;
+    },
 
-      
+    setSelectedName(state, selectedName) {
+      state.selectedName = selectedName;
+    },
 
-      // choose the first defaultName as state.selectedName
-      state.selectedName = defNames[0];
+    setSelectedNameData(state, nameData) {
+      state.selectedNameData = nameData;
+    },
 
-      // TODO: check if selectedName in local storage
-        // if yes, check if selectedName still owned by user
-          // if yes, set it as state.selectedName
+    setSelectedNameImageSvg(state, imageSvg) {
+      state.selectedNameImageSvg = imageSvg;
     }
   },
 
   actions: { 
-    async fetchDefaultNames({ commit, rootState }) {
+    async fetchDefaultNames({ dispatch, commit, rootState }) {
       // fetch user's default names
       let userDefaultNames = [];
 
@@ -77,9 +88,50 @@ export default {
       }
 
       commit('setDefaultNames', userDefaultNames);
-    }
+      commit('setSelectedName', userDefaultNames[0]);
 
-    // fetch name data
+      // TODO: check if selectedName in local storage
+        // if yes, check if selectedName still owned by user
+          // if yes, set it as state.selectedName
+      
+      dispatch("fetchSelectedNameData");
+    },
+
+    // fetch selectedName data (image etc.)
+    async fetchSelectedNameData({commit, state, rootState}) {
+
+      if (state.selectedName) {
+        const nameArr = state.selectedName.split(".");
+        const name = nameArr[0];
+        const domain = "." + nameArr[1];
+        
+        const intfc = new ethers.utils.Interface(tldAbi);
+        const contract = new ethers.Contract(rootState.web3panda.tldAddresses[domain], intfc, signer.value);
+
+        const nameData = await contract.domains(name);
+
+        commit("setSelectedNameData", nameData);
+        
+        if (nameData.pfpAddress != ethers.constants.AddressZero) {
+          // fetch image URL of that PFP
+        } else {
+          // get contract image for that token ID
+          const metadata = await contract.tokenURI(nameData.tokenId);
+
+          if (metadata) {
+            const json = atob(metadata.substring(29));
+            const result = JSON.parse(json);
+
+            if (result && result.image) {
+              commit("setSelectedNameImageSvg", result.image);
+            }
+            
+          }
+          
+        }
+      }
+      
+    }
   }
 
 };

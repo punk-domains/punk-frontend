@@ -11,6 +11,11 @@
 
         <p class="text-break">Address: {{getUserAddress}}</p>
         <p>Balance: {{ getUserBalance }} {{getNetworkCurrency}}</p>
+
+        <p>Description: {{getUserSelectedNameData.description}}</p>
+        <p>Token ID: {{getUserSelectedNameData.tokenId}}</p>
+        <p>Name: {{getUserSelectedNameData.name}}</p>
+        <p>Holder: {{getUserSelectedNameData.holder}}</p>
       </div>
     </div>
   </div>
@@ -30,7 +35,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("user", ["getUserAddress", "getUserBalance"]),
+    ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
   },
 }

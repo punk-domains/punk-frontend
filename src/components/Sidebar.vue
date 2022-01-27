@@ -1,7 +1,7 @@
 <template>
   <div class="container">
 
-    <img src="https://news.artnet.com/app/news-upload/2021/08/Yuga-Labs-Bored-Ape-Yacht-Club-7940.jpg" class="img-fluid img-thumbnail">
+    <img :src="getUserImage" class="img-fluid img-thumbnail">
 
     <h3 class="text-center mt-2 text-break">
       {{getNameOrAddress}}
@@ -43,7 +43,7 @@ export default {
   name: "Sidebar",
 
   computed: {
-    ...mapGetters("user", ["getUserSelectedName", "getUserShortAddress"]),
+    ...mapGetters("user", ["getUserSelectedName", "getUserShortAddress", "getUserSelectedNameImageSvg"]),
 
     getNameOrAddress() {
       if (this.getUserSelectedName) {
@@ -51,6 +51,10 @@ export default {
       } else {
         return this.getUserShortAddress;
       }
+    },
+
+    getUserImage() {
+      return this.getUserSelectedNameImageSvg;
     }
   },
 }
