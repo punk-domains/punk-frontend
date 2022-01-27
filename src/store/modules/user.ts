@@ -17,15 +17,19 @@ export default {
     getUserAddress(state) {
       return state.userAddress;
     },
-    getUserShortAddress(state) {
-      return state.userShortAddress;
-    },
+    
     getUserBalance(state) {
       return state.userBalance;
     },
     getUserBalanceWei(state) {
       return state.userBalanceWei;
-    }
+    },
+    getUserDefaultNames(state) {
+      return state.defaultNames;
+    },
+    getUserShortAddress(state) {
+      return state.userShortAddress;
+    },
   },
 
   mutations: { 
@@ -34,6 +38,10 @@ export default {
       state.userShortAddress = shortenAddress(address.value);
       state.userBalanceWei = balance.value;
       state.userBalance = displayEther(balance.value);
+    },
+
+    setDefaultNames(state, defNames) {
+      state.defaultNames = defNames;
     }
   },
 

@@ -33,8 +33,6 @@
       </div>
     </div>
 
-    <p>{{getTldAddresses}}</p>
-
   </div>
   
 </template>

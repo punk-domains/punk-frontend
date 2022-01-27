@@ -2,8 +2,9 @@ import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import addresses from "../../abi/addresses.json";
 import factoryAbi from "../../abi/Web3PandaTLDFactory.json";
+import tldAbi from "../../abi/Web3PandaTLD.json";
 
-const { chainId, signer } = useEthers();
+const { address, chainId, signer } = useEthers();
 
 export default {
   namespaced: true,
@@ -65,6 +66,22 @@ export default {
           console.log("Error getting tldAddresses from local storage.")
         }
       }
+
+      // fetch user's default names
+      let userDefaultNames = [];
+
+      for (let tldName of state.tlds) {
+        const intfc = new ethers.utils.Interface(tldAbi);
+        const contract = new ethers.Contract(state.tldAddresses[tldName], intfc, signer.value);
+
+        const userDefaultName = await contract.defaultNames(address.value);
+
+        if (userDefaultName) {
+          userDefaultNames.push(userDefaultName + tldName);
+        }
+      }
+
+      commit('user/setDefaultNames', userDefaultNames, { root: true });
 
     }
   }

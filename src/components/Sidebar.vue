@@ -4,7 +4,7 @@
     <img src="https://news.artnet.com/app/news-upload/2021/08/Yuga-Labs-Bored-Ape-Yacht-Club-7940.jpg" class="img-fluid img-thumbnail">
 
     <h3 class="text-center mt-2 text-break">
-      techie.web3
+      {{getUserDefaultNames[0]}}
     </h3>
 
     <hr />
@@ -37,9 +37,15 @@
 </template>
 
 <script>
-  export default {
-    name: "Sidebar"
-  }
+import { mapGetters } from 'vuex';
+
+export default {
+  name: "Sidebar",
+
+  computed: {
+    ...mapGetters("user", ["getUserDefaultNames"]),
+  },
+}
 </script>
 
 <style scoped>
