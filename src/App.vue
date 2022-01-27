@@ -13,7 +13,7 @@
 <script lang="ts">
 import { onMounted } from "vue"
 import { useEthers, useWallet } from 'vue-dapp';
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 
@@ -23,8 +23,13 @@ export default {
     Footer
   },
 
+  computed: {
+    ...mapGetters("user", ["getUserSelectedName"]),
+  },
+
   methods: {
     ...mapActions("web3panda", ["fetchTlds"]),
+    ...mapActions("user", ["fetchDefaultNames"]),
 
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
@@ -56,6 +61,7 @@ export default {
     address(newVal, oldVal) {
       if (newVal) {
         this.setUserData();
+        this.fetchDefaultNames();
       }
     },
 
@@ -67,6 +73,11 @@ export default {
       if (this.chainId >= 1) {
         this.fetchAllData();
       }
+    },
+
+    getUserSelectedName(newName, oldName) {
+      console.log("oldName: " + oldName);
+      console.log("newName: " + newName);
     },
 
     isActivated(newVal, oldVal) {

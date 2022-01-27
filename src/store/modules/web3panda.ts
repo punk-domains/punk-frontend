@@ -35,7 +35,7 @@ export default {
   },
 
   actions: { 
-    async fetchTlds({ commit, state }) {
+    async fetchTlds({ dispatch, commit, state }) {
       commit("setFactoryContract");
 
       state.tlds = await state.factoryContract.getTldsArray();
@@ -68,21 +68,7 @@ export default {
       }
 
       // fetch user's default names
-      let userDefaultNames = [];
-
-      for (let tldName of state.tlds) {
-        const intfc = new ethers.utils.Interface(tldAbi);
-        const contract = new ethers.Contract(state.tldAddresses[tldName], intfc, signer.value);
-
-        const userDefaultName = await contract.defaultNames(address.value);
-
-        if (userDefaultName) {
-          userDefaultNames.push(userDefaultName + tldName);
-        }
-      }
-
-      commit('user/setDefaultNames', userDefaultNames, { root: true });
-
+      dispatch('user/fetchDefaultNames', null, { root: true });
     }
   }
 };

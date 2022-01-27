@@ -30,7 +30,7 @@
             </div>
 
             <button class="btn btn-primary" @click="this.$router.push('profile')">
-              {{ getUserShortAddress }}
+              {{ getNameOrAddress }}
             </button>
           </div>
 
@@ -50,8 +50,16 @@ export default {
   name: "Navbar",
 
   computed: {
-    ...mapGetters("user", ["getUserShortAddress"]),
-    ...mapGetters("network", ["getNetworkName", "getSupportedNetworks"])
+    ...mapGetters("user", ["getUserShortAddress", "getUserSelectedName"]),
+    ...mapGetters("network", ["getNetworkName", "getSupportedNetworks"]),
+
+    getNameOrAddress() {
+      if (this.getUserSelectedName) {
+        return this.getUserSelectedName;
+      } else {
+        return this.getUserShortAddress;
+      }
+    }
   },
 
   methods: {

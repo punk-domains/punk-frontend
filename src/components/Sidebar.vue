@@ -4,7 +4,7 @@
     <img src="https://news.artnet.com/app/news-upload/2021/08/Yuga-Labs-Bored-Ape-Yacht-Club-7940.jpg" class="img-fluid img-thumbnail">
 
     <h3 class="text-center mt-2 text-break">
-      {{getUserDefaultNames[0]}}
+      {{getNameOrAddress}}
     </h3>
 
     <hr />
@@ -43,7 +43,15 @@ export default {
   name: "Sidebar",
 
   computed: {
-    ...mapGetters("user", ["getUserDefaultNames"]),
+    ...mapGetters("user", ["getUserSelectedName", "getUserShortAddress"]),
+
+    getNameOrAddress() {
+      if (this.getUserSelectedName) {
+        return this.getUserSelectedName;
+      } else {
+        return this.getUserShortAddress;
+      }
+    }
   },
 }
 </script>
