@@ -12,10 +12,9 @@
         <p class="text-break">Address: {{getUserAddress}}</p>
         <p>Balance: {{ getUserBalance }} {{getNetworkCurrency}}</p>
 
-        <p>Description: {{getUserSelectedNameData.description}}</p>
         <p>Token ID: {{getUserSelectedNameData.tokenId}}</p>
         <p>Name: {{getUserSelectedNameData.name}}</p>
-        <p>Holder: {{getUserSelectedNameData.holder}}</p>
+        <p class="text-break">Holder: {{getUserSelectedNameData.holder}}</p>
       </div>
     </div>
   </div>

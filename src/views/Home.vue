@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center">
-    <h2>Find your perfect Web3 domain!</h2>
+    <h2 class="mt-5">Find your perfect Web3 domain!</h2>
 
     <div class="dropdown mt-5">
       Choose network: 
@@ -24,7 +24,7 @@
         <input type="text" class="form-control text-end" aria-label="Text input with dropdown button">
         
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          {{getTlds[0]}}
+          {{selectedTld}}
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end">
@@ -32,6 +32,14 @@
         </ul>
       </div>
     </div>
+
+    <p class="mt-3">
+      Domain price: {{selectedPrice}} {{getNetworkCurrency}}
+    </p>
+
+    <button class="btn btn-primary btn-lg mt-1 mb-4">
+      Buy domain
+    </button>
 
   </div>
   
@@ -43,9 +51,23 @@ import { mapGetters } from 'vuex';
 export default {
   name: "Home",
 
+  data() {
+    return {
+      selectedTld: null,
+      selectedPrice: null
+    }
+  },
+
+  created() {
+    if (this.getDomainPrices) {
+      this.selectedTld = this.getTlds[0];
+      this.selectedPrice = this.getDomainPrices[this.selectedTld];
+    }
+  },
+
   computed: {
-    ...mapGetters("network", ["getNetworkName", "getSupportedNetworks"]),
-    ...mapGetters("web3panda", ["getTlds", "getTldAddresses"]),
+    ...mapGetters("network", ["getNetworkName", "getNetworkCurrency", "getSupportedNetworks"]),
+    ...mapGetters("web3panda", ["getTlds", "getTldAddresses", "getDomainPrices"]),
   },
 
   methods: {
@@ -71,8 +93,17 @@ export default {
         method: method, 
         params: params
       });
-    }
+    },
   },
+
+  watch: {
+    getDomainPrices(newVal, oldVal) {
+      if (newVal) {
+        this.selectedTld = this.getTlds[0];
+        this.selectedPrice = this.getDomainPrices[this.selectedTld];
+      }
+    },
+  }
 }
 </script>
 
