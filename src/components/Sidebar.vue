@@ -54,7 +54,12 @@ export default {
     },
 
     getUserImage() {
-      return this.getUserSelectedNameImageSvg;
+      if (this.getUserSelectedNameImageSvg) {
+        return this.getUserSelectedNameImageSvg;
+      } else {
+        return "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+      }
+      
     }
   },
 }

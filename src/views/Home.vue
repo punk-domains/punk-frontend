@@ -21,14 +21,20 @@
 
     <div class="d-flex mt-5 justify-content-center">
       <div class="input-group mb-3 domain-input input-group-lg">
-        <input type="text" class="form-control text-end" aria-label="Text input with dropdown button">
+        <input
+          v-model="chosenDomainName" 
+          placeholder="enter domain name"
+          type="text" 
+          class="form-control text-end" 
+          aria-label="Text input with dropdown button"
+        >
         
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           {{selectedTld}}
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><span class="dropdown-item" v-for="tld in getTlds">{{tld}}</span></li>
+          <li><span class="dropdown-item" v-for="tld in getTlds" @click="changeTld(tld)">{{tld}}</span></li>
         </ul>
       </div>
     </div>
@@ -37,7 +43,8 @@
       Domain price: {{selectedPrice}} {{getNetworkCurrency}}
     </p>
 
-    <button class="btn btn-primary btn-lg mt-1 mb-4">
+    <button class="btn btn-primary btn-lg mt-1 mb-4" @click="buyDomain" :disabled="waiting || buyNotValid">
+      <span v-if="waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Buy domain
     </button>
 
@@ -46,13 +53,19 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex';
+import { ethers } from 'ethers';
+import tldAbi from "../abi/Web3PandaTLD.json";
+import { useEthers } from 'vue-dapp';
+import { mapActions, mapGetters } from 'vuex';
+import { useToast, TYPE } from "vue-toastification";
 
 export default {
   name: "Home",
 
   data() {
     return {
+      waiting: false, // waiting for TX to complete
+      chosenDomainName: null,
       selectedTld: null,
       selectedPrice: null
     }
@@ -68,9 +81,69 @@ export default {
   computed: {
     ...mapGetters("network", ["getNetworkName", "getNetworkCurrency", "getSupportedNetworks"]),
     ...mapGetters("web3panda", ["getTlds", "getTldAddresses", "getDomainPrices"]),
+
+    buyNotValid() {
+      if (this.chosenDomainName === "") {
+        return true;
+      } else if (this.chosenDomainName === null) {
+        return true;
+      } else if (this.chosenDomainName.includes(".")) {
+        return true;
+      } else if (this.chosenDomainName.includes(" ")) {
+        return true;
+      } else if (this.chosenDomainName.includes("%")) {
+        return true;
+      } else if (this.chosenDomainName.includes("&")) {
+        return true;
+      } else if (this.chosenDomainName.includes("?")) {
+        return true;
+      } else if (this.chosenDomainName.includes("#")) {
+        return true;
+      }
+
+      return false;
+    }
   },
 
   methods: {
+    ...mapActions("web3panda", ["fetchTlds"]),
+
+    async buyDomain() {
+      this.waiting = true;
+
+      const intfc = new ethers.utils.Interface(tldAbi);
+      const contract = new ethers.Contract(this.getTldAddresses[this.selectedTld], intfc, this.signer);
+
+      try {
+
+        const tx = await contract["mint(string,address)"](
+          this.chosenDomainName,
+          this.address,
+          {
+            value: ethers.utils.parseEther(this.selectedPrice)
+          }
+        );
+
+        console.log(tx);
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast("You have successfully bought the domain!", {type: TYPE.SUCCESS});
+          this.fetchTlds();
+          console.log(receipt);
+        } else {
+          this.toast("Transaction has failed.", {type: TYPE.ERROR});
+        }
+
+      } catch (e) {
+        console.log(e)
+        this.toast(e.data.message, {type: TYPE.ERROR});
+      }
+
+      this.waiting = false;
+    },
+
     changeNetwork(networkName) {
       let method;
       let params;
@@ -94,6 +167,18 @@ export default {
         params: params
       });
     },
+
+    changeTld(tldName) {
+      this.selectedTld = tldName;
+      this.selectedPrice = this.getDomainPrices[tldName];
+    }
+  },
+
+  setup() {
+    const { address, signer } = useEthers()
+    const toast = useToast()
+
+    return { address, signer, toast }
   },
 
   watch: {

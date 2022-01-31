@@ -12,9 +12,9 @@
         <p class="text-break">Address: {{getUserAddress}}</p>
         <p>Balance: {{ getUserBalance }} {{getNetworkCurrency}}</p>
 
-        <p>Token ID: {{getUserSelectedNameData.tokenId}}</p>
-        <p>Name: {{getUserSelectedNameData.name}}</p>
-        <p class="text-break">Holder: {{getUserSelectedNameData.holder}}</p>
+        <p v-if="getUserSelectedNameData">Token ID: {{getUserSelectedNameData.tokenId}}</p>
+        <p v-if="getUserSelectedNameData">Name: {{getUserSelectedNameData.name}}</p>
+        <p v-if="getUserSelectedNameData" class="text-break">Holder: {{getUserSelectedNameData.holder}}</p>
       </div>
     </div>
   </div>

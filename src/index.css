@@ -11,7 +11,7 @@ body {
   color: #DBDFEA;
 }
 
-.btn-primary, .btn-primary:active, .btn-primary:focus {
+.btn-primary, .btn-primary:active, .btn-primary:focus, .btn-primary:disabled {
   background-color: #24263A;
   border-color: #DBDFEA;
   box-shadow: none;
