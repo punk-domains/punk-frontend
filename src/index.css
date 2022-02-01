@@ -30,6 +30,10 @@ body {
   border-radius: 10px;
 }
 
+.img-thumbnail {
+  background-color: transparent;
+}
+
 .modal-content {
   color: black;
 }

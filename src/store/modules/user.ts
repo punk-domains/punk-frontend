@@ -111,21 +111,27 @@ export default {
         const nameData = await contract.domains(name);
 
         commit("setSelectedNameData", nameData);
+
+        let metadata;
         
         if (nameData.pfpAddress != ethers.constants.AddressZero) {
           // fetch image URL of that PFP
+          const pfpInterface = new ethers.utils.Interface([
+            "function tokenURI(uint256 tokenId) public view virtual override returns (string memory)"
+          ]);
+          const pfpContract = new ethers.Contract(nameData.pfpAddress, pfpInterface, signer.value);
+          metadata = await pfpContract.tokenURI(nameData.tokenId);
         } else {
           // get contract image for that token ID
-          const metadata = await contract.tokenURI(nameData.tokenId);
+          metadata = await contract.tokenURI(nameData.tokenId);
+        }
 
-          if (metadata) {
-            const json = atob(metadata.substring(29));
-            const result = JSON.parse(json);
+        if (metadata) {
+          const json = atob(metadata.substring(29));
+          const result = JSON.parse(json);
 
-            if (result && result.image) {
-              commit("setSelectedNameImageSvg", result.image);
-            }
-            
+          if (result && result.image) {
+            commit("setSelectedNameImageSvg", result.image);
           }
           
         }
