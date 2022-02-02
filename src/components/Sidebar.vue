@@ -13,10 +13,19 @@
       <i class="bi bi-person"></i> Profile
     </router-link>
 
-    <router-link class="btn btn-sidebar text-start" to="/profile">
+    <router-link class="btn btn-sidebar text-start" to="/profile-edit">
+      <i class="bi bi-pencil-square"></i> Edit Profile
+    </router-link>
+
+    <router-link class="btn btn-sidebar text-start disabled" to="#">
       <i class="bi bi-send"></i> Send tokens
     </router-link>
+
+    <a class="btn btn-sidebar text-start" @click="disconnectWallet">
+      <i class="bi bi-x-circle"></i> Disconnect
+    </a>
     
+    <!--
     <router-link class="btn btn-sidebar text-start" to="/profile">
       <i class="bi bi-arrow-repeat"></i> Swap tokens
     </router-link>
@@ -32,12 +41,14 @@
     <router-link class="btn btn-sidebar text-start" to="/profile">
       <i class="bi bi-tree"></i> Help environment
     </router-link>
+    -->
 
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import { useWallet } from 'vue-dapp';
 
 export default {
   name: "Sidebar",
@@ -62,6 +73,20 @@ export default {
       
     }
   },
+
+  methods: {
+    disconnectWallet() {
+      localStorage.setItem("connected", null);
+      this.disconnect();
+      this.$router.push('/');
+    }
+  },
+
+  setup() {
+    const { disconnect } = useWallet();
+
+    return { disconnect }
+  }
 }
 </script>
 

@@ -6,19 +6,50 @@
     </div>
 
     <div class="col-md-9">
-      <div class="container text-center">
-        <h2>Profile</h2>
+      <div class="row">
 
-        <p class="text-break">Address: {{getUserAddress}}</p>
-        <p>Balance: {{ getUserBalance }} {{getNetworkCurrency}}</p>
+        <div class="col-md-6 mb-3">
+          <div class="container text-center">
+            <h3>Address</h3>
+            <p class="text-break">{{getUserAddress}}</p>
+          </div>
+        </div>
 
-        <p v-if="getUserSelectedNameData">Token ID: {{getUserSelectedNameData.tokenId}}</p>
-        <p v-if="getUserSelectedNameData">Name: {{getUserSelectedNameData.name}}</p>
-        <p v-if="getUserSelectedNameData" class="text-break">Holder: {{getUserSelectedNameData.holder}}</p>
+        <div class="col-md-6 mb-3">
+          <div class="container text-center">
+            <h3>Balance</h3>
+            <p class="text-break">{{ getUserBalance }} {{getNetworkCurrency}}</p>
+          </div>
+        </div>
+
       </div>
+
+      <div class="row mb-3" v-if="getUserSelectedNameData.data || getUserSelectedNameData.url">
+        <div class="col-md-12">
+          <div class="container text-center">
+            <h3>{{getUserSelectedName}} data</h3>
+            <p class="text-break">{{getUserSelectedNameData.data}}</p>
+            <p class="text-break">{{getUserSelectedNameData.url}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="container text-center">
+            <h3>Domains</h3>
+            <p class="text-break" v-for="defName in getUserDefaultNames">{{defName}}</p>
+
+            <hr>
+            <p>
+              <small><em>Don't see your domain here? Add it manually.</em></small>
+            </p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-
   
 </template>
 
@@ -34,7 +65,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserSelectedNameData"]),
+    ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserDefaultNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
   },
 }
