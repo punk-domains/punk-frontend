@@ -8,7 +8,6 @@ export default {
   namespaced: true,
   
   state: () => ({ 
-    defaultNames: [],
     selectedName: null, // domain name that appears as the main profile name
     selectedNameData: null,
     selectedNameImageSvg: null,
@@ -30,8 +29,8 @@ export default {
     getUserBalanceWei(state) {
       return state.userBalanceWei;
     },
-    getUserDefaultNames(state) {
-      return state.defaultNames;
+    getUserAllDomainNames(state) {
+      return state.userAllDomainNames;
     },
     getUserSelectedName(state) {
       return state.selectedName;
@@ -62,8 +61,8 @@ export default {
       }
 
       for (let udName of userDomainNames) {
-        if (!state.defaultNames.includes(udName)) {
-          state.defaultNames.push(udName);
+        if (!state.userAllDomainNames.includes(udName)) {
+          state.userAllDomainNames.push(udName);
         }
       }
 
@@ -78,8 +77,8 @@ export default {
     },
 
     setDefaultName(state, defName) {
-      if (!state.defaultNames.includes(defName)) {
-        state.defaultNames.push(defName);
+      if (!state.userAllDomainNames.includes(defName)) {
+        state.userAllDomainNames.push(defName);
       }
     },
 

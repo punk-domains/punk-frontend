@@ -38,7 +38,7 @@
         <div class="col-md-12">
           <div class="container text-center">
             <h3>Domains</h3>
-            <p class="text-break" v-for="defName in getUserDefaultNames">{{defName}}</p>
+            <p class="text-break" v-for="defName in getUserAllDomainNames">{{defName}}</p>
 
             <hr>
             <p v-if="getUserSelectedNameData">
@@ -110,7 +110,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserDefaultNames", "getUserSelectedName", "getUserSelectedNameData"]),
+    ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
     ...mapGetters("web3panda", ["getFactoryContract"]),
 
