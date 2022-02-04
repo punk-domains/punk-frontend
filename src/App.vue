@@ -29,14 +29,16 @@ export default {
 
   methods: {
     ...mapActions("web3panda", ["fetchTlds"]),
-    ...mapActions("user", ["fetchDefaultNames"]),
+    ...mapActions("user", ["fetchUserDomainNames"]),
 
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
+    ...mapMutations("web3panda", ["setFactoryContract"]),
 
     fetchAllData() {
       this.setUserData();
       this.setNetworkData();
+      this.setFactoryContract();
       this.fetchTlds();
     }
   },
@@ -61,7 +63,7 @@ export default {
     address(newVal, oldVal) {
       if (newVal) {
         this.setUserData();
-        this.fetchDefaultNames();
+        this.fetchUserDomainNames();
       }
     },
 
@@ -81,7 +83,7 @@ export default {
     },
 
     isActivated(newVal, oldVal) {
-      if (!localStorage.getItem("connected")) {
+      if (!localStorage.getItem("connected") || localStorage.getItem("connected") === "null") {
         // set this to auto-connect on next visit
         localStorage.setItem("connected", "metamask");
       }

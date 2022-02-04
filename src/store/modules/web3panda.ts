@@ -23,6 +23,9 @@ export default {
     getDomainPrices(state) {
       return state.domainPrices;
     },
+    getFactoryContract(state) {
+      return state.factoryContract;
+    },
     getTlds(state) {
       return state.tlds;
     },
@@ -50,12 +53,14 @@ export default {
       state.tlds = await state.factoryContract.getTldsArray();
 
       // fetch TLDs array from local storage
-      let lsTlds;
+      let lsTlds = [];
 
       if (state.tlds) {
         lsTlds = JSON.parse(localStorage.getItem(state.tldsKey));
-      } else {
-        lsTlds = [];
+
+        if (lsTlds === null) {
+          lsTlds = [];
+        }
       }
 
       // if length in local storage is less than what was just fetched from blockchain, do these:
@@ -79,7 +84,7 @@ export default {
       }
 
       // fetch user's default names
-      dispatch('user/fetchDefaultNames', null, { root: true });
+      dispatch('user/fetchUserDomainNames', null, { root: true });
 
       // fetch domain prices
       for (let tldName of state.tlds) {

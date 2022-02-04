@@ -38,6 +38,16 @@ body {
   color: black;
 }
 
+.span-link:hover {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.span-link {
+  text-decoration: underline;
+}
+
 @media only screen and (max-width: 767px) {
   #sidebar-container {
     display: none;

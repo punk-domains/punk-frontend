@@ -24,7 +24,7 @@
 
       </div>
 
-      <div class="row mb-3" v-if="getUserSelectedNameData.data || getUserSelectedNameData.url">
+      <div class="row mb-3" v-if="getUserSelectedNameData && (getUserSelectedNameData.data || getUserSelectedNameData.url)">
         <div class="col-md-12">
           <div class="container text-center">
             <h3>{{getUserSelectedName}} data</h3>
@@ -41,8 +41,15 @@
             <p class="text-break" v-for="defName in getUserDefaultNames">{{defName}}</p>
 
             <hr>
-            <p>
-              <small><em>Don't see your domain here? Add it manually.</em></small>
+            <p v-if="getUserSelectedNameData">
+              <small><em>
+                Don't see your domain here? 
+                <span class="span-link" data-bs-toggle="modal" data-bs-target="#addDomainModal">
+                  Add it manually</span>.
+              </em></small>
+            </p>
+            <p v-else>
+              No domain? No worries, <router-link to="/">buy yourself one here!</router-link>
             </p>
           </div>
         </div>
@@ -50,15 +57,53 @@
 
     </div>
   </div>
+
+  <!-- Add Domain Modal -->
+  <div class="modal fade" id="addDomainModal" tabindex="-1" aria-labelledby="addDomainModalLabel" aria-hidden="true" modal-dialog-centered>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDomainModalLabel">Add your existing domain</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Enter your existing domain:</label>
+            <input type="text" class="form-control" id="recipient-name" v-model="existingDomain">
+            <small><em>No transaction will be made, this is a free query.</em></small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button 
+            type="button" 
+            @click="addExistingDomain" 
+            class="btn btn-primary" 
+            :disabled="domainNotValid">Add domain</button>
+
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
+import { ethers } from 'ethers';
+import tldAbi from "../abi/Web3PandaTLD.json";
+import { useEthers } from 'vue-dapp';
+import { useToast, TYPE } from "vue-toastification";
 import Sidebar from '../components/Sidebar.vue';
 
 export default {
   name: "Profile",
+
+  data() {
+    return {
+      existingDomain: null
+    }
+  },
 
   components: {
     Sidebar
@@ -67,6 +112,63 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserDefaultNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
+    ...mapGetters("web3panda", ["getFactoryContract"]),
+
+    domainNotValid() {
+      if (this.existingDomain === "") {
+        return true;
+      } else if (this.existingDomain === null) {
+        return true;
+      } else if (this.existingDomain.split(".").length != 2) { // only 1 zero allowed (meaning there are two words after split)
+        return true;
+      } else if (this.existingDomain.includes(" ")) {
+        return true;
+      } else if (this.existingDomain.includes("%")) {
+        return true;
+      } else if (this.existingDomain.includes("&")) {
+        return true;
+      } else if (this.existingDomain.includes("?")) {
+        return true;
+      } else if (this.existingDomain.includes("#")) {
+        return true;
+      }
+    }
   },
+
+  methods: {
+    ...mapMutations("user", ["addDomainManually"]),
+
+    async addExistingDomain() {
+      const existingDomainParts = this.existingDomain.split(".");
+
+      // get TLD address and create contract
+      const tldAddress = await this.getFactoryContract.tldNamesAddresses("."+existingDomainParts[1]);
+
+      if (tldAddress !== ethers.constants.AddressZero) {
+        const intfc = new ethers.utils.Interface(tldAbi);
+        const contract = new ethers.Contract(tldAddress, intfc, this.signer);
+
+        const checkDomainHolder = await contract.getDomainHolder(existingDomainParts[0]);
+
+        if (String(checkDomainHolder)===String(this.address)) {
+          this.addDomainManually(this.existingDomain);
+          this.toast("Domain successfully added.", {type: TYPE.SUCCESS});
+        } else {
+          this.toast("This domain is not owned by your currently connected address.", {type: TYPE.ERROR});
+        }
+      } else {
+        this.toast("This TLD does not exist.", {type: TYPE.ERROR});
+      }
+      
+    }
+  },
+
+  setup() {
+    const { address, signer } = useEthers()
+    const toast = useToast()
+
+    return { address, signer, toast }
+  },
+
 }
 </script>

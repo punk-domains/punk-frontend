@@ -2,17 +2,18 @@ import { ethers } from 'ethers';
 import tldAbi from "../../abi/Web3PandaTLD.json";
 import { useEthers, displayEther, shortenAddress } from 'vue-dapp';
 
-const { address, balance, signer } = useEthers();
+const { address, balance, chainId, signer } = useEthers();
 
 export default {
   namespaced: true,
   
   state: () => ({ 
     defaultNames: [],
-    selectedName: [], // domain name that appears as the main profile name
+    selectedName: null, // domain name that appears as the main profile name
     selectedNameData: null,
     selectedNameImageSvg: null,
     userAddress: null,
+    userAllDomainNames: [], // all domain names of current user (default + manually added)
     userShortAddress: null,
     userBalanceWei: 0,
     userBalance: 0
@@ -47,6 +48,28 @@ export default {
   },
 
   mutations: { 
+    addDomainManually(state, domainName) {
+      let userDomainNames = [];
+
+      const userDomainNamesKey = "userDomainNames" + chainId.value;
+
+      if (localStorage.getItem(userDomainNamesKey)) {
+        userDomainNames = JSON.parse(localStorage.getItem(userDomainNamesKey));
+      }
+
+      if (!userDomainNames.includes(domainName)) {
+        userDomainNames.push(domainName);
+      }
+
+      for (let udName of userDomainNames) {
+        if (!state.defaultNames.includes(udName)) {
+          state.defaultNames.push(udName);
+        }
+      }
+
+      localStorage.setItem(userDomainNamesKey, JSON.stringify(userDomainNames));
+    },
+
     setUserData(state) {
       state.userAddress = address.value;
       state.userShortAddress = shortenAddress(address.value);
@@ -54,8 +77,10 @@ export default {
       state.userBalance = displayEther(balance.value);
     },
 
-    setDefaultNames(state, defNames) {
-      state.defaultNames = defNames;
+    setDefaultName(state, defName) {
+      if (!state.defaultNames.includes(defName)) {
+        state.defaultNames.push(defName);
+      }
     },
 
     setSelectedName(state, selectedName) {
@@ -72,10 +97,20 @@ export default {
   },
 
   actions: { 
-    async fetchDefaultNames({ dispatch, commit, rootState }) {
-      // fetch user's default names
-      let userDefaultNames = [];
+    async fetchUserDomainNames({ dispatch, commit, state, rootState }) {
+      let userDomainNames = [];
 
+      const userDomainNamesKey = "userDomainNames" + chainId.value;
+      
+      if (localStorage.getItem(userDomainNamesKey)) {
+        userDomainNames = JSON.parse(localStorage.getItem(userDomainNamesKey));
+      }
+
+      for (let udName of userDomainNames) {
+        commit('setDefaultName', udName);
+      }
+      
+      // fetch user's default names
       for (let tldName of rootState.web3panda.tlds) {
         const intfc = new ethers.utils.Interface(tldAbi);
         const contract = new ethers.Contract(rootState.web3panda.tldAddresses[tldName], intfc, signer.value);
@@ -83,16 +118,27 @@ export default {
         const userDefaultName = await contract.defaultNames(address.value);
 
         if (userDefaultName) {
-          userDefaultNames.push(userDefaultName + tldName);
+          commit('setDefaultName', userDefaultName + tldName);
+
+          if (!userDomainNames.includes(userDefaultName + tldName)) {
+            userDomainNames.push(userDefaultName + tldName);
+          }
+
+          if (!state.selectedName) {
+            commit('setSelectedName', userDefaultName + tldName);
+          }
         }
       }
 
-      commit('setDefaultNames', userDefaultNames);
-      commit('setSelectedName', userDefaultNames[0]);
+      const selectedNameKey = "selectedName" + chainId.value;
 
-      // TODO: check if selectedName in local storage
-        // if yes, check if selectedName still owned by user
-          // if yes, set it as state.selectedName
+      if (localStorage.getItem(selectedNameKey) && localStorage.getItem(selectedNameKey) !== String(null)) {
+        commit('setSelectedName', localStorage.getItem(selectedNameKey));
+      } else {
+        localStorage.setItem(selectedNameKey, state.selectedName);
+      }
+
+      localStorage.setItem(userDomainNamesKey, JSON.stringify(userDomainNames));
       
       dispatch("fetchSelectedNameData");
     },
