@@ -150,35 +150,37 @@ export default {
         const name = nameArr[0];
         const domain = "." + nameArr[1];
         
-        const intfc = new ethers.utils.Interface(tldAbi);
-        const contract = new ethers.Contract(rootState.web3panda.tldAddresses[domain], intfc, signer.value);
+        if (rootState.web3panda.tldAddresses[domain]) {
+          const intfc = new ethers.utils.Interface(tldAbi);
+          const contract = new ethers.Contract(rootState.web3panda.tldAddresses[domain], intfc, signer.value);
 
-        const nameData = await contract.domains(name);
+          const nameData = await contract.domains(name);
 
-        commit("setSelectedNameData", nameData);
+          commit("setSelectedNameData", nameData);
 
-        let metadata;
-        
-        if (nameData.pfpAddress != ethers.constants.AddressZero) {
-          // fetch image URL of that PFP
-          const pfpInterface = new ethers.utils.Interface([
-            "function tokenURI(uint256 tokenId) public view virtual override returns (string memory)"
-          ]);
-          const pfpContract = new ethers.Contract(nameData.pfpAddress, pfpInterface, signer.value);
-          metadata = await pfpContract.tokenURI(nameData.tokenId);
-        } else {
-          // get contract image for that token ID
-          metadata = await contract.tokenURI(nameData.tokenId);
-        }
-
-        if (metadata) {
-          const json = atob(metadata.substring(29));
-          const result = JSON.parse(json);
-
-          if (result && result.image) {
-            commit("setSelectedNameImageSvg", result.image);
-          }
+          let metadata;
           
+          if (nameData.pfpAddress != ethers.constants.AddressZero) {
+            // fetch image URL of that PFP
+            const pfpInterface = new ethers.utils.Interface([
+              "function tokenURI(uint256 tokenId) public view returns (string memory)"
+            ]);
+            const pfpContract = new ethers.Contract(nameData.pfpAddress, pfpInterface, signer.value);
+            metadata = await pfpContract.tokenURI(nameData.tokenId);
+          } else {
+            // get contract image for that token ID
+            metadata = await contract.tokenURI(nameData.tokenId);
+          }
+
+          if (metadata) {
+            const json = atob(metadata.substring(29));
+            const result = JSON.parse(json);
+
+            if (result && result.image) {
+              commit("setSelectedNameImageSvg", result.image);
+            }
+            
+          }
         }
       }
       

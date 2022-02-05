@@ -56,7 +56,7 @@
 import { ethers } from 'ethers';
 import tldAbi from "../abi/Web3PandaTLD.json";
 import { useEthers } from 'vue-dapp';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 
 export default {
@@ -107,9 +107,12 @@ export default {
 
   methods: {
     ...mapActions("web3panda", ["fetchTlds"]),
+    ...mapMutations("user", ["addDomainManually"]),
 
     async buyDomain() {
       this.waiting = true;
+      const fullDomainName = this.chosenDomainName + this.selectedTld;
+      console.log(fullDomainName);
 
       const intfc = new ethers.utils.Interface(tldAbi);
       const contract = new ethers.Contract(this.getTldAddresses[this.selectedTld], intfc, this.signer);
@@ -131,6 +134,7 @@ export default {
         if (receipt.status === 1) {
           this.toast("You have successfully bought the domain!", {type: TYPE.SUCCESS});
           this.fetchTlds();
+          this.addDomainManually(fullDomainName);
           console.log(receipt);
         } else {
           this.toast("Transaction has failed.", {type: TYPE.ERROR});

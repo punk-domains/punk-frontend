@@ -77,11 +77,6 @@ export default {
       }
     },
 
-    getUserSelectedName(newName, oldName) {
-      console.log("oldName: " + oldName);
-      console.log("newName: " + newName);
-    },
-
     isActivated(newVal, oldVal) {
       if (!localStorage.getItem("connected") || localStorage.getItem("connected") === "null") {
         // set this to auto-connect on next visit
