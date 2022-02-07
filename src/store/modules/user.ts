@@ -11,8 +11,10 @@ export default {
     selectedName: null, // domain name that appears as the main profile name
     selectedNameData: null,
     selectedNameImageSvg: null,
+    selectedNameKey: null,
     userAddress: null,
     userAllDomainNames: [], // all domain names of current user (default + manually added)
+    userDomainNamesKey: null,
     userShortAddress: null,
     userBalanceWei: 0,
     userBalance: 0
@@ -50,23 +52,27 @@ export default {
     addDomainManually(state, domainName) {
       let userDomainNames = [];
 
-      const userDomainNamesKey = "userDomainNames" + chainId.value;
+      if (chainId.value) {
+        this.userDomainNamesKey = "userDomainNames" + chainId.value;
+        this.selectedNameKey = "selectedName" + chainId.value;
 
-      if (localStorage.getItem(userDomainNamesKey)) {
-        userDomainNames = JSON.parse(localStorage.getItem(userDomainNamesKey));
-      }
-
-      if (!userDomainNames.includes(domainName)) {
-        userDomainNames.push(domainName);
-      }
-
-      for (let udName of userDomainNames) {
-        if (!state.userAllDomainNames.includes(udName)) {
-          state.userAllDomainNames.push(udName);
+        if (localStorage.getItem(this.userDomainNamesKey)) {
+          userDomainNames = JSON.parse(localStorage.getItem(this.userDomainNamesKey));
         }
-      }
 
-      localStorage.setItem(userDomainNamesKey, JSON.stringify(userDomainNames));
+        if (!userDomainNames.includes(domainName)) {
+          userDomainNames.push(domainName);
+        }
+
+        for (let udName of userDomainNames) {
+          if (!state.userAllDomainNames.includes(udName)) {
+            state.userAllDomainNames.push(udName);
+          }
+        }
+
+        localStorage.setItem(this.userDomainNamesKey, JSON.stringify(userDomainNames));
+      }
+      
     },
 
     setUserData(state) {
@@ -84,6 +90,7 @@ export default {
 
     setSelectedName(state, selectedName) {
       state.selectedName = selectedName;
+      localStorage.setItem(this.selectedNameKey, state.selectedName);
     },
 
     setSelectedNameData(state, nameData) {
@@ -99,10 +106,13 @@ export default {
     async fetchUserDomainNames({ dispatch, commit, state, rootState }) {
       let userDomainNames = [];
 
-      const userDomainNamesKey = "userDomainNames" + chainId.value;
+      if (chainId.value) {
+        this.userDomainNamesKey = "userDomainNames" + chainId.value;
+        this.selectedNameKey = "selectedName" + chainId.value;
+      }
       
-      if (localStorage.getItem(userDomainNamesKey)) {
-        userDomainNames = JSON.parse(localStorage.getItem(userDomainNamesKey));
+      if (localStorage.getItem(this.userDomainNamesKey)) {
+        userDomainNames = JSON.parse(localStorage.getItem(this.userDomainNamesKey));
       }
 
       for (let udName of userDomainNames) {
@@ -129,15 +139,13 @@ export default {
         }
       }
 
-      const selectedNameKey = "selectedName" + chainId.value;
-
-      if (localStorage.getItem(selectedNameKey) && localStorage.getItem(selectedNameKey) !== String(null)) {
-        commit('setSelectedName', localStorage.getItem(selectedNameKey));
+      if (localStorage.getItem(this.selectedNameKey) && localStorage.getItem(this.selectedNameKey) !== String(null)) {
+        commit('setSelectedName', localStorage.getItem(this.selectedNameKey));
       } else {
-        localStorage.setItem(selectedNameKey, state.selectedName);
+        localStorage.setItem(this.selectedNameKey, state.selectedName);
       }
 
-      localStorage.setItem(userDomainNamesKey, JSON.stringify(userDomainNames));
+      localStorage.setItem(this.userDomainNamesKey, JSON.stringify(userDomainNames));
       
       dispatch("fetchSelectedNameData");
     },
@@ -178,8 +186,12 @@ export default {
 
             if (result && result.image) {
               commit("setSelectedNameImageSvg", result.image);
+            } else {
+              commit("setSelectedNameImageSvg", null);
             }
             
+          } else {
+            commit("setSelectedNameImageSvg", null);
           }
         }
       }

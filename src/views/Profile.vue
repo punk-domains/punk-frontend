@@ -36,9 +36,16 @@
 
       <div class="row">
         <div class="col-md-12">
-          <div class="container text-center">
+          <div class="container">
             <h3>Domains</h3>
-            <p class="text-break" v-for="defName in getUserAllDomainNames">{{defName}}</p>
+
+            <table class="table table-dark table-hover mt-4 mb-4">
+              <tbody>
+                <tr v-for="domainName in getUserAllDomainNames">
+                  <MyDomain :domain="domainName" />
+                </tr>
+              </tbody>
+            </table>
 
             <hr>
             <p v-if="getUserSelectedNameData">
@@ -94,6 +101,7 @@ import { ethers } from 'ethers';
 import tldAbi from "../abi/Web3PandaTLD.json";
 import { useEthers } from 'vue-dapp';
 import { useToast, TYPE } from "vue-toastification";
+import MyDomain from '../components/MyDomain.vue';
 import Sidebar from '../components/Sidebar.vue';
 
 export default {
@@ -106,6 +114,7 @@ export default {
   },
 
   components: {
+    MyDomain,
     Sidebar
   },
 
@@ -172,3 +181,14 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.table-dark {
+  --bs-table-bg: transparent;
+}
+
+.table-dark:hover {
+  --bs-table-bg: transparent;
+  --bs-table-hover-bg: #1D1E2C;
+}
+</style>
