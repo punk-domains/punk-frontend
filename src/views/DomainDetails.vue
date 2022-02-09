@@ -23,10 +23,10 @@
         </div>
       </div>
 
-      <div class="row" v-if="isActivated && !isNetworkSupported">
+      <div class="row" v-if="domainData && !isCorrectChainForDomain">
         <div class="col-md-12">
           <div class="alert alert-warning" role="alert">
-            Please change your network.
+            Please switch your network to {{getSupportedNetworks[domainChain]}}.
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@ import Sidebar from '../components/Sidebar.vue';
 
 export default {
   name: "DomainDetails",
-  props: ["tld", "domainName"],
+  props: ["domainChain", "tld", "domainName"],
   components: { Sidebar },
 
   data() {
@@ -130,7 +130,7 @@ export default {
 
   computed: {
     ...mapGetters("web3panda", ["getTldAddressesKey", "getTldAddresses"]),
-    ...mapGetters("network", ["isNetworkSupported"]),
+    ...mapGetters("network", ["getChainId", "getSupportedNetworks", "isNetworkSupported"]),
 
     customData() {
       if (this.domainData) {
@@ -158,6 +158,14 @@ export default {
       }
 
       return "This domain name is not owned by anyone yet."
+    },
+
+    isCorrectChainForDomain() {
+      if (Number(this.domainChain) === Number(this.getChainId)) {
+        return true;
+      }
+
+      return false;
     },
 
     urlData() {

@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     component: About,
   },
   {
-    path: '/domain/:tld/:domainName',
+    path: '/domain/:domainChain/:tld/:domainName',
     name: 'DomainDetails',
     component: DomainDetails,
     props: true

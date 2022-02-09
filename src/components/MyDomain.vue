@@ -2,7 +2,7 @@
   <td>
     <span 
       class="text-click" 
-      @click="this.$router.push({name: 'DomainDetails', params: {tld: domain.split('.')[1], domainName: domain.split('.')[0]}})"
+      @click="this.$router.push({name: 'DomainDetails', params: {domainChain: getChainId, tld: domain.split('.')[1], domainName: domain.split('.')[0]}})"
     >{{domain}}</span>
   </td>
   <td>
@@ -35,6 +35,7 @@ export default {
   props: ["domain"],
 
   computed: {
+    ...mapGetters("network", ["getChainId"]),
     ...mapGetters("user", ["getUserSelectedName"]),
   },
 
