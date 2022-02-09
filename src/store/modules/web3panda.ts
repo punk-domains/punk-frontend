@@ -31,6 +31,9 @@ export default {
     },
     getTldAddresses(state) {
       return state.tldAddresses;
+    },
+    getTldAddressesKey(state) {
+      return state.tldAddressesKey;
     }
   },
 
@@ -38,11 +41,14 @@ export default {
     setFactoryContract(state) {
       state.factoryAddress = addresses["Web3PandaTLDFactory"][String(chainId.value)];
 
-      state.tldsKey = "tlds" + chainId.value;
-      state.tldAddressesKey = "tldAddresses" + chainId.value;
+      if (state.factoryAddress) {
+        state.tldsKey = "tlds" + chainId.value;
+        state.tldAddressesKey = "tldAddresses" + chainId.value;
 
-      const intfc = new ethers.utils.Interface(factoryAbi);
-      state.factoryContract = new ethers.Contract(state.factoryAddress, intfc, signer.value);
+        const intfc = new ethers.utils.Interface(factoryAbi);
+        state.factoryContract = new ethers.Contract(state.factoryAddress, intfc, signer.value);
+      }
+      
     }
   },
 
@@ -50,54 +56,56 @@ export default {
     async fetchTlds({ dispatch, commit, state }) {
       commit("setFactoryContract");
 
-      state.tlds = await state.factoryContract.getTldsArray();
+      if (state.factoryContract) {
+        state.tlds = await state.factoryContract.getTldsArray();
 
-      // fetch TLDs array from local storage
-      let lsTlds = [];
-
-      if (state.tlds) {
-        lsTlds = JSON.parse(localStorage.getItem(state.tldsKey));
-
-        if (lsTlds === null) {
-          lsTlds = [];
+        // fetch TLDs array from local storage
+        let lsTlds = [];
+  
+        if (state.tlds) {
+          lsTlds = JSON.parse(localStorage.getItem(state.tldsKey));
+  
+          if (lsTlds === null) {
+            lsTlds = [];
+          }
         }
-      }
+  
+        // if length in local storage is less than what was just fetched from blockchain, do these:
+        if (lsTlds.length < state.tlds.length) {
+          localStorage.setItem(state.tldsKey, JSON.stringify(state.tlds));
+  
+          // fetch TLD addresses from blockchain and update local storage
+          for (let tldName of state.tlds) {
+            let tldAddress = await state.factoryContract.tldNamesAddresses(tldName);
+            state.tldAddresses[tldName] = tldAddress;
+          }
+  
+          localStorage.setItem(state.tldAddressesKey, JSON.stringify(state.tldAddresses));
+        } else {
+  
+          try {
+            state.tldAddresses = JSON.parse(localStorage.getItem(state.tldAddressesKey));
+          } catch {
+            console.log("Error getting tldAddresses from local storage.")
+          }
+        }
 
-      // if length in local storage is less than what was just fetched from blockchain, do these:
-      if (lsTlds.length < state.tlds.length) {
-        localStorage.setItem(state.tldsKey, JSON.stringify(state.tlds));
+        // fetch user's default names
+        dispatch('user/fetchUserDomainNames', null, { root: true });
 
-        // fetch TLD addresses from blockchain and update local storage
+        // fetch domain prices
         for (let tldName of state.tlds) {
-          let tldAddress = await state.factoryContract.tldNamesAddresses(tldName);
-          state.tldAddresses[tldName] = tldAddress;
+          const intfc = new ethers.utils.Interface(tldAbi);
+          const contract = new ethers.Contract(state.tldAddresses[tldName], intfc, signer.value);
+
+          const price = await contract.price();
+
+          if (!state.domainPrices) {
+            state.domainPrices = {}
+          }
+
+          state.domainPrices[tldName] = displayEther(price);
         }
-
-        localStorage.setItem(state.tldAddressesKey, JSON.stringify(state.tldAddresses));
-      } else {
-
-        try {
-          state.tldAddresses = JSON.parse(localStorage.getItem(state.tldAddressesKey));
-        } catch {
-          console.log("Error getting tldAddresses from local storage.")
-        }
-      }
-
-      // fetch user's default names
-      dispatch('user/fetchUserDomainNames', null, { root: true });
-
-      // fetch domain prices
-      for (let tldName of state.tlds) {
-        const intfc = new ethers.utils.Interface(tldAbi);
-        const contract = new ethers.Contract(state.tldAddresses[tldName], intfc, signer.value);
-
-        const price = await contract.price();
-
-        if (!state.domainPrices) {
-          state.domainPrices = {}
-        }
-
-        state.domainPrices[tldName] = displayEther(price);
       }
     }
   }

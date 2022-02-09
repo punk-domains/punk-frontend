@@ -44,8 +44,8 @@ export default {
   },
 
   setup() {
-    const { address, chainId, isActivated } = useEthers()
-    const { connect } = useWallet()
+    const { address, chainId, isActivated } = useEthers();
+    const { connect } = useWallet();
 
     onMounted(() => {
       // if user already connected via MetaMask before, connect them automatically on the next visit

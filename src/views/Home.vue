@@ -12,7 +12,7 @@
         <li>
           <span 
             class="dropdown-item" 
-            v-for="network in getSupportedNetworks"
+            v-for="network in getSupportedNetworkNames"
             @click="changeNetwork(network)"
           >{{network}}</span>
         </li>
@@ -79,7 +79,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getNetworkName", "getNetworkCurrency", "getSupportedNetworks"]),
+    ...mapGetters("network", ["getNetworkName", "getNetworkCurrency", "getSupportedNetworks", "getSupportedNetworkNames"]),
     ...mapGetters("web3panda", ["getTlds", "getTldAddresses", "getDomainPrices"]),
 
     buyNotValid() {
@@ -99,10 +99,12 @@ export default {
         return true;
       } else if (this.chosenDomainName.includes("#")) {
         return true;
+      } else if (this.chosenDomainName.includes("/")) {
+        return true;
       }
 
       return false;
-    }
+    },
   },
 
   methods: {

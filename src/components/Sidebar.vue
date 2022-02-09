@@ -78,7 +78,7 @@ export default {
     disconnectWallet() {
       localStorage.setItem("connected", null);
       this.disconnect();
-      this.$router.push('/');
+      this.$router.push({name: 'Home'});
     }
   },
 

@@ -22,14 +22,14 @@
                 <li>
                   <span 
                     class="dropdown-item" 
-                    v-for="network in getSupportedNetworks"
+                    v-for="network in getSupportedNetworkNames"
                     @click="changeNetwork(network)"
                   >{{network}}</span>
                 </li>
               </ul>
             </div>
 
-            <button class="btn btn-primary" @click="this.$router.push('profile')">
+            <button class="btn btn-primary" @click="this.$router.push({name: 'Profile'})">
               {{ getNameOrAddress }}
             </button>
           </div>
@@ -51,7 +51,7 @@ export default {
 
   computed: {
     ...mapGetters("user", ["getUserShortAddress", "getUserSelectedName"]),
-    ...mapGetters("network", ["getNetworkName", "getSupportedNetworks"]),
+    ...mapGetters("network", ["getNetworkName", "getSupportedNetworks", "getSupportedNetworkNames"]),
 
     getNameOrAddress() {
       if (this.getUserSelectedName) {
@@ -59,7 +59,8 @@ export default {
       } else {
         return this.getUserShortAddress;
       }
-    }
+    },
+
   },
 
   methods: {

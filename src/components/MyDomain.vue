@@ -1,7 +1,16 @@
 <template>
-  <td>{{domain}}</td>
   <td>
-    <span class="text-click">Edit domain data</span>
+    <span 
+      class="text-click" 
+      @click="this.$router.push({name: 'DomainDetails', params: {tld: domain.split('.')[1], domainName: domain.split('.')[0]}})"
+    >{{domain}}</span>
+  </td>
+  <td>
+    <span 
+      class="text-click" 
+    >
+      Edit domain data
+    </span>
   </td>
   <td>
     <span v-if="getUserSelectedName === domain">
@@ -35,7 +44,6 @@ export default {
     ...mapMutations("user", ["setSelectedName"]),
 
     setAsMainName() {
-      console.log("Main name: " + this.domain);
       this.setSelectedName(this.domain);
       this.fetchSelectedNameData();
     }

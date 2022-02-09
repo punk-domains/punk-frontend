@@ -8,7 +8,10 @@ export default {
   state: () => ({
     networkCurrency: "ETH",
     networkName: "Unsupported Network",
-    supportedNetworks: ["Mumbai", "Ropsten"]
+    supportedNetworks: {
+      80001: "Mumbai",
+      3: "Ropsten"
+    }
   }),
 
   getters: { 
@@ -21,11 +24,35 @@ export default {
     },
 
     getNetworkName(state) {
-      return state.networkName;
+      const supportedIds = Object.keys(state.supportedNetworks);
+
+      if (supportedIds && supportedIds.includes(String(chainId.value))) {
+        return state.networkName;
+      }
+
+      return "Unsupported Network";
     },
 
     getSupportedNetworks(state) {
       return state.supportedNetworks;
+    },
+
+    getSupportedNetworkIds(state) {
+      return Object.keys(state.supportedNetworks);
+    },
+
+    getSupportedNetworkNames(state) {
+      return Object.values(state.supportedNetworks);
+    },
+
+    isNetworkSupported(state) {
+      const supportedIds = Object.keys(state.supportedNetworks);
+
+      if (supportedIds && supportedIds.includes(String(chainId.value))) {
+        return true;
+      }
+
+      return false;
     }
   },
 

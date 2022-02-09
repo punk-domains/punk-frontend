@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from './views/Home.vue'
+
 import About from './views/About.vue'
+import DomainDetails from './views/DomainDetails.vue'
+import DomainEdit from './views/DomainEdit.vue'
+import Home from './views/Home.vue'
 import Profile from './views/Profile.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
@@ -15,6 +18,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/about',
     name: 'About',
     component: About,
+  },
+  {
+    path: '/domain/:tld/:domainName',
+    name: 'DomainDetails',
+    component: DomainDetails,
+    props: true
   },
   {
     path: '/profile',
