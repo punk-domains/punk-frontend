@@ -18,7 +18,7 @@
       <div class="row" v-if="isActivated && isNetworkSupported && !domainData">
         <div class="col-md-12">
           <div class="alert alert-warning" role="alert">
-            Try to reload the page.
+            If data does not show in a reasonable amount of time, reload the page.
           </div>
         </div>
       </div>

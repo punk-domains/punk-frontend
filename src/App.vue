@@ -90,5 +90,8 @@ export default {
 <style scoped>
 .main-container {
   padding: 20px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

@@ -25,13 +25,21 @@
       </div>
 
       <div class="row mb-3" v-if="getUserSelectedNameData && (getUserSelectedNameData.data || getUserSelectedNameData.url)">
-        <div class="col-md-12">
+
+        <div class="col-md-6" v-if="getUserSelectedNameData.url">
           <div class="container text-center">
-            <h3>{{getUserSelectedName}} data</h3>
-            <p class="text-break">{{getUserSelectedNameData.data}}</p>
+            <h3>Redirect URL</h3>
             <p class="text-break">{{getUserSelectedNameData.url}}</p>
           </div>
         </div>
+
+        <div class="col-md-6" v-for="(dataValue, dataKey) in customData">
+          <div class="container text-center">
+            <h3>{{dataKey}}</h3>
+            <p class="text-break">{{dataValue}}</p>
+          </div>
+        </div>
+
       </div>
 
       <div class="row">
@@ -122,6 +130,18 @@ export default {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
     ...mapGetters("web3panda", ["getFactoryContract"]),
+
+    customData() {
+      if (this.getUserSelectedNameData) {
+        try {
+          return JSON.parse(this.getUserSelectedNameData.data);
+        } catch {
+          return null
+        }
+      }
+
+      return null
+    },
 
     domainNotValid() {
       if (this.existingDomain === "") {
