@@ -40,25 +40,40 @@
             <img class="img-thumbnail domain-image" :src="pfpImage" />
 
             <div class="mb-3 row domain-data mt-4" v-if="domainData">
-              <label for="staticHolder" class="col-sm-3 col-form-label">Holder address</label>
-              <div class="col-sm-9">
-                <input type="text" readonly class="form-control-plaintext domain-data" id="staticHolder" :value="holderData">
+              <div class="col-sm-3">
+                Holder address
+              </div>
+
+              <div class="col-sm-9 text-start">
+                {{holderData}}
               </div>
             </div>
 
             <div class="mb-3 row domain-data mt-4" v-if="domainData">
-              <label for="staticUrl" class="col-sm-3 col-form-label">URL</label>
-              <div class="col-sm-9">
-                <input type="text" readonly class="form-control-plaintext domain-data" id="staticUrl" :value="urlData">
+              <div class="col-sm-3">
+                URL
+              </div>
+
+              <div class="col-sm-9 text-start">
+                <span>{{urlData}}</span>
+
+                <button 
+                  class="btn btn-primary btn-sm mx-3"
+                  data-bs-toggle="modal" data-bs-target="#editUrlModal"
+                >Edit</button>
               </div>
             </div>
 
             <div class="mb-3 row domain-data mt-4" v-if="domainData">
-              <label for="staticPfp" class="col-sm-3 col-form-label">Custom PFP</label>
-              <div class="col-sm-9">
-                <input type="text" readonly class="form-control-plaintext domain-data" id="staticPfp" :value="customPfp">
+              <div class="col-sm-3">
+                Custom PFP
+              </div>
+
+              <div class="col-sm-9 text-start">
+                {{customPfp}}
               </div>
             </div>
+
 
             <div class="mb-3 row domain-data mt-4" v-if="customData && customData.description">
               <label for="staticDescription" class="col-sm-3 col-form-label">Description</label>
@@ -74,30 +89,42 @@
               </div>
             </div>
 
-            <!--
-            <div class="input-group mb-3 mt-4">
-              <input type="text" class="form-control" value="twitter" disabled>
-              <span class="input-group-text"><i class="bi bi-arrow-right"></i></span>
-              <input 
-                type="text" 
-                class="form-control" 
-                v-model="twitter"
-                placeholder="Enter your Twitter handle">
-            </div>
-            
-
-            <button 
-              class="btn btn-primary mt-3 mb-3"
-              @click="storeData"
-            >
-              Store data to blockchain
-            </button>
-            -->
-
           </div>
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- Edit URL Modal -->
+  <div class="modal fade" id="editUrlModal" tabindex="-1" aria-labelledby="editUrlModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUrlModalLabel">Edit URL</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Anyone who's using the Web3Panda browser extension will get redirected to this URL if they enter 
+            {{domainName}}.{{tld}} in the browser URL bar.
+          </p>
+
+          <div class="mb-3" v-if="domainData">
+            <input
+              type="text" 
+              class="form-control" 
+              ref="urlInput" 
+              placeholder="Enter URL"
+              :value="domainData.url"
+            >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="editUrl">Edit URL</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -108,6 +135,7 @@ import { mapGetters } from 'vuex';
 import { useEthers } from 'vue-dapp';
 import tldAbi from "../abi/Web3PandaTLD.json";
 import Sidebar from '../components/Sidebar.vue';
+import { useToast, TYPE } from "vue-toastification";
 
 export default {
   name: "DomainDetails",
@@ -116,8 +144,9 @@ export default {
 
   data() {
     return {
+      tldContract: null,
       domainData: null,
-      pfpImage: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg"
+      pfpImage: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg",
     }
   },
 
@@ -126,6 +155,17 @@ export default {
     if (this.getTldAddresses && JSON.stringify(this.getTldAddresses) != "{}") {
       this.fetchData();
     }
+
+    console.log("this domain created");
+    
+
+    this.toast(
+      "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
+      {
+        type: TYPE.SUCCESS,
+        onClick: () => window.open("https://google.com", '_blank').focus()
+      }
+    );
   },
 
   computed: {
@@ -178,7 +218,75 @@ export default {
   },
 
   methods: {
+    async editUrl() {
+      if (!this.tldContract) {
+        this.setContract();
+      }
+
+      if (this.tldContract) {
+        const tx = await this.tldContract.editUrl(this.$refs.urlInput.value);
+
+        const toastWait = this.toast(
+          "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
+          {
+            type: TYPE.INFO,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully bought the domain!", {type: TYPE.SUCCESS});
+          this.fetchTlds();
+          this.addDomainManually(fullDomainName);
+          console.log(receipt);
+        } else {
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {type: TYPE.ERROR});
+        }
+      }
+    },
+
     async fetchData() {
+      if (!this.tldContract) {
+        this.setContract();
+      }
+
+      if (this.tldContract) {
+        // get domain data
+        this.domainData = await this.tldContract.domains(this.domainName);
+
+        if (this.domainData && this.domainData.holder !== ethers.constants.AddressZero) {
+          let metadata;
+            
+          if (this.domainData.pfpAddress !== ethers.constants.AddressZero) {
+            // fetch image URL of that PFP
+            const pfpInterface = new ethers.utils.Interface([
+              "function tokenURI(uint256 tokenId) public view returns (string memory)"
+            ]);
+            const pfpContract = new ethers.Contract(this.domainData.pfpAddress, pfpInterface, this.signer);
+            metadata = await pfpContract.tokenURI(this.domainData.tokenId);
+          } else {
+            // get contract image for that token ID
+            metadata = await this.tldContract.tokenURI(this.domainData.tokenId);
+          }
+
+          if (metadata) {
+            const json = atob(metadata.substring(29));
+            const result = JSON.parse(json);
+
+            if (result && result.image) {
+              this.pfpImage = result.image;
+            }
+            
+          }
+        }
+      }
+    },
+
+    setContract() {
       let tldAddresses = this.getTldAddresses;
 
       if (!tldAddresses) {
@@ -194,51 +302,16 @@ export default {
 
         // construct contract
         const intfc = new ethers.utils.Interface(tldAbi);
-        const contract = new ethers.Contract(tldAddr, intfc, this.signer);
-
-        // get domain data
-        this.domainData = await contract.domains(this.domainName);
-        //console.log(this.domainData);
-
-        if (this.domainData && this.domainData.holder !== ethers.constants.AddressZero) {
-          let metadata;
-            
-          if (this.domainData.pfpAddress !== ethers.constants.AddressZero) {
-            // fetch image URL of that PFP
-            const pfpInterface = new ethers.utils.Interface([
-              "function tokenURI(uint256 tokenId) public view returns (string memory)"
-            ]);
-            const pfpContract = new ethers.Contract(this.domainData.pfpAddress, pfpInterface, this.signer);
-            metadata = await pfpContract.tokenURI(this.domainData.tokenId);
-          } else {
-            // get contract image for that token ID
-            metadata = await contract.tokenURI(this.domainData.tokenId);
-          }
-
-          if (metadata) {
-            const json = atob(metadata.substring(29));
-            const result = JSON.parse(json);
-
-            if (result && result.image) {
-              this.pfpImage = result.image;
-            }
-            
-          }
-        }
-          
+        this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
       }
-
-    },
-
-    storeData() {
-      console.log("Store data click: " + this.url + ", " + this.description + ", " + this.twitter);
     }
   },
 
   setup() {
     const { chainId, isActivated, signer } = useEthers();
+    const toast = useToast();
 
-    return { chainId, isActivated, signer }
+    return { chainId, isActivated, signer, toast }
   },
 
   watch: {

@@ -55,7 +55,6 @@
               </tbody>
             </table>
 
-            <hr>
             <p v-if="getUserSelectedNameData">
               <small><em>
                 Don't see your domain here? 

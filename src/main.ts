@@ -5,7 +5,7 @@ import store from './store'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
 import "bootstrap-icons/font/bootstrap-icons.css"
-import Toast, { POSITION } from "vue-toastification";
+import Toast, { POSITION, TYPE } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import './index.css'
 import { VueDapp } from 'vue-dapp'
@@ -18,7 +18,14 @@ const options = {
   closeButton: "button",
   position:POSITION.TOP_LEFT,
   toastClassName: "panda-toast-class",
-  closeOnClick: false
+  closeOnClick: false,
+
+  toastDefaults: {
+    // ToastOptions object for each type of toast
+    [TYPE.INFO]: {
+        timeout: false,
+    }    
+  }
 }
 
 app.use(router)

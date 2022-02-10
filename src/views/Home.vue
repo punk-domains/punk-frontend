@@ -133,8 +133,6 @@ export default {
           "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
           {
             type: TYPE.INFO,
-            timeout: false,
-            closeOnClick: false,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           }
         );
@@ -192,7 +190,7 @@ export default {
 
   setup() {
     const { address, signer } = useEthers()
-    const toast = useToast()
+    const toast = useToast();
 
     return { address, signer, toast }
   },
