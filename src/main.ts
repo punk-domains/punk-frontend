@@ -24,6 +24,7 @@ const options = {
     // ToastOptions object for each type of toast
     [TYPE.INFO]: {
         timeout: false,
+        icon: false
     }    
   }
 }

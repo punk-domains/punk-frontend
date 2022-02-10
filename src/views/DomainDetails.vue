@@ -121,7 +121,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="closeUrlModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" @click="editUrl">Edit URL</button>
         </div>
       </div>
@@ -136,6 +136,7 @@ import { useEthers } from 'vue-dapp';
 import tldAbi from "../abi/Web3PandaTLD.json";
 import Sidebar from '../components/Sidebar.vue';
 import { useToast, TYPE } from "vue-toastification";
+import WaitingToast from "../components/toasts/WaitingToast.vue";
 
 export default {
   name: "DomainDetails",
@@ -155,22 +156,11 @@ export default {
     if (this.getTldAddresses && JSON.stringify(this.getTldAddresses) != "{}") {
       this.fetchData();
     }
-
-    console.log("this domain created");
-    
-
-    this.toast(
-      "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
-      {
-        type: TYPE.SUCCESS,
-        onClick: () => window.open("https://google.com", '_blank').focus()
-      }
-    );
   },
 
   computed: {
     ...mapGetters("web3panda", ["getTldAddressesKey", "getTldAddresses"]),
-    ...mapGetters("network", ["getChainId", "getSupportedNetworks", "isNetworkSupported"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getSupportedNetworks", "isNetworkSupported"]),
 
     customData() {
       if (this.domainData) {
@@ -224,10 +214,17 @@ export default {
       }
 
       if (this.tldContract) {
-        const tx = await this.tldContract.editUrl(this.$refs.urlInput.value);
+        const tx = await this.tldContract.editUrl(this.domainName, this.$refs.urlInput.value);
+
+        document.getElementById('closeUrlModal').click();
 
         const toastWait = this.toast(
-          "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
           {
             type: TYPE.INFO,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
@@ -238,10 +235,11 @@ export default {
 
         if (receipt.status === 1) {
           this.toast.dismiss(toastWait);
-          this.toast("You have successfully bought the domain!", {type: TYPE.SUCCESS});
-          this.fetchTlds();
-          this.addDomainManually(fullDomainName);
-          console.log(receipt);
+          this.toast("You have successfully updated the URL!", {
+            type: TYPE.SUCCESS,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.fetchData();
         } else {
           this.toast.dismiss(toastWait);
           this.toast("Transaction has failed.", {type: TYPE.ERROR});
