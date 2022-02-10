@@ -58,6 +58,7 @@ import tldAbi from "../abi/Web3PandaTLD.json";
 import { useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
+import WaitingToast from "../components/toasts/WaitingToast.vue";
 
 export default {
   name: "Home",
@@ -114,7 +115,6 @@ export default {
     async buyDomain() {
       this.waiting = true;
       const fullDomainName = this.chosenDomainName + this.selectedTld;
-      console.log(fullDomainName);
 
       const intfc = new ethers.utils.Interface(tldAbi);
       const contract = new ethers.Contract(this.getTldAddresses[this.selectedTld], intfc, this.signer);
@@ -130,7 +130,12 @@ export default {
         );
 
         const toastWait = this.toast(
-          "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
           {
             type: TYPE.INFO,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
@@ -144,15 +149,18 @@ export default {
           this.toast("You have successfully bought the domain!", {type: TYPE.SUCCESS});
           this.fetchTlds();
           this.addDomainManually(fullDomainName);
-          console.log(receipt);
+          this.waiting = false;
         } else {
           this.toast.dismiss(toastWait);
           this.toast("Transaction has failed.", {type: TYPE.ERROR});
+          console.log(receipt);
+          this.waiting = false;
         }
 
       } catch (e) {
         console.log(e)
-        this.toast(e.data.message, {type: TYPE.ERROR});
+        this.waiting = false;
+        this.toast(e.message, {type: TYPE.ERROR});
       }
 
       this.waiting = false;

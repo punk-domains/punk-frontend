@@ -214,35 +214,41 @@ export default {
       }
 
       if (this.tldContract) {
-        const tx = await this.tldContract.editUrl(this.domainName, this.$refs.urlInput.value);
+        try {
+          const tx = await this.tldContract.editUrl(this.domainName, this.$refs.urlInput.value);
 
-        document.getElementById('closeUrlModal').click();
+          document.getElementById('closeUrlModal').click();
 
-        const toastWait = this.toast(
-          {
-            component: WaitingToast,
-            props: {
-              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+          const toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              }
+            },
+            {
+              type: TYPE.INFO,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
             }
-          },
-          {
-            type: TYPE.INFO,
-            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          );
+
+          const receipt = await tx.wait();
+
+          if (receipt.status === 1) {
+            this.toast.dismiss(toastWait);
+            this.toast("You have successfully updated the URL!", {
+              type: TYPE.SUCCESS,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            this.fetchData();
+          } else {
+            this.toast.dismiss(toastWait);
+            this.toast("Transaction has failed.", {type: TYPE.ERROR});
+            console.log(receipt);
           }
-        );
-
-        const receipt = await tx.wait();
-
-        if (receipt.status === 1) {
-          this.toast.dismiss(toastWait);
-          this.toast("You have successfully updated the URL!", {
-            type: TYPE.SUCCESS,
-            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-          });
-          this.fetchData();
-        } else {
-          this.toast.dismiss(toastWait);
-          this.toast("Transaction has failed.", {type: TYPE.ERROR});
+        } catch (e) {
+          console.log(e);
+          this.toast(e.message, {type: TYPE.ERROR});
         }
       }
     },
