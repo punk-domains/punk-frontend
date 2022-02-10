@@ -15,6 +15,18 @@ export default {
   }),
 
   getters: { 
+    getBlockExplorerBaseUrl() {
+      if (chainId.value === 3) {
+        return "https://ropsten.etherscan.io";
+      } else if (chainId.value === 137) {
+        return "https://polygonscan.com";
+      } else if (chainId.value === 42161) {
+        return "https://arbiscan.io/";
+      } else if (chainId.value === 80001) {
+        return "https://mumbai.polygonscan.com";
+      }
+    },
+    
     getChainId() {
       return chainId.value;
     },
@@ -61,6 +73,9 @@ export default {
       if (chainId.value === 137) {
         state.networkName = "Polygon";
         state.networkCurrency = "MATIC";
+      } else if (chainId.value === 42161) {
+        state.networkName = "Arbitrum";
+        state.networkCurrency = "ETH";
       } else if (chainId.value === 80001) {
         state.networkName = "Mumbai";
         state.networkCurrency = "MATIC";

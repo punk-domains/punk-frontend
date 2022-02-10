@@ -79,7 +79,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getNetworkName", "getNetworkCurrency", "getSupportedNetworks", "getSupportedNetworkNames"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkName", "getNetworkCurrency", "getSupportedNetworks", "getSupportedNetworkNames"]),
     ...mapGetters("web3panda", ["getTlds", "getTldAddresses", "getDomainPrices"]),
 
     buyNotValid() {
@@ -129,16 +129,26 @@ export default {
           }
         );
 
-        console.log(tx);
+        const toastWait = this.toast(
+          "Please wait for your tx to confirm. Click on this notification to see tx in the block explorer.", 
+          {
+            type: TYPE.INFO,
+            timeout: false,
+            closeOnClick: false,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
 
         const receipt = await tx.wait();
 
         if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
           this.toast("You have successfully bought the domain!", {type: TYPE.SUCCESS});
           this.fetchTlds();
           this.addDomainManually(fullDomainName);
           console.log(receipt);
         } else {
+          this.toast.dismiss(toastWait);
           this.toast("Transaction has failed.", {type: TYPE.ERROR});
         }
 

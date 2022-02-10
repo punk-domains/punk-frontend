@@ -18,6 +18,7 @@ const options = {
   closeButton: "button",
   position:POSITION.TOP_LEFT,
   toastClassName: "panda-toast-class",
+  closeOnClick: false
 }
 
 app.use(router)
