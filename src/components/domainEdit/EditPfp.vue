@@ -8,6 +8,7 @@
       <span>{{customPfp}}</span>
 
       <button 
+        v-if="isOwner"
         class="btn btn-primary btn-sm mx-3"
         data-bs-toggle="modal" data-bs-target="#editPfpModal"
       >Edit</button>
@@ -89,6 +90,10 @@ export default {
       }
 
       return "Custom PFP not set yet."
+    },
+
+    isOwner() {
+      return String(this.address).toLowerCase() === String(this.domainData.holder).toLowerCase();
     },
 
     pfpAddress() {

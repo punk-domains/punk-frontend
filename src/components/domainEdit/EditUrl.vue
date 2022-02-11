@@ -8,6 +8,7 @@
       <span>{{urlData}}</span>
 
       <button 
+        v-if="isOwner"
         class="btn btn-primary btn-sm mx-3"
         data-bs-toggle="modal" data-bs-target="#editUrlModal"
       >Edit</button>
@@ -70,6 +71,10 @@ export default {
   computed: {
     ...mapGetters("web3panda", ["getTldAddressesKey", "getTldAddresses"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl"]),
+
+    isOwner() {
+      return String(this.address).toLowerCase() === String(this.domainData.holder).toLowerCase();
+    },
 
     urlData() {
       if (this.domainData.url) {
@@ -158,10 +163,10 @@ export default {
   },
 
   setup() {
-    const { signer } = useEthers();
+    const { address, signer } = useEthers();
     const toast = useToast();
 
-    return { signer, toast }
+    return { address, signer, toast }
   },
 
   watch: {
