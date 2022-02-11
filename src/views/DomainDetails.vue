@@ -49,31 +49,19 @@
               </div>
             </div>
 
-            <div class="mb-3 row domain-data mt-4" v-if="domainData">
-              <div class="col-sm-3">
-                URL
-              </div>
+            <EditUrl 
+              :domainData="domainData" 
+              :tld="tld" 
+              :domainName="domainName" 
+              @fetchData="fetchData" 
+            />
 
-              <div class="col-sm-9 text-start">
-                <span>{{urlData}}</span>
-
-                <button 
-                  class="btn btn-primary btn-sm mx-3"
-                  data-bs-toggle="modal" data-bs-target="#editUrlModal"
-                >Edit</button>
-              </div>
-            </div>
-
-            <div class="mb-3 row domain-data mt-4" v-if="domainData">
-              <div class="col-sm-3">
-                Custom PFP
-              </div>
-
-              <div class="col-sm-9 text-start">
-                {{customPfp}}
-              </div>
-            </div>
-
+            <EditPfp
+              :domainData="domainData" 
+              :tld="tld" 
+              :domainName="domainName" 
+              @fetchData="fetchData"  
+            />
 
             <div class="mb-3 row domain-data mt-4" v-if="customData && customData.description">
               <label for="staticDescription" class="col-sm-3 col-form-label">Description</label>
@@ -96,37 +84,7 @@
     </div>
   </div>
 
-  <!-- Edit URL Modal -->
-  <div class="modal fade" id="editUrlModal" tabindex="-1" aria-labelledby="editUrlModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editUrlModalLabel">Edit URL</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>
-            Anyone who's using the Web3Panda browser extension will get redirected to this URL if they enter 
-            {{domainName}}.{{tld}} in the browser URL bar.
-          </p>
 
-          <div class="mb-3" v-if="domainData">
-            <input
-              type="text" 
-              class="form-control" 
-              ref="urlInput" 
-              placeholder="Enter URL"
-              :value="domainData.url"
-            >
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button id="closeUrlModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="editUrl">Edit URL</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -137,11 +95,17 @@ import tldAbi from "../abi/Web3PandaTLD.json";
 import Sidebar from '../components/Sidebar.vue';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
+import EditUrl from "../components/domainEdit/EditUrl.vue";
+import EditPfp from "../components/domainEdit/EditPfp.vue";
 
 export default {
   name: "DomainDetails",
   props: ["domainChain", "tld", "domainName"],
-  components: { Sidebar },
+  components: { 
+    EditPfp,
+    EditUrl, 
+    Sidebar 
+  },
 
   data() {
     return {
@@ -174,14 +138,6 @@ export default {
       return null
     },
 
-    customPfp() {
-      if (this.domainData.pfpAddress != ethers.constants.AddressZero) {
-        return this.domainData.pfpAddress + "(token ID: " + this.domainData.pfpTokenId + ")";
-      }
-
-      return "Custom PFP not set yet."
-    },
-
     holderData() {
       if (this.domainData.holder !== ethers.constants.AddressZero) {
         return this.domainData.holder;
@@ -196,63 +152,10 @@ export default {
       }
 
       return false;
-    },
-
-    urlData() {
-      if (this.domainData.url) {
-        return this.domainData.url;
-      }
-
-      return "Redirect URL not set yet."
     }
   },
 
   methods: {
-    async editUrl() {
-      if (!this.tldContract) {
-        this.setContract();
-      }
-
-      if (this.tldContract) {
-        try {
-          const tx = await this.tldContract.editUrl(this.domainName, this.$refs.urlInput.value);
-
-          document.getElementById('closeUrlModal').click();
-
-          const toastWait = this.toast(
-            {
-              component: WaitingToast,
-              props: {
-                text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
-              }
-            },
-            {
-              type: TYPE.INFO,
-              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-            }
-          );
-
-          const receipt = await tx.wait();
-
-          if (receipt.status === 1) {
-            this.toast.dismiss(toastWait);
-            this.toast("You have successfully updated the URL!", {
-              type: TYPE.SUCCESS,
-              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-            });
-            this.fetchData();
-          } else {
-            this.toast.dismiss(toastWait);
-            this.toast("Transaction has failed.", {type: TYPE.ERROR});
-            console.log(receipt);
-          }
-        } catch (e) {
-          console.log(e);
-          this.toast(e.message, {type: TYPE.ERROR});
-        }
-      }
-    },
-
     async fetchData() {
       if (!this.tldContract) {
         this.setContract();
