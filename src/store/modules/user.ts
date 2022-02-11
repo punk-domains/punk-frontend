@@ -53,8 +53,8 @@ export default {
       let userDomainNames = [];
 
       if (chainId.value) {
-        this.userDomainNamesKey = "userDomainNames" + chainId.value;
-        this.selectedNameKey = "selectedName" + chainId.value;
+        this.userDomainNamesKey = "userDomainNames" + String(chainId.value) + String(shortenAddress(address.value));
+        this.selectedNameKey = "selectedName" + String(chainId.value) + String(shortenAddress(address.value));
 
         if (localStorage.getItem(this.userDomainNamesKey)) {
           userDomainNames = JSON.parse(localStorage.getItem(this.userDomainNamesKey));
@@ -99,16 +99,28 @@ export default {
 
     setSelectedNameImageSvg(state, imageSvg) {
       state.selectedNameImageSvg = imageSvg;
+    },
+
+    setUserAllDomainNames(state, domains) {
+      state.userAllDomainNames = domains;
     }
   },
 
   actions: { 
-    async fetchUserDomainNames({ dispatch, commit, state, rootState }) {
+    async fetchUserDomainNames({ dispatch, commit, state, rootState }, newAccount) {
       let userDomainNames = [];
 
       if (chainId.value) {
-        this.userDomainNamesKey = "userDomainNames" + chainId.value;
-        this.selectedNameKey = "selectedName" + chainId.value;
+        this.userDomainNamesKey = "userDomainNames" + String(chainId.value) + String(shortenAddress(address.value));
+        this.selectedNameKey = "selectedName" + String(chainId.value) + String(shortenAddress(address.value));
+      }
+
+      // reset user data in case there's a switch between accounts
+      if (newAccount) {
+        commit('setSelectedName', null);
+        commit("setSelectedNameData", null);
+        commit("setSelectedNameImageSvg", null);
+        commit("setUserAllDomainNames", []);
       }
       
       if (localStorage.getItem(this.userDomainNamesKey)) {

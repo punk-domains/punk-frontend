@@ -63,7 +63,7 @@ export default {
     address(newVal, oldVal) {
       if (newVal) {
         this.setUserData();
-        this.fetchUserDomainNames();
+        this.fetchUserDomainNames(true);
       }
     },
 
