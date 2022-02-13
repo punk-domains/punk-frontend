@@ -203,19 +203,26 @@ export default {
   },
 
   setup() {
-    const { address, signer } = useEthers()
+    const { address, chainId, signer } = useEthers()
     const toast = useToast();
 
-    return { address, signer, toast }
+    return { address, chainId, signer, toast }
   },
 
   watch: {
+    getTlds() {
+      if (this.getDomainPrices) {
+        this.selectedTld = this.getTlds[0];
+        this.selectedPrice = this.getDomainPrices[this.selectedTld];
+      }
+    },
+
     getDomainPrices(newVal, oldVal) {
       if (newVal) {
         this.selectedTld = this.getTlds[0];
         this.selectedPrice = this.getDomainPrices[this.selectedTld];
       }
-    },
+    }
   }
 }
 </script>
