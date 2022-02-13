@@ -1,14 +1,14 @@
 import { createStore } from 'vuex';
 import network from "./modules/network";
 import user from "./modules/user";
-import web3panda from "./modules/web3panda";
+import punk from "./modules/punk";
 
 
 const store = createStore({
   modules: {
     network,
     user,
-    web3panda
+    punk
   }
 })
 

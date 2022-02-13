@@ -105,7 +105,7 @@
 <script lang="ts">
 import { mapGetters, mapMutations } from 'vuex';
 import { ethers } from 'ethers';
-import tldAbi from "../abi/Web3PandaTLD.json";
+import tldAbi from "../abi/PunkTLD.json";
 import { useEthers } from 'vue-dapp';
 import { useToast, TYPE } from "vue-toastification";
 import MyDomain from '../components/MyDomain.vue';
@@ -128,7 +128,7 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
-    ...mapGetters("web3panda", ["getFactoryContract"]),
+    ...mapGetters("punk", ["getFactoryContract"]),
 
     customData() {
       if (this.getUserSelectedNameData) {

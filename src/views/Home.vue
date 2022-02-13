@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { ethers } from 'ethers';
-import tldAbi from "../abi/Web3PandaTLD.json";
+import tldAbi from "../abi/PunkTLD.json";
 import { useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
@@ -81,7 +81,7 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkName", "getNetworkCurrency", "getSupportedNetworks", "getSupportedNetworkNames"]),
-    ...mapGetters("web3panda", ["getTlds", "getTldAddresses", "getDomainPrices"]),
+    ...mapGetters("punk", ["getTlds", "getTldAddresses", "getDomainPrices"]),
 
     buyNotValid() {
       if (this.chosenDomainName === "") {
@@ -109,7 +109,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("web3panda", ["fetchTlds"]),
+    ...mapActions("punk", ["fetchTlds"]),
     ...mapMutations("user", ["addDomainManually"]),
 
     async buyDomain() {

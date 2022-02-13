@@ -1,4 +1,4 @@
-# Web3Panda frontend
+# Punk Domains frontend
 
 ## Quickstart
 

@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
 import { displayEther, useEthers } from 'vue-dapp';
 import addresses from "../../abi/addresses.json";
-import factoryAbi from "../../abi/Web3PandaTLDFactory.json";
-import tldAbi from "../../abi/Web3PandaTLD.json";
+import factoryAbi from "../../abi/PunkTLDFactory.json";
+import tldAbi from "../../abi/PunkTLD.json";
 
 const { chainId, signer } = useEthers();
 
@@ -39,7 +39,7 @@ export default {
 
   mutations: { 
     setFactoryContract(state) {
-      state.factoryAddress = addresses["Web3PandaTLDFactory"][String(chainId.value)];
+      state.factoryAddress = addresses["PunkTLDFactory"][String(chainId.value)];
 
       if (state.factoryAddress) {
         state.tldsKey = "tlds" + chainId.value;

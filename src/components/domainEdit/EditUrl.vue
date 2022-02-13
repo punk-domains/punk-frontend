@@ -25,7 +25,7 @@
         </div>
         <div class="modal-body">
           <p>
-            Anyone who's using the Web3Panda browser extension will get redirected to this URL if they enter 
+            Anyone who's using the Punk browser extension will get redirected to this URL if they enter 
             {{domainName}}.{{tld}} in the browser URL bar.
           </p>
 
@@ -51,7 +51,7 @@
 import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
 import { useEthers } from 'vue-dapp';
-import tldAbi from "../../abi/Web3PandaTLD.json";
+import tldAbi from "../../abi/PunkTLD.json";
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../toasts/WaitingToast.vue";
 
@@ -69,7 +69,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("web3panda", ["getTldAddressesKey", "getTldAddresses"]),
+    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl"]),
 
     isOwner() {

@@ -17,7 +17,7 @@ const options = {
   hideProgressBar: true,
   closeButton: "button",
   position:POSITION.TOP_LEFT,
-  toastClassName: "panda-toast-class",
+  toastClassName: "punk-toast-class",
   closeOnClick: false,
 
   toastDefaults: {

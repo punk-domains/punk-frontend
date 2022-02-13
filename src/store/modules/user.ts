@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import tldAbi from "../../abi/Web3PandaTLD.json";
+import tldAbi from "../../abi/PunkTLD.json";
 import { useEthers, displayEther, shortenAddress } from 'vue-dapp';
 
 const { address, balance, chainId, signer } = useEthers();
@@ -132,9 +132,9 @@ export default {
       }
       
       // fetch user's default names
-      for (let tldName of rootState.web3panda.tlds) {
+      for (let tldName of rootState.punk.tlds) {
         const intfc = new ethers.utils.Interface(tldAbi);
-        const contract = new ethers.Contract(rootState.web3panda.tldAddresses[tldName], intfc, signer.value);
+        const contract = new ethers.Contract(rootState.punk.tldAddresses[tldName], intfc, signer.value);
 
         const userDefaultName = await contract.defaultNames(address.value);
 
@@ -170,9 +170,9 @@ export default {
         const name = nameArr[0];
         const domain = "." + nameArr[1];
         
-        if (rootState.web3panda.tldAddresses[domain]) {
+        if (rootState.punk.tldAddresses[domain]) {
           const intfc = new ethers.utils.Interface(tldAbi);
-          const contract = new ethers.Contract(rootState.web3panda.tldAddresses[domain], intfc, signer.value);
+          const contract = new ethers.Contract(rootState.punk.tldAddresses[domain], intfc, signer.value);
 
           const nameData = await contract.domains(name);
 

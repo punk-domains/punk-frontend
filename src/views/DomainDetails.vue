@@ -91,7 +91,7 @@
 import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
 import { useEthers } from 'vue-dapp';
-import tldAbi from "../abi/Web3PandaTLD.json";
+import tldAbi from "../abi/PunkTLD.json";
 import Sidebar from '../components/Sidebar.vue';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
@@ -123,7 +123,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("web3panda", ["getTldAddressesKey", "getTldAddresses"]),
+    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getSupportedNetworks", "isNetworkSupported"]),
 
     customData() {

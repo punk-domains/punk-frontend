@@ -28,12 +28,12 @@ export default {
   },
 
   methods: {
-    ...mapActions("web3panda", ["fetchTlds"]),
+    ...mapActions("punk", ["fetchTlds"]),
     ...mapActions("user", ["fetchUserDomainNames"]),
 
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
-    ...mapMutations("web3panda", ["setFactoryContract"]),
+    ...mapMutations("punk", ["setFactoryContract"]),
 
     fetchAllData() {
       this.setUserData();
