@@ -74,6 +74,7 @@ export default {
 
       if (this.chainId >= 1) {
         this.fetchAllData();
+        this.fetchUserDomainNames(true);
       }
     },
 
