@@ -1,10 +1,10 @@
 <template>
   <div class="mb-3 row domain-data mt-4" v-if="domainData">
-    <div class="col-sm-3">
+    <div class="col-sm-3 punk-title">
       URL
     </div>
 
-    <div class="col-sm-9 text-start">
+    <div class="col-sm-9 punk-text">
       <span>{{urlData}}</span>
 
       <button 
@@ -177,3 +177,21 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.punk-text {
+  text-align: left;
+}
+
+@media only screen and (max-width: 767px) {
+  .punk-text {
+    text-align: center;
+  }
+
+  .punk-title {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+}
+</style>

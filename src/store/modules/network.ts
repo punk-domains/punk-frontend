@@ -9,8 +9,9 @@ export default {
     networkCurrency: "ETH",
     networkName: "Unsupported Network",
     supportedNetworks: {
+      3: "Ropsten",
       80001: "Mumbai",
-      3: "Ropsten"
+      421611: "Arbitrum Testnet"
     }
   }),
 
@@ -24,6 +25,8 @@ export default {
         return "https://arbiscan.io/";
       } else if (chainId.value === 80001) {
         return "https://mumbai.polygonscan.com";
+      } else if (chainId.value === 421611) {
+        return "https://rinkeby-explorer.arbitrum.io";
       }
     },
     
@@ -75,6 +78,9 @@ export default {
         state.networkCurrency = "MATIC";
       } else if (chainId.value === 42161) {
         state.networkName = "Arbitrum";
+        state.networkCurrency = "ETH";
+      } else if (chainId.value === 421611) {
+        state.networkName = "Arbitrum Testnet";
         state.networkCurrency = "ETH";
       } else if (chainId.value === 80001) {
         state.networkName = "Mumbai";

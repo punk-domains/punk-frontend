@@ -13,8 +13,8 @@
       <i class="bi bi-person"></i> Profile
     </router-link>
 
-    <router-link class="btn btn-sidebar text-start" to="/profile-edit">
-      <i class="bi bi-pencil-square"></i> Edit Profile
+    <router-link class="btn btn-sidebar text-start" to="/profile">
+      <i class="bi bi-search"></i> Search domain
     </router-link>
 
     <router-link class="btn btn-sidebar text-start disabled" to="#">

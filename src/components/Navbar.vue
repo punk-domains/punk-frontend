@@ -80,6 +80,15 @@ export default {
           nativeCurrency: { decimals: 18, name: "Matic", symbol: "MATIC" }, 
           rpcUrls: ["https://matic-mumbai.chainstacklabs.com"]
         }] 
+      } else if (networkName == "Arbitrum Testnet") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://rinkeby-explorer.arbitrum.io/" ],
+          chainId: "0x66EEB",
+          chainName: "Arbitrum Testnet",
+          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+          rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
+        }] 
       }
 
       window.ethereum.request({ 

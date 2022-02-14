@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="isActivated && isNetworkSupported && !domainData">
+      <div class="row" v-if="isActivated && isCorrectChainForDomain && !domainData">
         <div class="col-md-12">
           <div class="alert alert-warning" role="alert">
             If data does not show in a reasonable amount of time, reload the page.
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="domainData && !isCorrectChainForDomain">
+      <div class="row" v-if="!isCorrectChainForDomain">
         <div class="col-md-12">
           <div class="alert alert-warning" role="alert">
             Please switch your network to {{getSupportedNetworks[domainChain]}}.
@@ -40,11 +40,11 @@
             <img class="img-thumbnail domain-image" :src="pfpImage" />
 
             <div class="mb-3 row domain-data mt-4" v-if="domainData">
-              <div class="col-sm-3">
+              <div class="col-sm-3 punk-title">
                 Holder address
               </div>
 
-              <div class="col-sm-9 text-start">
+              <div class="col-sm-9 punk-text text-break">
                 {{holderData}}
               </div>
             </div>
@@ -63,19 +63,12 @@
               @fetchData="fetchData"  
             />
 
-            <div class="mb-3 row domain-data mt-4" v-if="customData && customData.description">
-              <label for="staticDescription" class="col-sm-3 col-form-label">Description</label>
-              <div class="col-sm-9">
-                <input type="text" readonly class="form-control-plaintext domain-data" id="staticDescription" :value="customData.description">
-              </div>
-            </div>
-
-            <div class="mb-3 row domain-data mt-4" v-if="customData && customData.twitter">
-              <label for="staticTwitter" class="col-sm-3 col-form-label">Twitter</label>
-              <div class="col-sm-9">
-                <input type="text" readonly class="form-control-plaintext domain-data" id="staticTwitter" :value="customData.twitter">
-              </div>
-            </div>
+            <EditOtherData
+              :domainData="domainData" 
+              :tld="tld" 
+              :domainName="domainName" 
+              @fetchData="fetchData" 
+            />
 
           </div>
         </div>
@@ -91,17 +84,20 @@
 import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
 import { useEthers } from 'vue-dapp';
-import tldAbi from "../abi/PunkTLD.json";
-import Sidebar from '../components/Sidebar.vue';
 import { useToast, TYPE } from "vue-toastification";
-import WaitingToast from "../components/toasts/WaitingToast.vue";
-import EditUrl from "../components/domainEdit/EditUrl.vue";
+
+import EditOtherData from "../components/domainEdit/EditOtherData.vue";
 import EditPfp from "../components/domainEdit/EditPfp.vue";
+import EditUrl from "../components/domainEdit/EditUrl.vue";
+import Sidebar from '../components/Sidebar.vue';
+import tldAbi from "../abi/PunkTLD.json";
+import WaitingToast from "../components/toasts/WaitingToast.vue";
 
 export default {
   name: "DomainDetails",
   props: ["domainChain", "tld", "domainName"],
   components: { 
+    EditOtherData,
     EditPfp,
     EditUrl, 
     Sidebar 
@@ -125,18 +121,6 @@ export default {
   computed: {
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getSupportedNetworks", "isNetworkSupported"]),
-
-    customData() {
-      if (this.domainData) {
-        try {
-          return JSON.parse(this.domainData.data);
-        } catch {
-          return null
-        }
-      }
-
-      return null
-    },
 
     holderData() {
       if (this.domainData.holder !== ethers.constants.AddressZero) {
@@ -239,7 +223,19 @@ export default {
   max-width: 200px;
 }
 
-.form-control-plaintext {
-  color: #DBDFEA;
+.punk-text {
+  text-align: left;
+}
+
+@media only screen and (max-width: 767px) {
+  .punk-text {
+    text-align: center;
+  }
+
+  .punk-title {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
 }
 </style>

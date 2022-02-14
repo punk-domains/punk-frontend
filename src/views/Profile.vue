@@ -24,18 +24,18 @@
 
       </div>
 
-      <div class="row mb-3" v-if="getUserSelectedNameData && (getUserSelectedNameData.data || getUserSelectedNameData.url)">
+      <div class="row" v-if="getUserSelectedNameData && (getUserSelectedNameData.data || getUserSelectedNameData.url)">
 
-        <div class="col-md-6" v-if="getUserSelectedNameData.url">
+        <div class="col-md-6 mb-3" v-if="getUserSelectedNameData.url">
           <div class="container text-center">
             <h3>Redirect URL</h3>
             <p class="text-break">{{getUserSelectedNameData.url}}</p>
           </div>
         </div>
 
-        <div class="col-md-6" v-for="(dataValue, dataKey) in customData">
+        <div class="col-md-6 mb-3" v-for="(dataValue, dataKey) in customData">
           <div class="container text-center">
-            <h3>{{dataKey}}</h3>
+            <h3>{{dataKey.charAt(0).toUpperCase() + dataKey.slice(1)}}</h3>
             <p class="text-break">{{dataValue}}</p>
           </div>
         </div>
@@ -187,7 +187,6 @@ export default {
       } else {
         this.toast("This TLD does not exist.", {type: TYPE.ERROR});
       }
-      
     }
   },
 

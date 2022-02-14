@@ -1,13 +1,11 @@
 <template>
   <td>
-    <span 
-      class="text-click" 
-      @click="this.$router.push({name: 'DomainDetails', params: {domainChain: getChainId, tld: domain.split('.')[1], domainName: domain.split('.')[0]}})"
-    >{{domain}}</span>
+    <span>{{domain}}</span>
   </td>
   <td>
     <span 
       class="text-click" 
+      @click="this.$router.push({name: 'DomainDetails', params: {domainChain: getChainId, tld: domain.split('.')[1], domainName: domain.split('.')[0]}})"
     >
       Edit domain data
     </span>
