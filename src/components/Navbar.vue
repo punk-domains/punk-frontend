@@ -2,7 +2,7 @@
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="../assets/logo2.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
+        <img src="../assets/logo5.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
         Punk Domains
       </router-link>
 
@@ -114,12 +114,17 @@ export default {
   cursor: pointer;
 }
 
+.navbar-brand {
+  font-family: 'Permanent Marker', cursive;
+}
+
 .navbar-dark .navbar-brand {
   color: #DBDFEA;
 }
 
 .navbar-dark {
-  background-color: #24263A;
+  /*background-color: #24263A;*/
+  background-color: transparent;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
