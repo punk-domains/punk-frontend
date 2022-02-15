@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto+Serif:wght@100;200;300;400;500;600&display=swap');
+
+@font-face { 
+  font-family: "Cybrpnuk";
+  src: url("assets/punkboy_tbs.ttf"); 
+}
+
 a {
   color: #DBDFEA;
 }
@@ -7,27 +14,43 @@ a:hover {
 }
 
 body {
+/*
   background-color: #1D1E2C;
+  */
+
+  background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
+  
   color: #DBDFEA;
+
+}
+
+h1, h2, h3 {
+  font-family: 'Permanent Marker';
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:focus, .btn-primary:disabled {
-  background-color: #24263A;
+  /*background-color: #24263A;*/
+  background: transparent;
   border-color: #DBDFEA;
   box-shadow: none;
   color: #DBDFEA;
 }
 
 .btn-primary:hover {
-  background-color: #1D1E2C;
+  /*background-color: #1D1E2C;*/
+  background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
   border-color: #ffffff;
   color: #ffffff;
 }
 
 .container {
+  background: transparent;
+  /*
   background-color: #24263A;
+  */
   padding: 20px;
   border-radius: 10px;
+  border: 1px solid #DBDFEA;
 }
 
 .img-thumbnail {

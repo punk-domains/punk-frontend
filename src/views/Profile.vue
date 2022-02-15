@@ -207,6 +207,7 @@ export default {
 
 .table-dark:hover {
   --bs-table-bg: transparent;
-  --bs-table-hover-bg: #1D1E2C;
+  /*--bs-table-hover-bg: #1D1E2C;*/
+  --bs-table-hover-bg: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
 }
 </style>

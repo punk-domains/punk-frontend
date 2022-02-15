@@ -13,7 +13,8 @@ export default {
 
 <style scoped>
 .container-fluid {
-  background-color: #24263A;
+  /*background-color: #24263A;*/
+  background-color: transparent;
   padding: 20px 0px;
   border-radius: 10px;
 }
