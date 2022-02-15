@@ -89,6 +89,15 @@ export default {
           nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
           rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
         }] 
+      } else if (networkName == "Optimism Testnet") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://kovan-optimistic.etherscan.io/" ],
+          chainId: "0x45",
+          chainName: "Optimism Testnet",
+          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+          rpcUrls: ["https://kovan.optimism.io"]
+        }] 
       }
 
       window.ethereum.request({ 

@@ -10,6 +10,7 @@ export default {
     networkName: "Unsupported Network",
     supportedNetworks: {
       3: "Ropsten",
+      69: "Optimism Testnet",
       80001: "Mumbai",
       421611: "Arbitrum Testnet"
     }
@@ -19,6 +20,8 @@ export default {
     getBlockExplorerBaseUrl() {
       if (chainId.value === 3) {
         return "https://ropsten.etherscan.io";
+      } else if (chainId.value === 69) {
+        return "https://kovan-optimistic.etherscan.io/";
       } else if (chainId.value === 137) {
         return "https://polygonscan.com";
       } else if (chainId.value === 42161) {
@@ -76,6 +79,9 @@ export default {
       if (chainId.value === 137) {
         state.networkName = "Polygon";
         state.networkCurrency = "MATIC";
+      } else if (chainId.value === 69) {
+        state.networkName = "Optimism Testnet";
+        state.networkCurrency = "ETH";
       } else if (chainId.value === 42161) {
         state.networkName = "Arbitrum";
         state.networkCurrency = "ETH";

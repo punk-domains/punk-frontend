@@ -21,27 +21,9 @@
       <i class="bi bi-send"></i> Send tokens
     </router-link>
 
-    <a class="btn btn-sidebar text-start" @click="disconnectWallet">
-      <i class="bi bi-x-circle"></i> Disconnect
-    </a>
-    
-    <!--
-    <router-link class="btn btn-sidebar text-start" to="/profile">
-      <i class="bi bi-arrow-repeat"></i> Swap tokens
+    <router-link class="btn btn-sidebar text-start" to="/browser">
+      <i class="bi bi-window-plus"></i> Browser extension
     </router-link>
-    
-    <router-link class="btn btn-sidebar text-start" to="/profile">
-      <i class="bi bi-piggy-bank"></i> Lend tokens
-    </router-link>
-    
-    <router-link class="btn btn-sidebar text-start" to="/profile">
-      <i class="bi bi-trophy"></i> Win tokens
-    </router-link>
-
-    <router-link class="btn btn-sidebar text-start" to="/profile">
-      <i class="bi bi-tree"></i> Help environment
-    </router-link>
-    -->
 
   </div>
 </template>
@@ -74,16 +56,6 @@ export default {
     }
   },
 
-  methods: {
-    disconnectWallet() {
-      localStorage.clear();
-      this.disconnect();
-      localStorage.clear();
-      this.$router.push({name: 'Home'});
-      localStorage.clear();
-    }
-  },
-
   setup() {
     const { disconnect } = useWallet();
 
@@ -109,5 +81,10 @@ export default {
   color: #DBDFEA;
   border-color: #DBDFEA;
   border-radius: 10px;
+}
+
+.img-thumbnail {
+  border-color: transparent;
+  border-radius: 15px;
 }
 </style>

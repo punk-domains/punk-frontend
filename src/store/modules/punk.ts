@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { displayEther, useEthers } from 'vue-dapp';
+import { useEthers } from 'vue-dapp';
 import addresses from "../../abi/addresses.json";
 import factoryAbi from "../../abi/PunkTLDFactory.json";
 import tldAbi from "../../abi/PunkTLD.json";
@@ -104,7 +104,7 @@ export default {
             state.domainPrices = {}
           }
 
-          state.domainPrices[tldName] = displayEther(price);
+          state.domainPrices[tldName] = price;
         }
       }
     }

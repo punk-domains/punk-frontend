@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import About from './views/About.vue'
+import BrowserExtension from './views/BrowserExtension.vue'
 import DomainDetails from './views/DomainDetails.vue'
-import DomainEdit from './views/DomainEdit.vue'
 import Home from './views/Home.vue'
 import Profile from './views/Profile.vue'
 
@@ -18,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/about',
     name: 'About',
     component: About,
+  },
+  {
+    path: '/browser',
+    name: 'BrowserExtension',
+    component: BrowserExtension,
   },
   {
     path: '/domain/:domainChain/:tld/:domainName',

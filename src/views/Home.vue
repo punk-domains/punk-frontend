@@ -40,7 +40,7 @@
     </div>
 
     <p class="mt-3">
-      Domain price: {{selectedPrice}} {{getNetworkCurrency}}
+      Domain price: {{this.parseValue(this.selectedPrice)}} {{getNetworkCurrency}}
     </p>
 
     <button class="btn btn-primary btn-lg mt-1 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid">
@@ -55,7 +55,7 @@
 <script lang="ts">
 import { ethers } from 'ethers';
 import tldAbi from "../abi/PunkTLD.json";
-import { useEthers } from 'vue-dapp';
+import { displayEther, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
@@ -125,7 +125,7 @@ export default {
           this.chosenDomainName,
           this.address,
           {
-            value: ethers.utils.parseEther(this.selectedPrice)
+            value: String(this.selectedPrice)
           }
         );
 
@@ -197,6 +197,15 @@ export default {
           nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
           rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
         }] 
+      } else if (networkName == "Optimism Testnet") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://kovan-optimistic.etherscan.io/" ],
+          chainId: "0x45",
+          chainName: "Optimism Testnet",
+          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+          rpcUrls: ["https://kovan.optimism.io"]
+        }] 
       }
 
       window.ethereum.request({ 
@@ -229,6 +238,12 @@ export default {
 
       this.selectedTld = this.enabledBuyingTlds[0];
       this.selectedPrice = this.getDomainPrices[this.selectedTld];
+    },
+
+    parseValue(someVal) {
+      if (someVal) {
+        return ethers.utils.formatEther(someVal);
+      }
     }
   },
 
@@ -236,7 +251,7 @@ export default {
     const { address, signer } = useEthers()
     const toast = useToast();
 
-    return { address, signer, toast }
+    return { address, displayEther, signer, toast }
   },
 
   watch: {

@@ -113,6 +113,10 @@ export default {
 
   created() {
     // fetch existing data from blockchain
+    if (!this.tldContract) {
+      this.setContract();
+    }
+      
     if (this.getTldAddresses && JSON.stringify(this.getTldAddresses) != "{}") {
       this.fetchData();
     }
