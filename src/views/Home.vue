@@ -34,7 +34,7 @@
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><span class="dropdown-item" v-for="tld in getTlds" @click="changeTld(tld)">{{tld}}</span></li>
+          <li><span class="dropdown-item" v-for="tld in enabledBuyingTlds" @click="changeTld(tld)">{{tld}}</span></li>
         </ul>
       </div>
     </div>
@@ -65,17 +65,17 @@ export default {
 
   data() {
     return {
-      waiting: false, // waiting for TX to complete
       chosenDomainName: null,
+      enabledBuyingTlds: [],
       selectedTld: null,
-      selectedPrice: null
+      selectedPrice: null,
+      waiting: false, // waiting for TX to complete
     }
   },
 
   created() {
     if (this.getDomainPrices) {
-      this.selectedTld = this.getTlds[0];
-      this.selectedPrice = this.getDomainPrices[this.selectedTld];
+      this.checkEnabledBuying();
     }
   },
 
@@ -208,6 +208,27 @@ export default {
     changeTld(tldName) {
       this.selectedTld = tldName;
       this.selectedPrice = this.getDomainPrices[tldName];
+    },
+
+    async checkEnabledBuying() {
+      this.enabledBuyingTlds = [];
+      
+      if (this.getTlds) {
+        for (let tld of this.getTlds) {
+          // construct contract
+          const intfc = new ethers.utils.Interface(tldAbi);
+          const tldContract = new ethers.Contract(this.getTldAddresses[tld], intfc, this.signer);
+
+          const canBuy = await tldContract.buyingEnabled();
+
+          if (canBuy) {
+            this.enabledBuyingTlds.push(tld);
+          }
+        }
+      }
+
+      this.selectedTld = this.enabledBuyingTlds[0];
+      this.selectedPrice = this.getDomainPrices[this.selectedTld];
     }
   },
 
@@ -221,15 +242,13 @@ export default {
   watch: {
     getTlds() {
       if (this.getDomainPrices) {
-        this.selectedTld = this.getTlds[0];
-        this.selectedPrice = this.getDomainPrices[this.selectedTld];
+        this.checkEnabledBuying();
       }
     },
 
     getDomainPrices(newVal, oldVal) {
       if (newVal) {
-        this.selectedTld = this.getTlds[0];
-        this.selectedPrice = this.getDomainPrices[this.selectedTld];
+        this.checkEnabledBuying();
       }
     }
   }
