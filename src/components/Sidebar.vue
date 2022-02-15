@@ -17,7 +17,7 @@
       <i class="bi bi-search"></i> Search domain
     </router-link>
 
-    <router-link class="btn btn-sidebar text-start disabled" to="#">
+    <router-link class="btn btn-sidebar text-start" to="#">
       <i class="bi bi-send"></i> Send tokens
     </router-link>
 
@@ -105,7 +105,7 @@ export default {
 
 .btn-sidebar:hover {
   color: #DBDFEA;
-  background-color: #1D1E2C;
+  border-color: #DBDFEA;
   border-radius: 10px;
 }
 </style>

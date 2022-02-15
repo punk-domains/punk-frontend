@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid text-center mt-3">
-    <a target="_blank" href="https://icons8.com/icon/24853/punk">Punk</a> icon by 
-    <a target="_blank" href="https://icons8.com">Icons8</a>
+    <a target="_blank" href="https://icons8.com/icon/f34LtRddK1jj/man">Man</a> 
+    icon by <a target="_blank" href="https://icons8.com">Icons8</a>
   </div>
 </template>
 

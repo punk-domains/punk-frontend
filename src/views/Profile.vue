@@ -47,7 +47,7 @@
           <div class="container">
             <h3>Domains</h3>
 
-            <table class="table table-dark table-hover mt-4 mb-4">
+            <table class="table table-hover mt-4 mb-4">
               <tbody>
                 <tr v-for="domainName in getUserAllDomainNames">
                   <MyDomain :domain="domainName" />
@@ -201,13 +201,15 @@ export default {
 </script>
 
 <style scoped>
-.table-dark {
+.table {
   --bs-table-bg: transparent;
+  color: #DBDFEA;
 }
 
-.table-dark:hover {
+.table:hover {
   --bs-table-bg: transparent;
   /*--bs-table-hover-bg: #1D1E2C;*/
-  --bs-table-hover-bg: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
+  --bs-table-hover-bg: transparent;
+  --bs-table-hover-color: none;
 }
 </style>

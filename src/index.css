@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto+Serif:wght@100;200;300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
 
 @font-face { 
-  font-family: "Cybrpnuk";
+  font-family: "Cyber";
   src: url("assets/Cyber.ttf"); 
 }
 
@@ -17,6 +17,7 @@ body {
 /*
   background-color: #1D1E2C;
   */
+  font-family: 'Roboto Condensed', sans-serif;
 
   background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
   
@@ -24,8 +25,16 @@ body {
 
 }
 
-h1, h2, h3 {
-  font-family: 'Cybrpnuk';
+p {
+  font-size: 18px;
+}
+
+div {
+  font-size: 18px;
+}
+
+hr {
+  background-color: #DBDFEA;
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:focus, .btn-primary:disabled {
@@ -37,10 +46,15 @@ h1, h2, h3 {
 }
 
 .btn-primary:hover {
-  /*background-color: #1D1E2C;*/
+  /*background-color: #1D1E2C;
   background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
   border-color: #ffffff;
   color: #ffffff;
+  */
+
+  color: black;
+  border-color: #ffffff;
+  background: #ffffff;
 }
 
 .container {
