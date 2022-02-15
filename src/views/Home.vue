@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center">
-    <h2 class="mt-5">Permissionless Web3 domains!</h2>
+    <h1 class="mt-5">Permissionless Web3 domains</h1>
 
     <div class="dropdown mt-5">
       Choose network: 
@@ -212,7 +212,7 @@ export default {
 
     async checkEnabledBuying() {
       this.enabledBuyingTlds = [];
-      
+
       if (this.getTlds) {
         for (let tld of this.getTlds) {
           // construct contract
@@ -256,10 +256,6 @@ export default {
 </script>
 
 <style scoped>
-h2 {
-  font-family: 'Permanent Marker', cursive;
-}
-
 .buy-button {
   margin-bottom: 100px;
 }

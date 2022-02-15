@@ -2,7 +2,7 @@
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="../assets/logo1.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
+        <img src="../assets/logo.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
         Punk Domains
       </router-link>
 
@@ -115,7 +115,7 @@ export default {
 }
 
 .navbar-brand {
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Cyber', cursive;
 }
 
 .navbar-dark .navbar-brand {
@@ -123,7 +123,8 @@ export default {
 }
 
 .navbar-dark {
-  background-color: #24263A;
+  /*background-color: #24263A;*/
+  background-color: transparent;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
@@ -131,5 +132,6 @@ export default {
 
 .navbar-img {
   margin-right: 5px;
+  color: #DBDFEA;
 }
 </style>
