@@ -91,7 +91,7 @@
           <button 
             type="button" 
             @click="addExistingDomain" 
-            class="btn btn-primary" 
+            class="btn btn-secondary" 
             :disabled="domainNotValid">Add domain</button>
 
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -76,9 +76,11 @@ export default {
 
   methods: {
     disconnectWallet() {
-      localStorage.setItem("connected", null);
+      localStorage.clear();
       this.disconnect();
+      localStorage.clear();
       this.$router.push({name: 'Home'});
+      localStorage.clear();
     }
   },
 

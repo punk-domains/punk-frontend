@@ -14,15 +14,9 @@ a:hover {
 }
 
 body {
-/*
-  background-color: #1D1E2C;
-  */
   font-family: 'Roboto Condensed', sans-serif;
-
   background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
-  
   color: #DBDFEA;
-
 }
 
 p {
@@ -38,7 +32,6 @@ hr {
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:focus, .btn-primary:disabled {
-  /*background-color: #24263A;*/
   background: transparent;
   border-color: #DBDFEA;
   box-shadow: none;
@@ -46,12 +39,19 @@ hr {
 }
 
 .btn-primary:hover {
-  /*background-color: #1D1E2C;
-  background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
+  color: black;
   border-color: #ffffff;
-  color: #ffffff;
-  */
+  background: #ffffff;
+}
 
+.btn-secondary, .btn-secondary:active, .btn-secondary:focus, .btn-secondary:disabled {
+  background: white;
+  border-color: black;
+  box-shadow: none;
+  color: black;
+}
+
+.btn-secondary:hover {
   color: black;
   border-color: #ffffff;
   background: #ffffff;
@@ -59,9 +59,6 @@ hr {
 
 .container {
   background: transparent;
-  /*
-  background-color: #24263A;
-  */
   padding: 20px;
   border-radius: 10px;
   border: 1px solid #DBDFEA;
@@ -83,6 +80,21 @@ hr {
 
 .span-link {
   text-decoration: underline;
+}
+
+.Vue-Toastification__toast--info {
+  background-color: #3a1174;
+  border: 1px solid #DBDFEA;
+}
+
+.Vue-Toastification__toast--success {
+  background-color: #4b7411;
+  border: 1px solid #DBDFEA;
+}
+
+.Vue-Toastification__toast--error {
+  background-color: #741911;
+  border: 1px solid #DBDFEA;
 }
 
 @media only screen and (max-width: 767px) {

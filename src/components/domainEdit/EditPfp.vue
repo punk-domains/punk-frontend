@@ -50,8 +50,8 @@
 
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="editPfp" :disabled="btnInactive">Edit PFP data</button>
           <button id="closePfpModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="editPfp" :disabled="btnInactive">Edit PFP data</button>
         </div>
       </div>
     </div>

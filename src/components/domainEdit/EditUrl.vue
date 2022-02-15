@@ -39,8 +39,8 @@
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="editUrl" :disabled="btnInactive">Edit URL</button>
           <button id="closeUrlModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="editUrl" :disabled="btnInactive">Edit URL</button>
         </div>
       </div>
     </div>

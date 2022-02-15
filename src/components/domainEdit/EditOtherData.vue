@@ -57,7 +57,7 @@
           </div>
 
           <button
-            class="btn btn-primary btn-sm"
+            class="btn btn-secondary btn-sm"
             @click="addField"
           >
             Add new field
@@ -65,8 +65,8 @@
 
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="editData" :disabled="btnInactive">Edit data</button>
           <button id="closeCustomDataModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" @click="editData" :disabled="btnInactive">Edit data</button>
         </div>
       </div>
     </div>

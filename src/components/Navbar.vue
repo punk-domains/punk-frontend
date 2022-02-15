@@ -124,7 +124,7 @@ export default {
 
 .navbar-dark {
   /*background-color: #24263A;*/
-  background-color: transparent;
+  background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
