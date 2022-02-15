@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center">
-    <h2 class="mt-5">Find your perfect Web3 domain!</h2>
+    <h2 class="mt-5">Permissionless Web3 domains!</h2>
 
     <div class="dropdown mt-5">
       Choose network: 
@@ -19,7 +19,7 @@
       </ul>
     </div>
 
-    <div class="d-flex mt-5 justify-content-center">
+    <div class="d-flex justify-content-center domain-input-container">
       <div class="input-group mb-3 domain-input input-group-lg">
         <input
           v-model="chosenDomainName" 
@@ -43,7 +43,7 @@
       Domain price: {{selectedPrice}} {{getNetworkCurrency}}
     </p>
 
-    <button class="btn btn-primary btn-lg mt-1 mb-4" @click="buyDomain" :disabled="waiting || buyNotValid">
+    <button class="btn btn-primary btn-lg mt-1 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid">
       <span v-if="waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Buy domain
     </button>
@@ -256,8 +256,20 @@ export default {
 </script>
 
 <style scoped>
+h2 {
+  font-family: 'Permanent Marker', cursive;
+}
+
+.buy-button {
+  margin-bottom: 100px;
+}
+
 .domain-input {
   width: 50%;
+}
+
+.domain-input-container {
+  margin-top: 80px;
 }
 
 .dropdown-item {

@@ -2,7 +2,7 @@
   <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="../assets/logo5.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
+        <img src="../assets/logo1.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
         Punk Domains
       </router-link>
 
@@ -123,8 +123,7 @@ export default {
 }
 
 .navbar-dark {
-  /*background-color: #24263A;*/
-  background-color: transparent;
+  background-color: #24263A;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
