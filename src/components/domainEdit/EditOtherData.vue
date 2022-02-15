@@ -13,7 +13,64 @@
     v-if="isOwner"
     class="btn btn-primary btn-lg mx-3 mt-3"
     data-bs-toggle="modal" data-bs-target="#editDataModal"
-  >Edit data</button>
+  >
+    Edit data
+  </button>
+
+  <!-- Edit Other Data Modal -->
+  <div class="modal fade text-start" id="editDataModal" tabindex="-1" aria-labelledby="editDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editDataModalLabel">Edit other data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            You can add custom data to this domain.
+          </p>
+
+          <p>
+            Example: twitter -> myhandle
+          </p>
+
+          <div class="input-group mb-3 mt-4" v-if="customData" v-for="(item, index) in fields">
+            <input 
+              type="text" 
+              :key="'dataKey'+index"
+              class="form-control" 
+              v-model="item.dataKey"
+              placeholder="Enter key (like twitter)"
+            >
+
+            <span class="input-group-text"><i class="bi bi-arrow-right"></i></span>
+
+            <input 
+              type="text" 
+              class="form-control" 
+              :key="'dataValue'+index"
+              v-model="item.dataValue"
+              placeholder="Enter value"
+            >
+
+            <span class="input-group-text" @click="removeField(index)"><i class="bi bi-x-circle"></i></span>
+          </div>
+
+          <button
+            class="btn btn-primary btn-sm"
+            @click="addField"
+          >
+            Add new field
+          </button>
+
+        </div>
+        <div class="modal-footer">
+          <button id="closeCustomDataModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="editData" :disabled="btnInactive">Edit data</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -29,7 +86,18 @@ export default {
   emits: ["fetchData"],
   props: ["domainData", "tld", "domainName"],
 
+  data() {
+    return {
+      btnInactive: false, // make the submit button inactive so that the user does not click on it multiple times while waiting for MetaMask to show up
+      fields: [],
+      tldContract: null
+    }
+  },
+
   computed: {
+    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl"]),
+
     customData() {
       if (this.domainData) {
         try {
@@ -42,8 +110,103 @@ export default {
     },
 
     isOwner() {
-      return String(this.address).toLowerCase() === String(this.domainData.holder).toLowerCase();
+      if (this.domainData) {
+        return String(this.address).toLowerCase() === String(this.domainData.holder).toLowerCase();
+      }
     },
+  },
+
+  methods: {
+    addField() {
+      this.fields.push({dataKey: "", dataValue: ""});
+    },
+
+    removeField(index) {
+      this.fields.splice(index, 1);
+    },
+
+    async editData() {
+      this.btnInactive = true;
+
+      if (!this.tldContract) {
+        this.setContract();
+      }
+
+      const finalData = {};
+
+      for (let item of this.fields) {
+        if (item.dataKey && item.dataValue) {
+          finalData[item.dataKey] = item.dataValue;
+        }
+      }
+
+      if (this.tldContract) {
+        try {
+          const tx = await this.tldContract.editData(this.domainName, JSON.stringify(finalData));
+
+          document.getElementById('closeCustomDataModal').click();
+
+          const toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              }
+            },
+            {
+              type: TYPE.INFO,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            }
+          );
+
+          const receipt = await tx.wait();
+
+          if (receipt.status === 1) {
+            this.toast.dismiss(toastWait);
+            this.toast("You have successfully updated your domain's custom data!", {
+              type: TYPE.SUCCESS,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            this.$emit("fetchData");
+            this.btnInactive = false;
+          } else {
+            this.toast.dismiss(toastWait);
+            this.toast("Transaction has failed.", {
+              type: TYPE.ERROR,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            console.log(receipt);
+            this.btnInactive = false;
+            this.inputUrl = this.domainData.url;
+          }
+        } catch (e) {
+          this.btnInactive = false;
+          console.log(e);
+          this.toast(e.message, {type: TYPE.ERROR});
+          this.inputUrl = this.domainData.url;
+        }
+      }
+    },
+
+    setContract() {
+      let tldAddresses = this.getTldAddresses;
+
+      if (!tldAddresses) {
+        const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
+
+        if (tldAddressesStorage) {
+          tldAddresses = JSON.parse(tldAddressesStorage);
+        }
+      }
+
+      if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
+        const tldAddr = tldAddresses["."+this.tld];
+
+        // construct contract
+        const intfc = new ethers.utils.Interface(tldAbi);
+        this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
+      }
+    }
   },
 
   setup() {
@@ -52,6 +215,20 @@ export default {
 
     return { address, signer, toast }
   },
+
+  watch: {
+    domainData() {
+      if (this.domainData && this.fields.length === 0) {
+        const cstmData = JSON.parse(this.domainData.data);
+
+        for (const [key, value] of Object.entries(cstmData)) {
+          this.fields.push({dataKey: key, dataValue: value})
+        }
+      }
+
+      this.setContract();
+    }
+  }
 }
 </script>
 
