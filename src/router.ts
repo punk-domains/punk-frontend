@@ -13,6 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: Home,
+    alias: '/punk-frontend'
   },
   {
     path: '/about',
