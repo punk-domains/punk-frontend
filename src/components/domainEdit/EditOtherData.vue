@@ -219,7 +219,6 @@ export default {
   watch: {
     domainData() {
       if (this.domainData && this.domainData.data && this.fields.length === 0) {
-        console.log(this.domainData.data)
         const cstmData = JSON.parse(this.domainData.data);
 
         for (const [key, value] of Object.entries(cstmData)) {

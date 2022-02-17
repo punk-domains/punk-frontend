@@ -1,6 +1,6 @@
 <template>
   <div class="container text-center">
-    <h1 class="mt-5">Permissionless Web3 domains</h1>
+    <h1 class="mt-5">Permissionless Web3 Domains</h1>
 
     <div class="dropdown mt-5">
       Choose network: 
