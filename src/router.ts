@@ -6,6 +6,7 @@ import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
 import Profile from './views/Profile.vue'
 import SearchDomains from './views/SearchDomains.vue'
+import SendTokens from './views/SendTokens.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
 
@@ -40,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/search-domain',
     name: 'SearchDomains',
     component: SearchDomains,
+  },
+  {
+    path: '/send-tokens',
+    name: 'SendTokens',
+    component: SendTokens,
   },
   // Fallback route for handling 404s
   {

@@ -1,4 +1,5 @@
 import { useEthers } from 'vue-dapp';
+import tokens from "../../abi/tokens.json";
 
 const { chainId } = useEthers();
 
@@ -61,6 +62,10 @@ export default {
 
     getSupportedNetworkNames(state) {
       return Object.values(state.supportedNetworks);
+    },
+
+    getTokens(state) {
+      return tokens[String(chainId.value)]
     },
 
     isNetworkSupported(state) {

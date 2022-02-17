@@ -16,7 +16,6 @@
               <div class="col-md-6 offset-md-3">
                 <input 
                   v-model="query"
-                  type="email" 
                   class="form-control text-center"
                   placeholder="Enter a domain name"
                 >
@@ -70,9 +69,7 @@ export default {
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
 
     notValid() {
-      if (this.query === "") {
-        return true;
-      } else if (this.query === null) {
+      if (!this.query) {
         return true;
       } else if (!this.query.includes(".")) {
         return true;
