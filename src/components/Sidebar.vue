@@ -17,7 +17,7 @@
       <i class="bi bi-cart4"></i> Buy domain
     </router-link>
 
-    <router-link class="btn btn-sidebar text-start" to="/profile">
+    <router-link class="btn btn-sidebar text-start" to="/search-domain">
       <i class="bi bi-search"></i> Search domain
     </router-link>
 

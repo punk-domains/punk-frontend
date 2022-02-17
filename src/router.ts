@@ -1,10 +1,11 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 import About from './views/About.vue'
 import BrowserExtension from './views/BrowserExtension.vue'
 import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
 import Profile from './views/Profile.vue'
+import SearchDomains from './views/SearchDomains.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
 
@@ -35,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Profile',
     component: Profile,
   },
+  {
+    path: '/search-domain',
+    name: 'SearchDomains',
+    component: SearchDomains,
+  },
   // Fallback route for handling 404s
   {
     path: '/:pathMatch(.*)*',
@@ -45,7 +51,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   // If app is not hosted at the domain root, make sure to pass the `base` input here: https://next.router.vuejs.org/api/#parameters
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 })
 
