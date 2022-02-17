@@ -119,6 +119,14 @@ export default {
       const intfc = new ethers.utils.Interface(tldAbi);
       const contract = new ethers.Contract(this.getTldAddresses[this.selectedTld], intfc, this.signer);
 
+      const existingHolder = await contract.getDomainHolder(this.chosenDomainName);
+
+      if (existingHolder !== ethers.constants.AddressZero) {
+        this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
+        this.waiting = false;
+        return;
+      }
+
       try {
 
         const tx = await contract["mint(string,address)"](
