@@ -117,9 +117,14 @@ export default {
 
       // reset user data in case there's a switch between accounts
       if (newAccount) {
-        commit('setSelectedName', null);
-        commit("setSelectedNameData", null);
-        commit("setSelectedNameImageSvg", null);
+        if (localStorage.getItem(this.selectedNameKey) && localStorage.getItem(this.selectedNameKey) !== String(null)) {
+          commit('setSelectedName', localStorage.getItem(this.selectedNameKey));
+        } else {
+          commit('setSelectedName', null);
+          commit("setSelectedNameData", null);
+          commit("setSelectedNameImageSvg", null);
+        }
+
         commit("setUserAllDomainNames", []);
       }
       
