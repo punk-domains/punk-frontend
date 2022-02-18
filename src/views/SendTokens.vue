@@ -77,6 +77,7 @@
               @click="validateDomainName"
               data-bs-toggle="modal" data-bs-target="#sendTokensModal"
             >
+              <span v-if="waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
               Send tokens
             </button>
           </div>
@@ -118,6 +119,7 @@
 
             <div class="col-sm-9">
               <span class="text-break">{{receiverAddress}}</span>
+              <span class="domain-error" v-if="receiverAddress == address">Error: You are sending tokens to yourself.</span>
             </div>
           </div>
 
@@ -192,9 +194,10 @@ export default {
       filterTokens: null,
       receiver: null,
       receiverAddress: null,
-      tokenBalance: 0,
+      tokenBalance: 0, // max token balance of sender
       selectedToken: null,
-      tokenAmount: null,
+      selectedTokenDecimals: null,
+      tokenAmount: null, // amount to be sent
       waiting: false
     }
   },
@@ -207,7 +210,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getChainId", "getNetworkCurrency", "getNetworkName", "getTokens"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getNetworkName", "getTokens"]),
     ...mapGetters("user", ["getUserBalance"]),
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
 
@@ -264,7 +267,8 @@ export default {
 
         if (Number(balanceWei) > 0) {
           const decimals = await tokenContract.decimals();
-          this.tokenBalance = ethers.utils.formatUnits(balanceWei, Number(decimals));
+          this.selectedTokenDecimals = Number(decimals);
+          this.tokenBalance = ethers.utils.formatUnits(balanceWei, this.selectedTokenDecimals);
         } else {
           this.tokenBalance = 0;
         }
@@ -274,6 +278,72 @@ export default {
     selectToken(tokenName) {
       this.selectedToken = tokenName;
       this.getTokenBalance(tokenName);
+    },
+
+    send() {
+      if (this.getTokens[this.selectedToken] === "0x0") {
+        // TODO: send native token
+      } else {
+        this.sendErc20Tokens();
+      }
+    },
+
+    async sendErc20Tokens() {
+      this.waiting = true;
+
+      try {
+        const sToken = this.selectedToken;
+        const tAmount = this.tokenAmount;
+        const recDomain = this.receiver;
+
+        const valueWei = ethers.utils.parseUnits(tAmount, this.selectedTokenDecimals);
+
+        const tokenAddr = this.getTokens[sToken];
+        
+        const intfc = new ethers.utils.Interface(Erc20Abi);
+        const tokenContract = new ethers.Contract(tokenAddr, intfc, this.signer);
+
+        const tx = await tokenContract.transfer(this.receiverAddress, valueWei);
+
+        document.getElementById('closeSendModal').click();
+
+        const toastWait = this.toast(
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
+          {
+            type: TYPE.INFO,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully sent " + tAmount + " " + sToken + " to " + recDomain + "!", {
+            type: TYPE.SUCCESS,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.waiting = false;
+          this.getTokenBalance(sToken);
+        } else {
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {
+            type: TYPE.ERROR,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          console.log(receipt);
+          this.waiting = false;
+        }
+      } catch (e) {
+        this.waiting = false;
+        console.log(e);
+        this.toast(e.message, {type: TYPE.ERROR});
+      }
     },
 
     async validateDomainName() {
