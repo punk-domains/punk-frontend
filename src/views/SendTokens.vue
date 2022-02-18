@@ -66,14 +66,14 @@
 
                 <small>
                   Balance: 
-                  <span id="balance" @click="tokenAmount=tokenBalance">{{tokenBalance}} {{selectedToken}}</span>
+                  <span id="balance" @click="tokenAmount=tokenBalance">{{formatTokenBalance}} {{selectedToken}}</span>
                 </small>
               </div>
             </div>
 
             <button
               class="btn btn-primary mt-4 mb-5"
-              :disabled="notValid"
+              :disabled="notValid || waiting"
               @click="validateDomainName"
               data-bs-toggle="modal" data-bs-target="#sendTokensModal"
             >
@@ -205,7 +205,7 @@ export default {
   created() {
     if (this.getChainId >= 1) {
       this.selectedToken = Object.keys(this.getTokens)[0];
-      this.tokenBalance = this.getUserBalance;
+      this.tokenBalance = ethers.utils.formatEther(this.balance);
     }
   },
 
@@ -213,6 +213,14 @@ export default {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getNetworkName", "getTokens"]),
     ...mapGetters("user", ["getUserBalance"]),
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
+
+    formatTokenBalance() {
+      if (this.tokenBalance > 100) {
+        return Number(this.tokenBalance).toFixed(2);
+      } else {
+        return Number(this.tokenBalance).toFixed(4);
+      }
+    },
 
     getTokenNames() {
       if (this.getTokens && !this.filterTokens) {
@@ -258,7 +266,7 @@ export default {
       const tokenAddr = this.getTokens[tokenName];
 
       if (tokenAddr === "0x0") {
-        this.tokenBalance = this.getUserBalance;
+        this.tokenBalance = ethers.utils.formatEther(this.balance);
       } else {
         const intfc = new ethers.utils.Interface(Erc20Abi);
         const tokenContract = new ethers.Contract(tokenAddr, intfc, this.signer);
@@ -282,7 +290,7 @@ export default {
 
     send() {
       if (this.getTokens[this.selectedToken] === "0x0") {
-        // TODO: send native token
+        this.sendNativeTokens();
       } else {
         this.sendErc20Tokens();
       }
@@ -304,6 +312,62 @@ export default {
         const tokenContract = new ethers.Contract(tokenAddr, intfc, this.signer);
 
         const tx = await tokenContract.transfer(this.receiverAddress, valueWei);
+
+        document.getElementById('closeSendModal').click();
+
+        const toastWait = this.toast(
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
+          {
+            type: TYPE.INFO,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully sent " + tAmount + " " + sToken + " to " + recDomain + "!", {
+            type: TYPE.SUCCESS,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.waiting = false;
+          this.getTokenBalance(sToken);
+        } else {
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {
+            type: TYPE.ERROR,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          console.log(receipt);
+          this.waiting = false;
+        }
+      } catch (e) {
+        this.waiting = false;
+        console.log(e);
+        this.toast(e.message, {type: TYPE.ERROR});
+      }
+    },
+
+    async sendNativeTokens() {
+      this.waiting = true;
+
+      try {
+        const sToken = this.selectedToken;
+        const tAmount = this.tokenAmount;
+        const recDomain = this.receiver;
+
+        const valueWei = ethers.utils.parseEther(tAmount);
+        
+        const tx = await this.signer.sendTransaction({
+          to: this.receiverAddress,
+          value: valueWei
+        });
 
         document.getElementById('closeSendModal').click();
 
@@ -395,10 +459,10 @@ export default {
   },
 
   setup() {
-    const { address, signer } = useEthers()
+    const { address, balance, signer } = useEthers()
     const toast = useToast();
 
-    return { address, signer, toast }
+    return { address, balance, signer, toast }
   },
 
   watch: {
@@ -407,6 +471,10 @@ export default {
         this.selectedToken = Object.keys(this.getTokens)[0];
         this.tokenBalance = this.getUserBalance;
       }
+    },
+
+    address() {
+      this.getTokenBalance(this.selectedToken);
     }
   }
 }
