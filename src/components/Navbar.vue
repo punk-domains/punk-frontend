@@ -14,6 +14,7 @@
         
         <div class="d-flex ms-auto">
           <div v-if="isActivated" class="">
+          
             <div class="btn-group mx-2">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 {{getNetworkName}}
@@ -29,9 +30,18 @@
               </ul>
             </div>
 
-            <button class="btn btn-primary" @click="this.$router.push({name: 'Profile'})">
-              {{ getNameOrAddress }}
-            </button>
+            <div class="btn-group mx-2">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ getNameOrAddress }}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <router-link tag="li" class="dropdown-item" to="/profile">Profile</router-link>
+                <router-link tag="li" class="dropdown-item" to="/">Buy domain</router-link>
+                <router-link tag="li" class="dropdown-item" to="/search-domain">Search domain</router-link>
+                <router-link tag="li" class="dropdown-item" to="/send-tokens">Send tokens</router-link>
+                <router-link tag="li" class="dropdown-item" to="/browser">Browser extension</router-link>
+              </ul>
+            </div>
           </div>
 
           <button v-else class="btn btn-primary" @click="open">Connect wallet</button>

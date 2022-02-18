@@ -2,7 +2,7 @@
   <div class="container text-center">
     <h1 class="mt-5">Permissionless Web3 Domains</h1>
 
-    <div class="dropdown mt-5">
+    <div v-if="isActivated" class="dropdown mt-5">
       Choose network: 
 
       <button class="mx-3 btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -17,6 +17,10 @@
           >{{network}}</span>
         </li>
       </ul>
+    </div>
+
+    <div v-if="!isActivated" class="mt-5">
+      <button class="btn btn-primary" @click="open">Connect wallet</button>
     </div>
 
     <div class="d-flex justify-content-center domain-input-container">
@@ -55,7 +59,7 @@
 <script lang="ts">
 import { ethers } from 'ethers';
 import tldAbi from "../abi/PunkTLD.json";
-import { displayEther, useEthers } from 'vue-dapp';
+import { displayEther, useBoard, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
@@ -256,10 +260,11 @@ export default {
   },
 
   setup() {
-    const { address, signer } = useEthers()
+    const { open } = useBoard()
+    const { address, isActivated, signer } = useEthers()
     const toast = useToast();
 
-    return { address, displayEther, signer, toast }
+    return { address, isActivated, displayEther, open, signer, toast }
   },
 
   watch: {
