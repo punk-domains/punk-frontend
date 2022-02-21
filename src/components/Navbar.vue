@@ -39,6 +39,8 @@
                 <router-link tag="li" class="dropdown-item" to="/">Buy domain</router-link>
                 <router-link tag="li" class="dropdown-item" to="/search-domain">Search domain</router-link>
                 <router-link tag="li" class="dropdown-item" to="/send-tokens">Send tokens</router-link>
+                <router-link tag="li" class="dropdown-item" to="/about">About</router-link>
+                <router-link tag="li" class="dropdown-item" to="/how">How it works</router-link>
                 <router-link tag="li" class="dropdown-item" to="/browser">Browser extension</router-link>
               </ul>
             </div>

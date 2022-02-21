@@ -4,15 +4,23 @@
     
     <span v-if="isActivated && isNetworkSupported"> | </span>
 
+    <router-link to="/about">About</router-link>
+    
+    <span> | </span>
+
+    <router-link to="/how">How it works</router-link>
+    
+    <span> | </span>
+
+    <a target="_blank" href="https://github.com/punk-domains">GitHub</a>
+    
+    <span> | </span>
+
     <router-link v-if="isActivated && isNetworkSupported" to="/">Buy domain</router-link>
 
     <span v-if="isActivated && isNetworkSupported"> | </span>
 
     <router-link v-if="isActivated && isNetworkSupported" to="/search-domain">Search domain</router-link>
-    
-    <span v-if="isActivated && isNetworkSupported"> | </span>
-
-    <router-link v-if="isActivated && isNetworkSupported" to="/send-tokens">Send tokens</router-link>
     
     <span v-if="isActivated && isNetworkSupported"> | </span>
 

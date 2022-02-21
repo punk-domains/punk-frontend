@@ -4,6 +4,7 @@ import About from './views/About.vue'
 import BrowserExtension from './views/BrowserExtension.vue'
 import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
+import HowItWorks from './views/HowItWorks.vue'
 import Profile from './views/Profile.vue'
 import SearchDomains from './views/SearchDomains.vue'
 import SendTokens from './views/SendTokens.vue'
@@ -31,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'DomainDetails',
     component: DomainDetails,
     props: true
+  },
+  {
+    path: '/how',
+    name: 'HowItWorks',
+    component: HowItWorks,
   },
   {
     path: '/profile',
