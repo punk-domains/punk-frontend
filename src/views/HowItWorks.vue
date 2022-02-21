@@ -9,6 +9,10 @@
         <strong>Factory</strong> contracts.
       </p>
 
+      <p class="text-center">
+        <img class="img-fluid" src="../assets/architecture.png" />
+      </p>
+
       <h3>TLD Factories</h3>
 
       <p>
