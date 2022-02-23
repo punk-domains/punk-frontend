@@ -203,11 +203,20 @@ export default {
       } else if (networkName == "Arbitrum Testnet") {
         method = "wallet_addEthereumChain"
         params = [{ 
-          blockExplorerUrls: [ "https://rinkeby-explorer.arbitrum.io/" ],
+          blockExplorerUrls: [ "https://testnet.arbiscan.io" ],
           chainId: "0x66EEB",
           chainName: "Arbitrum Testnet",
           nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
           rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
+        }] 
+      } else if (networkName == "Optimism") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://optimistic.etherscan.io/" ],
+          chainId: "0xA",
+          chainName: "Optimism",
+          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+          rpcUrls: ["https://mainnet.optimism.io"]
         }] 
       } else if (networkName == "Optimism Testnet") {
         method = "wallet_addEthereumChain"
@@ -217,6 +226,15 @@ export default {
           chainName: "Optimism Testnet",
           nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
           rpcUrls: ["https://kovan.optimism.io"]
+        }] 
+      } else if (networkName == "Polygon") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://polygonscan.com/" ],
+          chainId: "0x89",
+          chainName: "Polygon PoS Chain",
+          nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
+          rpcUrls: ["https://polygon-rpc.com/"]
         }] 
       }
 
