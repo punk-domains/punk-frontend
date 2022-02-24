@@ -4,7 +4,7 @@ import addresses from "../../abi/addresses.json";
 import factoryAbi from "../../abi/PunkTLDFactory.json";
 import tldAbi from "../../abi/PunkTLD.json";
 
-const { chainId, signer } = useEthers();
+const { chainId, provider, signer } = useEthers();
 
 export default {
   namespaced: true,
@@ -39,6 +39,27 @@ export default {
 
   mutations: { 
     setFactoryContract(state) {
+      let urls;
+
+      if (chainId.value == 137) {
+        urls = [
+          "https://polygon-rpc.com/", 
+          "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
+        ]; 
+      } else if (chainId.value == 10) {
+        urls = [
+          "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY,
+          "https://mainnet.optimism.io", 
+        ]; 
+      } 
+
+      let fProvider = provider.value;
+
+      if (urls) {
+        const providers = urls.map(url => new ethers.providers.JsonRpcProvider(url));
+        fProvider = new ethers.providers.FallbackProvider(providers, 1);
+      }
+
       state.factoryAddress = addresses["PunkTLDFactory"][String(chainId.value)];
 
       if (state.factoryAddress) {
@@ -46,7 +67,7 @@ export default {
         state.tldAddressesKey = "tldAddresses" + chainId.value;
 
         const intfc = new ethers.utils.Interface(factoryAbi);
-        state.factoryContract = new ethers.Contract(state.factoryAddress, intfc, signer.value);
+        state.factoryContract = new ethers.Contract(state.factoryAddress, intfc, fProvider);
       }
       
     }
