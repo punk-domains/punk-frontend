@@ -25,6 +25,44 @@
       Buy domain
     </button>
   </div>
+
+  <div class="container text-center mt-3" v-if="tldOwner == address">
+    <h2 class="mt-1">Owner</h2>
+
+    <p class="mt-3">Domain owner can mint domain for free:</p>
+
+    <div class="d-flex justify-content-center">
+      <div class="input-group mb-3 domain-input input-group-lg">
+        <input
+          v-model="chosenDomainNameFree" 
+          placeholder="enter domain name"
+          type="text" 
+          class="form-control text-end" 
+          aria-label="Text input with dropdown button"
+        >
+
+        <span class="input-group-text tld-addon">.{{tld}}</span>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="input-group mb-3 domain-input input-group-lg">
+        <input
+          v-model="freeDomainReceiver" 
+          placeholder="enter recipient address"
+          type="text" 
+          class="form-control text-center" 
+          aria-label="Text input with dropdown button"
+        >
+      </div>
+    </div>
+
+    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="ownerMintDomain" :disabled="waitingFree || buyNotValidFree">
+      <span v-if="waitingFree" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Mint domain for free
+    </button>
+
+  </div>
 </template>
 
 <script>
@@ -43,9 +81,13 @@ export default {
     return {
       canBuy: false,
       chosenDomainName: null,
+      chosenDomainNameFree: null,
+      freeDomainReceiver: null,
       selectedPrice: null,
       tldContract: null,
+      tldOwner: null,
       waiting: false, // waiting for TX to complete
+      waitingFree: false, // waiting for owner's TX to complete
     }
   },
 
@@ -77,6 +119,30 @@ export default {
       } else if (this.chosenDomainName.includes("#")) {
         return true;
       } else if (this.chosenDomainName.includes("/")) {
+        return true;
+      }
+
+      return false;
+    },
+
+    buyNotValidFree() {
+      if (this.chosenDomainNameFree === "") {
+        return true;
+      } else if (this.chosenDomainNameFree === null) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes(".")) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes(" ")) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes("%")) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes("&")) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes("?")) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes("#")) {
+        return true;
+      } else if (this.chosenDomainNameFree.includes("/")) {
         return true;
       }
 
@@ -167,7 +233,83 @@ export default {
       if (this.tldContract) {
         this.canBuy = await this.tldContract.buyingEnabled();
         this.selectedPrice = this.getDomainPrices["."+this.tld];
+
+        this.tldOwner = await this.tldContract.owner();
       }
+    },
+
+    async ownerMintDomain() {
+      this.waitingFree = true;
+      const fullDomainName = this.chosenDomainNameFree + "." + this.tld;
+      const recipient = this.freeDomainReceiver;
+
+      if (!this.tldContract) {
+        this.setContract();
+      }
+
+      if (this.tldContract) {
+        const existingHolder = await this.tldContract.getDomainHolder(this.chosenDomainNameFree);
+
+        if (existingHolder !== ethers.constants.AddressZero) {
+          this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
+          this.waitingFree = false;
+          return;
+        }
+      }
+
+      try {
+
+        const tx = await this.tldContract.ownerMintDomain(
+          this.chosenDomainNameFree,
+          recipient
+        );
+
+        const toastWait = this.toast(
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
+          {
+            type: TYPE.INFO,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully bought the domain!", {
+            type: TYPE.SUCCESS,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.fetchTlds();
+
+          if (String(recipient).toLowerCase() === String(this.address).toLowerCase()) {
+            // if recipient is current user, add domain to the list of their domains
+            this.addDomainManually(fullDomainName);
+          }
+          
+          this.waitingFree = false;
+        } else {
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {
+            type: TYPE.ERROR,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          console.log(receipt);
+          this.waitingFree = false;
+        }
+
+      } catch (e) {
+        console.log(e)
+        this.waitingFree = false;
+        this.toast(e.message, {type: TYPE.ERROR});
+      }
+
+      this.waitingFree = false;
     },
 
     parseValue(someVal) {
