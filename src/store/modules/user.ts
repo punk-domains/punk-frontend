@@ -175,10 +175,10 @@ export default {
         const name = nameArr[0];
         const domain = "." + nameArr[1];
         
-        if (rootState.punk.tldAddresses[domain]) {
+        if (name && rootState.punk.tldAddresses[domain]) {
           const intfc = new ethers.utils.Interface(tldAbi);
           const contract = new ethers.Contract(rootState.punk.tldAddresses[domain], intfc, signer.value);
-
+          
           const nameData = await contract.domains(name);
 
           commit("setSelectedNameData", nameData);
