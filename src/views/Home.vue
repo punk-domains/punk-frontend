@@ -34,7 +34,7 @@
         >
         
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <span v-if="isActivated && !selectedTld" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span v-if="!selectedTld" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           {{selectedTld}}
         </button>
 
@@ -253,8 +253,6 @@ export default {
     async checkEnabledBuying() {
       this.enabledBuyingTlds = [];
 
-      let counter = 0;
-
       if (this.getTlds) {
         for (let tld of this.getTlds) {
           // construct contract
@@ -265,19 +263,11 @@ export default {
 
           if (canBuy) {
             this.enabledBuyingTlds.push(tld);
-
-            if (counter === 0) {
-              this.selectedTld = tld;
-              counter++;
-            }
           }
         }
       }
 
-      if (this.enabledBuyingTlds) {
-        this.selectedTld = this.enabledBuyingTlds[0];
-      }
-      
+      this.selectedTld = this.enabledBuyingTlds[0];
       this.selectedPrice = this.getDomainPrices[this.selectedTld];
     },
 
@@ -297,14 +287,12 @@ export default {
   },
 
   watch: {
-    chainId(newVal, oldVal) {
-      if (newVal != oldVal) {
-        this.selectedTld = null;
-      }
+    chainId() {
+      this.selectedTld = null;
     },
 
-    getTlds(newVal, oldVal) {
-      if (newVal && this.getDomainPrices) {
+    getTlds() {
+      if (this.getDomainPrices) {
         this.checkEnabledBuying();
       }
     },
