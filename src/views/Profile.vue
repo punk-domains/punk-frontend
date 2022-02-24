@@ -122,13 +122,14 @@ export default {
 
   components: {
     MyDomain,
+    
     Sidebar
   },
 
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
-    ...mapGetters("punk", ["getFactoryContract"]),
+    ...mapGetters("punk", ["getFactoryContract", "getTlds", "getTldAddresses"]),
 
     customData() {
       if (this.getUserSelectedNameData) {
