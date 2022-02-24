@@ -26,7 +26,7 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserSelectedName"]),
   },
-  
+
   methods: {
     ...mapActions("punk", ["fetchTlds"]),
     ...mapActions("user", ["fetchUserDomainNames"]),
