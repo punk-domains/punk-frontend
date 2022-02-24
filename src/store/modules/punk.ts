@@ -56,6 +56,8 @@ export default {
     async fetchTlds({ dispatch, commit, state }) {
       commit("setFactoryContract");
 
+      state.tlds = [];
+      
       if (state.factoryContract) {
         state.tlds = await state.factoryContract.getTldsArray();
 

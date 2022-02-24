@@ -280,13 +280,17 @@ export default {
 
   setup() {
     const { open } = useBoard()
-    const { address, isActivated, signer } = useEthers()
+    const { address, chainId, isActivated, signer } = useEthers()
     const toast = useToast();
 
-    return { address, isActivated, displayEther, open, signer, toast }
+    return { address, chainId, isActivated, displayEther, open, signer, toast }
   },
 
   watch: {
+    chainId() {
+      this.selectedTld = null;
+    },
+
     getTlds() {
       if (this.getDomainPrices) {
         this.checkEnabledBuying();
