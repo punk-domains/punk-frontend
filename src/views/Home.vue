@@ -34,6 +34,7 @@
         >
         
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span v-if="!selectedTld" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           {{selectedTld}}
         </button>
 
