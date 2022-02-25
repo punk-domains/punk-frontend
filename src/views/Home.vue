@@ -246,6 +246,15 @@ export default {
           nativeCurrency: { decimals: 18, name: "SPOA", symbol: "SPOA" }, 
           rpcUrls: ["https://sokol.poa.network"]
         }] 
+      } else if (networkName == "Gnosis Chain") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://blockscout.com/xdai/mainnet" ],
+          chainId: "0x64",
+          chainName: "Gnosis Chain",
+          nativeCurrency: { decimals: 18, name: "XDAI", symbol: "XDAI" }, 
+          rpcUrls: ["https://rpc.gnosischain.com"]
+        }] 
       }
 
       window.ethereum.request({ 

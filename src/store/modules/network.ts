@@ -26,6 +26,8 @@ export default {
         return "https://kovan-optimistic.etherscan.io";
       } else if (chainId.value === 77) {
         return "https://blockscout.com/poa/sokol";
+      } else if (chainId.value === 100) {
+        return "https://blockscout.com/xdai/mainnet";
       } else if (chainId.value === 137) {
         return "https://polygonscan.com";
       } else if (chainId.value === 42161) {
@@ -96,6 +98,9 @@ export default {
       } else if (chainId.value === 77) {
         state.networkName = "Gnosis Testnet";
         state.networkCurrency = "SPOA";
+      } else if (chainId.value === 100) {
+        state.networkName = "Gnosis Chain";
+        state.networkCurrency = "XDAI";
       } else if (chainId.value === 137) {
         state.networkName = "Polygon";
         state.networkCurrency = "MATIC";
