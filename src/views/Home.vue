@@ -231,11 +231,20 @@ export default {
       } else if (networkName == "Polygon") {
         method = "wallet_addEthereumChain"
         params = [{ 
-          blockExplorerUrls: [ "https://polygonscan.com/" ],
+          blockExplorerUrls: [ "https://polygonscan.com" ],
           chainId: "0x89",
           chainName: "Polygon PoS Chain",
           nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
           rpcUrls: ["https://polygon-rpc.com/"]
+        }] 
+      } else if (networkName == "Gnosis Testnet") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://blockscout.com/poa/sokol" ],
+          chainId: "0x4D",
+          chainName: "Gnosis Testnet",
+          nativeCurrency: { decimals: 18, name: "SPOA", symbol: "SPOA" }, 
+          rpcUrls: ["https://sokol.poa.network"]
         }] 
       }
 

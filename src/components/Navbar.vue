@@ -128,6 +128,15 @@ export default {
           nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
           rpcUrls: ["https://polygon-rpc.com/"]
         }] 
+      } else if (networkName == "Gnosis Testnet") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://blockscout.com/poa/sokol" ],
+          chainId: "0x4D",
+          chainName: "Gnosis Testnet",
+          nativeCurrency: { decimals: 18, name: "SPOA", symbol: "SPOA" }, 
+          rpcUrls: ["https://sokol.poa.network"]
+        }] 
       }
 
       window.ethereum.request({ 

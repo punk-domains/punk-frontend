@@ -11,6 +11,7 @@ export default {
     networkName: "Unsupported Network",
     supportedNetworks: {
       10: "Optimism",
+      77: "Gnosis Testnet",
       137: "Polygon"
     }
   }),
@@ -23,6 +24,8 @@ export default {
         return "https://optimistic.etherscan.io";
       } else if (chainId.value === 69) {
         return "https://kovan-optimistic.etherscan.io";
+      } else if (chainId.value === 77) {
+        return "https://blockscout.com/poa/sokol";
       } else if (chainId.value === 137) {
         return "https://polygonscan.com";
       } else if (chainId.value === 42161) {
@@ -90,6 +93,9 @@ export default {
       } else if (chainId.value === 69) {
         state.networkName = "Optimism Testnet";
         state.networkCurrency = "ETH";
+      } else if (chainId.value === 77) {
+        state.networkName = "Gnosis Testnet";
+        state.networkCurrency = "SPOA";
       } else if (chainId.value === 137) {
         state.networkName = "Polygon";
         state.networkCurrency = "MATIC";
