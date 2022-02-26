@@ -169,7 +169,7 @@ export default {
           }
 
           if (metadata.includes("ipfs://")) {
-            metadata = metadata.replace("ipfs://", "https://dweb.link/ipfs/");
+            metadata = metadata.replace("ipfs://", "https://ipfs.io/ipfs/");
           }
           
           if (metadata.includes("http")) {
@@ -177,7 +177,11 @@ export default {
             const result = await response.json();
 
             if (result && result.image) {
-              this.pfpImage = result.image;
+              if (result.image.includes("ipfs://")) {
+                this.pfpImage = result.image.replace("ipfs://", "https://ipfs.io/ipfs/")
+              } else {
+                this.pfpImage = result.image;
+              }
             }
           }
           else if (metadata) {
