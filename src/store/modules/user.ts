@@ -197,7 +197,20 @@ export default {
             metadata = await contract.tokenURI(nameData.tokenId);
           }
 
-          if (metadata) {
+          if (metadata.includes("ipfs://")) {
+            metadata = metadata.replace("ipfs://", "https://dweb.link/ipfs/");
+          }
+          
+          if (metadata.includes("http")) {
+            const response = await fetch(metadata);
+            const result = await response.json();
+
+            if (result && result.image) {
+              commit("setSelectedNameImageSvg", result.image);
+            } else {
+              commit("setSelectedNameImageSvg", null);
+            }
+          } else if (metadata) {
             const json = atob(metadata.substring(29));
             const result = JSON.parse(json);
 

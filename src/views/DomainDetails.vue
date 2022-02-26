@@ -168,7 +168,19 @@ export default {
             metadata = await this.tldContract.tokenURI(this.domainData.tokenId);
           }
 
-          if (metadata) {
+          if (metadata.includes("ipfs://")) {
+            metadata = metadata.replace("ipfs://", "https://dweb.link/ipfs/");
+          }
+          
+          if (metadata.includes("http")) {
+            const response = await fetch(metadata);
+            const result = await response.json();
+
+            if (result && result.image) {
+              this.pfpImage = result.image;
+            }
+          }
+          else if (metadata) {
             const json = atob(metadata.substring(29));
             const result = JSON.parse(json);
 

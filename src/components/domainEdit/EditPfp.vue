@@ -138,14 +138,10 @@ export default {
         this.inputPfpAddress = this.domainData.pfpAddress;
         this.inputPfpId = this.domainData.pfpTokenId;
       } else if (nftOwner && String(this.address).toLowerCase() === String(nftOwner).toLowerCase()) {
-        console.log("is owner");
-
         // update the NFT address and token ID for this domain
         if (!this.tldContract) {
           this.setContract();
         }
-
-        console.log(this.tldContract);
 
         if (this.tldContract) {
           try {
