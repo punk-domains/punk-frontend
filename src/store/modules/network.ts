@@ -11,7 +11,7 @@ export default {
     networkName: "Unsupported Network",
     supportedNetworks: {
       10: "Optimism",
-      77: "Gnosis Testnet",
+      100: "Gnosis Chain",
       137: "Polygon"
     }
   }),
