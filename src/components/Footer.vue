@@ -4,10 +4,6 @@
     
     <span v-if="isActivated && isNetworkSupported"> | </span>
 
-    <a href="http://docs.punk.domains" target="_blank">Docs</a>
-    
-    <span> | </span>
-
     <router-link to="/about">About</router-link>
     
     <span> | </span>
@@ -16,16 +12,20 @@
     
     <span> | </span>
 
-    <a target="_blank" href="https://github.com/punk-domains">GitHub</a>
-    
-    <span> | </span>
-
-    <a target="_blank" href="https://discord.gg/8dSrwrAQeu">Discord</a>
-    
-    <span> | </span>
-
     <a target="_blank" href="https://icons8.com/icon/f34LtRddK1jj/man">Man</a> 
     icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+  </div>
+
+  <div class="container-fluid text-center">
+
+    <a class="icons" href="http://docs.punk.domains" target="_blank"><i class="bi bi-journal-text"></i></a>
+
+    <a class="icons" target="_blank" href="https://github.com/punk-domains"><i class="bi bi-github"></i></a>
+
+    <a class="icons" target="_blank" href="https://discord.gg/8dSrwrAQeu"><i class="bi bi-discord"></i></a>
+
+    <a class="icons" target="_blank" href="https://twitter.com/PunkDomains"><i class="bi bi-twitter"></i></a>
+    
   </div>
 </template>
 
@@ -62,5 +62,11 @@ a:hover {
   background-color: transparent;
   padding: 20px 0px;
   border-radius: 10px;
+}
+
+.icons {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 2em;
 }
 </style>
