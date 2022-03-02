@@ -4,6 +4,10 @@
     
     <span v-if="isActivated && isNetworkSupported"> | </span>
 
+    <a href="http://docs.punk.domains" target="_blank">Docs</a>
+    
+    <span> | </span>
+
     <router-link to="/about">About</router-link>
     
     <span> | </span>
@@ -16,17 +20,9 @@
     
     <span> | </span>
 
-    <router-link v-if="isActivated && isNetworkSupported" to="/">Buy domain</router-link>
-
-    <span v-if="isActivated && isNetworkSupported"> | </span>
-
-    <router-link v-if="isActivated && isNetworkSupported" to="/search-domain">Search domain</router-link>
+    <a target="_blank" href="https://discord.gg/8dSrwrAQeu">Discord</a>
     
-    <span v-if="isActivated && isNetworkSupported"> | </span>
-
-    <router-link v-if="isActivated && isNetworkSupported" to="/browser">Browser extension</router-link>
-    
-    <span v-if="isActivated && isNetworkSupported"> | </span>
+    <span> | </span>
 
     <a target="_blank" href="https://icons8.com/icon/f34LtRddK1jj/man">Man</a> 
     icon by <a target="_blank" href="https://icons8.com">Icons8</a>

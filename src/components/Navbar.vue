@@ -42,6 +42,8 @@
                 <router-link tag="li" class="dropdown-item" to="/about">About</router-link>
                 <router-link tag="li" class="dropdown-item" to="/how">How it works</router-link>
                 <router-link tag="li" class="dropdown-item" to="/browser">Browser extension</router-link>
+                <li class="dropdown-item" @click="openUrl('http://docs.punk.domains')">Docs</li>
+                <li class="dropdown-item" @click="openUrl('https://discord.gg/8dSrwrAQeu')">Discord</li>
               </ul>
             </div>
           </div>
@@ -152,6 +154,10 @@ export default {
         method: method, 
         params: params
       });
+    },
+
+    openUrl(url) {
+      window.open(url, '_blank').focus();
     }
   },
   
