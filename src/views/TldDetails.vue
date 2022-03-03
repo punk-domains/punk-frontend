@@ -21,15 +21,39 @@
     </p>
 
     <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid || !canBuy">
-      <span v-if="waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Buy domain
+      <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+      <span v-if="canBuy">Buy domain</span>
+      <span v-if="!canBuy">Buying disabled</span>
     </button>
   </div>
 
   <div class="container text-center mt-3" v-if="tldOwner == address">
-    <h2 class="mt-1">Owner</h2>
+    <h2 class="mt-1">Start/stop domain sale (only owner)</h2>
 
-    <p class="mt-3">Domain owner can mint domain for free:</p>
+    <p class="mt-5">
+      TLD owner can start/stop public domain sale. If the sale is stopped, only owner can mint new domains 
+      (for free, see section below).
+    </p>
+
+    <p class="mt-3" v-if="canBuy">Status: public sale is ENABLED.</p>
+    <p class="mt-3" v-if="!canBuy">Status: public sale is DISABLED.</p>
+
+    <button 
+      class="btn btn-primary btn-lg mt-3 buy-button" 
+      @click="togglePublicSale" 
+      :disabled="waitingSale"
+    >
+      <span v-if="waitingSale" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+      <span v-if="canBuy">Stop the public sale</span>
+      <span v-if="!canBuy">Enable the public sale</span>
+    </button>
+
+  </div>
+
+  <div class="container text-center mt-3" v-if="tldOwner == address">
+    <h2 class="mt-1">Mint domain for free (only owner)</h2>
+
+    <p class="mt-5">TLD owner can mint a new domain for free:</p>
 
     <div class="d-flex justify-content-center">
       <div class="input-group mb-3 domain-input input-group-lg">
@@ -88,6 +112,7 @@ export default {
       tldOwner: null,
       waiting: false, // waiting for TX to complete
       waitingFree: false, // waiting for owner's TX to complete
+      waitingSale: false // waiting for start/stop sale tx to complete
     }
   },
 
@@ -336,7 +361,65 @@ export default {
         const intfc = new ethers.utils.Interface(tldAbi);
         this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
       }
-    }
+    },
+
+    async togglePublicSale() {
+      this.waitingSale = true;
+
+      if (!this.tldContract) {
+        this.setContract();
+      }
+
+      if (this.tldContract) {
+        try {
+          const tx = await this.tldContract.toggleBuyingDomains();
+
+          const toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              }
+            },
+            {
+              type: TYPE.INFO,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            }
+          );
+
+          const receipt = await tx.wait();
+
+          if (receipt.status === 1) {
+            this.toast.dismiss(toastWait);
+            this.toast("You have successfully changed the buying domains status from " + this.canBuy + " to " + !this.canBuy + "!", {
+              type: TYPE.SUCCESS,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+
+            this.canBuy = !this.canBuy;
+            
+            this.waitingSale = false;
+          } else {
+            this.toast.dismiss(toastWait);
+            this.toast("Transaction has failed.", {
+              type: TYPE.ERROR,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            console.log(receipt);
+            this.waitingSale = false;
+          }
+
+        } catch (e) {
+          console.log(e)
+          this.waitingSale = false;
+          this.toast(e.message, {type: TYPE.ERROR});
+        }
+
+        this.waitingSale = false;
+      }
+
+      
+    },
   },
 
   setup() {
