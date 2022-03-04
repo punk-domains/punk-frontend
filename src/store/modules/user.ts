@@ -191,7 +191,7 @@ export default {
               "function tokenURI(uint256 tokenId) public view returns (string memory)"
             ]);
             const pfpContract = new ethers.Contract(nameData.pfpAddress, pfpInterface, signer.value);
-            metadata = await pfpContract.tokenURI(nameData.tokenId);
+            metadata = await pfpContract.tokenURI(nameData.pfpTokenId);
           } else {
             // get contract image for that token ID
             metadata = await contract.tokenURI(nameData.tokenId);
