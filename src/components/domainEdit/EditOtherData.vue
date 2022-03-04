@@ -34,7 +34,7 @@
             Example: twitter -> myhandle
           </p>
 
-          <div class="input-group mb-3 mt-4" v-if="customData" v-for="(item, index) in fields">
+          <div class="input-group mb-3 mt-4" v-if="fields" v-for="(item, index) in fields">
             <input 
               type="text" 
               :key="'dataKey'+index"

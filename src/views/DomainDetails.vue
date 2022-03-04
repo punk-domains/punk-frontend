@@ -153,14 +153,8 @@ export default {
         // get domain data
         this.domainData = await this.tldContract.domains(this.domainName);
 
-        console.log("this.domainData");
-        console.log(this.domainData);
-
         if (this.domainData && this.domainData.holder !== ethers.constants.AddressZero) {
           let metadata;
-
-          console.log("this.domainData.tokenId 1");
-          console.log(this.domainData.tokenId);
             
           if (this.domainData.pfpAddress !== ethers.constants.AddressZero) {
             // fetch image URL of that PFP
@@ -173,12 +167,6 @@ export default {
             // get contract image for that token ID
             metadata = await this.tldContract.tokenURI(this.domainData.tokenId);
           }
-
-          console.log("this.domainData.tokenId 2");
-          console.log(this.domainData.pfpTokenId);
-
-          console.log("metadata:");
-          console.log(metadata);
 
           if (metadata.includes("ipfs://")) {
             metadata = metadata.replace("ipfs://", "https://ipfs.io/ipfs/");
