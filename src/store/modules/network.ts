@@ -12,7 +12,8 @@ export default {
     supportedNetworks: {
       10: "Optimism",
       100: "Gnosis Chain",
-      137: "Polygon"
+      137: "Polygon",
+      42161: "Arbitrum"
     }
   }),
 
@@ -34,6 +35,8 @@ export default {
         return "https://arbiscan.io";
       } else if (chainId.value === 80001) {
         return "https://mumbai.polygonscan.com";
+      } else if (chainId.value === 42161) {
+        return "https://arbiscan.io";
       } else if (chainId.value === 421611) {
         return "https://testnet.arbiscan.io";
       }

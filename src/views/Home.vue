@@ -210,6 +210,15 @@ export default {
           nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
           rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
         }] 
+      } else if (networkName == "Arbitrum") {
+        method = "wallet_addEthereumChain"
+        params = [{ 
+          blockExplorerUrls: [ "https://arbiscan.io" ],
+          chainId: "0xA4B1",
+          chainName: "Arbitrum One",
+          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+          rpcUrls: ["https://arb1.arbitrum.io/rpc"]
+        }] 
       } else if (networkName == "Optimism") {
         method = "wallet_addEthereumChain"
         params = [{ 
