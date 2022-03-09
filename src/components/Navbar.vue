@@ -84,6 +84,9 @@ export default {
       if (networkName == "Ropsten") {
         method = "wallet_switchEthereumChain"
         params = [{ chainId: "0x3" }] 
+      } else if (networkName == "Rinkeby") {
+        method = "wallet_switchEthereumChain"
+        params = [{ chainId: "0x4" }] 
       } else if (networkName == "Mumbai") {
         method = "wallet_addEthereumChain"
         params = [{ 

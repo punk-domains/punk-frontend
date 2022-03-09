@@ -21,6 +21,8 @@ export default {
     getBlockExplorerBaseUrl() {
       if (chainId.value === 3) {
         return "https://ropsten.etherscan.io";
+      } else if (chainId.value === 4) {
+        return "https://rinkeby.etherscan.io";
       } else if (chainId.value === 10) {
         return "https://optimistic.etherscan.io";
       } else if (chainId.value === 69) {
@@ -118,6 +120,9 @@ export default {
         state.networkCurrency = "MATIC";
       } else if (chainId.value === 3) {
         state.networkName = "Ropsten";
+        state.networkCurrency = "ETH";
+      } else if (chainId.value === 4) {
+        state.networkName = "Rinkeby";
         state.networkCurrency = "ETH";
       } else {
         state.networkName = "Unsupported Network";
