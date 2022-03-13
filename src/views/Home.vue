@@ -132,9 +132,16 @@ export default {
       this.waiting = true;
       const fullDomainName = this.chosenDomainName + this.selectedTld;
 
+      // create TLD contract object
       const intfc = new ethers.utils.Interface(tldAbi);
       const contract = new ethers.Contract(this.getTldAddresses[this.selectedTld], intfc, this.signer);
 
+      // check if price is missing
+      if (!this.selectedPrice) {
+        this.selectedPrice = await contract.price();
+      }
+
+      // check if domain is already taken
       const existingHolder = await contract.getDomainHolder(this.chosenDomainName);
 
       if (existingHolder !== ethers.constants.AddressZero) {
@@ -143,6 +150,7 @@ export default {
         return;
       }
 
+      // buy/mint domain
       try {
 
         const tx = await contract["mint(string,address)"](
