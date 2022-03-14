@@ -43,6 +43,7 @@
                 <router-link tag="li" class="dropdown-item" to="/how">How it works</router-link>
                 <router-link tag="li" class="dropdown-item" to="/browser">Browser extension</router-link>
                 <li class="dropdown-item" @click="openUrl('http://docs.punk.domains')">Docs</li>
+                <li class="dropdown-item" @click="logout">Disconnect</li>
               </ul>
             </div>
           </div>
@@ -57,7 +58,7 @@
 
 <script lang="ts">
 import { mapGetters } from 'vuex';
-import { useBoard, useEthers } from 'vue-dapp'
+import { useBoard, useEthers, useWallet } from 'vue-dapp'
 
 export default {
   name: "Navbar",
@@ -167,17 +168,24 @@ export default {
       });
     },
 
+    logout() {
+      this.disconnect();
+      localStorage.clear();
+      localStorage.setItem("connected", "null");
+    },
+
     openUrl(url) {
       window.open(url, '_blank').focus();
     }
   },
   
   setup() {
-    const { open } = useBoard()
-    const { isActivated } = useEthers()
+    const { open } = useBoard();
+    const { disconnect } = useWallet();
+    const { isActivated } = useEthers();
 
     return {
-      isActivated, open
+      isActivated, disconnect, open
     }
   }
 }

@@ -79,7 +79,7 @@ export default {
     },
 
     isActivated(newVal, oldVal) {
-      if (!localStorage.getItem("connected") || localStorage.getItem("connected") === "null") {
+      if (!localStorage.getItem("connected") && localStorage.getItem("connected") !== "null") {
         // set this to auto-connect on next visit
         localStorage.setItem("connected", "metamask");
       }

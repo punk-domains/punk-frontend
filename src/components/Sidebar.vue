@@ -44,7 +44,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { useWallet } from 'vue-dapp';
 
 export default {
   name: "Sidebar",
@@ -68,12 +67,6 @@ export default {
       }
       
     }
-  },
-
-  setup() {
-    const { disconnect } = useWallet();
-
-    return { disconnect }
   }
 }
 </script>

@@ -91,6 +91,7 @@ export default {
     setSelectedName(state, selectedName) {
       state.selectedName = selectedName;
       localStorage.setItem(this.selectedNameKey, state.selectedName);
+      localStorage.setItem("connected", "metamask");
     },
 
     setSelectedNameData(state, nameData) {
