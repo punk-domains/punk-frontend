@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-import tldAbi from "../../abi/PunkTLD.json";
 import { useEthers, displayEther, shortenAddress } from 'vue-dapp';
 
 const { address, balance, chainId, signer } = useEthers();
@@ -108,7 +107,7 @@ export default {
   },
 
   actions: { 
-    async fetchUserDomainNames({ dispatch, commit, state, rootState }, newAccount) {
+    async fetchUserDomainNames({ dispatch, commit, state, rootState, rootGetters }, newAccount) {
       let userDomainNames = [];
 
       if (chainId.value) {
@@ -139,7 +138,7 @@ export default {
       
       // fetch user's default names
       for (let tldName of rootState.punk.tlds) {
-        const intfc = new ethers.utils.Interface(tldAbi);
+        const intfc = new ethers.utils.Interface(rootGetters["punk/getTldAbi"]);
         const contract = new ethers.Contract(rootState.punk.tldAddresses[tldName], intfc, signer.value);
 
         const userDefaultName = await contract.defaultNames(address.value);
@@ -169,7 +168,7 @@ export default {
     },
 
     // fetch selectedName data (image etc.)
-    async fetchSelectedNameData({commit, state, rootState}) {
+    async fetchSelectedNameData({commit, state, rootState, rootGetters}) {
 
       if (state.selectedName) {
         const nameArr = state.selectedName.split(".");
@@ -177,7 +176,7 @@ export default {
         const domain = "." + nameArr[1];
         
         if (name && rootState.punk.tldAddresses[domain]) {
-          const intfc = new ethers.utils.Interface(tldAbi);
+          const intfc = new ethers.utils.Interface(rootGetters["punk/getTldAbi"]);
           const contract = new ethers.Contract(rootState.punk.tldAddresses[domain], intfc, signer.value);
 
           const nameData = await contract.domains(name);
@@ -186,7 +185,7 @@ export default {
 
           let metadata;
           
-          if (nameData.pfpAddress != ethers.constants.AddressZero) {
+          if (nameData.pfpAddress && nameData.pfpAddress != ethers.constants.AddressZero) {
             // fetch image URL of that PFP
             const pfpInterface = new ethers.utils.Interface([
               "function tokenURI(uint256 tokenId) public view returns (string memory)"

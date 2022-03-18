@@ -26,7 +26,6 @@
 
 <script>
 import { ethers } from 'ethers';
-import tldAbi from "../abi/PunkTLD.json";
 import { useEthers } from 'vue-dapp';
 import { mapGetters } from 'vuex';
 
@@ -45,7 +44,7 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getChainId"]),
-    ...mapGetters("punk", ["getTlds", "getTldAddresses"]),
+    ...mapGetters("punk", ["getTlds", "getTldAddresses", "getTldAbi"]),
   },
 
   methods: {
@@ -55,7 +54,7 @@ export default {
       if (this.getTlds) {
         for (let tld of this.getTlds) {
           // construct contract
-          const intfc = new ethers.utils.Interface(tldAbi);
+          const intfc = new ethers.utils.Interface(this.getTldAbi);
           const tldContract = new ethers.Contract(this.getTldAddresses[tld], intfc, this.signer);
 
           const tldOwner = await tldContract.owner();

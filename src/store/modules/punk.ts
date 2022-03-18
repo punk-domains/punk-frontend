@@ -1,7 +1,9 @@
 import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import addresses from "../../abi/addresses.json";
+import factoryAbiOld from "../../abi/PunkTLDFactoryOld.json";
 import factoryAbi from "../../abi/PunkTLDFactory.json";
+import tldAbiOld from "../../abi/PunkTLDOld.json";
 import tldAbi from "../../abi/PunkTLD.json";
 
 const { chainId, signer } = useEthers();
@@ -34,6 +36,56 @@ export default {
     },
     getTldAddressesKey(state) {
       return state.tldAddressesKey;
+    },
+    getTldAbi() {
+      if (chainId.value === 3) {
+        return tldAbiOld;
+      } else if (chainId.value === 4) {
+        return tldAbiOld;
+      } else if (chainId.value === 10) {
+        return tldAbiOld;
+      } else if (chainId.value === 69) {
+        return tldAbiOld;
+      } else if (chainId.value === 77) {
+        return tldAbiOld;
+      } else if (chainId.value === 100) {
+        return tldAbiOld;
+      } else if (chainId.value === 137) {
+        return tldAbiOld;
+      } else if (chainId.value === 42161) {
+        return tldAbiOld;
+      } else if (chainId.value === 42161) {
+        return tldAbiOld;
+      } else if (chainId.value === 421611) {
+        return tldAbiOld;
+      } else {
+        return tldAbi;
+      } 
+    },
+    getFactoryAbi() {
+      if (chainId.value === 3) {
+        return factoryAbiOld;
+      } else if (chainId.value === 4) {
+        return factoryAbiOld;
+      } else if (chainId.value === 10) {
+        return factoryAbiOld;
+      } else if (chainId.value === 69) {
+        return factoryAbiOld;
+      } else if (chainId.value === 77) {
+        return factoryAbiOld;
+      } else if (chainId.value === 100) {
+        return factoryAbiOld;
+      } else if (chainId.value === 137) {
+        return factoryAbiOld;
+      } else if (chainId.value === 42161) {
+        return factoryAbiOld;
+      } else if (chainId.value === 42161) {
+        return factoryAbiOld;
+      } else if (chainId.value === 421611) {
+        return factoryAbiOld;
+      } else {
+        return factoryAbi;
+      } 
     }
   },
 
@@ -53,7 +105,7 @@ export default {
   },
 
   actions: { 
-    async fetchTlds({ dispatch, commit, state }) {
+    async fetchTlds({ dispatch, commit, state, getters }) {
       commit("setFactoryContract");
 
       state.tlds = [];
@@ -97,7 +149,7 @@ export default {
 
         // fetch domain prices
         for (let tldName of state.tlds) {
-          const intfc = new ethers.utils.Interface(tldAbi);
+          const intfc = new ethers.utils.Interface(getters.getTldAbi);
           const contract = new ethers.Contract(state.tldAddresses[tldName], intfc, signer.value);
 
           const price = await contract.price();

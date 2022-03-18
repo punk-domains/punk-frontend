@@ -105,7 +105,6 @@
 <script lang="ts">
 import { mapGetters, mapMutations } from 'vuex';
 import { ethers } from 'ethers';
-import tldAbi from "../abi/PunkTLD.json";
 import { useEthers } from 'vue-dapp';
 import { useToast, TYPE } from "vue-toastification";
 import MyDomain from '../components/MyDomain.vue';
@@ -129,7 +128,7 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedName", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
-    ...mapGetters("punk", ["getFactoryContract", "getTlds", "getTldAddresses"]),
+    ...mapGetters("punk", ["getFactoryContract", "getTlds", "getTldAddresses", "getTldAbi"]),
 
     customData() {
       if (this.getUserSelectedNameData) {
@@ -174,7 +173,7 @@ export default {
       const tldAddress = await this.getFactoryContract.tldNamesAddresses("."+existingDomainParts[1]);
 
       if (tldAddress !== ethers.constants.AddressZero) {
-        const intfc = new ethers.utils.Interface(tldAbi);
+        const intfc = new ethers.utils.Interface(this.getTldAbi);
         const contract = new ethers.Contract(tldAddress, intfc, this.signer);
 
         const checkDomainHolder = await contract.getDomainHolder(existingDomainParts[0]);

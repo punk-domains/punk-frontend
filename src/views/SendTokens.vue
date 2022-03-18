@@ -178,7 +178,6 @@ import { useToast, TYPE } from "vue-toastification";
 
 import Sidebar from '../components/Sidebar.vue';
 import Erc20Abi from "../abi/Erc20.json";
-import tldAbi from "../abi/PunkTLD.json";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
 
 export default {
@@ -212,7 +211,7 @@ export default {
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getNetworkName", "getTokens"]),
     ...mapGetters("user", ["getUserBalance"]),
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
+    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
 
     formatTokenBalance() {
       if (this.tokenBalance > 100) {
@@ -436,7 +435,7 @@ export default {
           }
 
           // construct contract
-          const intfc = new ethers.utils.Interface(tldAbi);
+          const intfc = new ethers.utils.Interface(this.getTldAbi);
           const tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
 
           const existingHolder = await tldContract.getDomainHolder(domainName);

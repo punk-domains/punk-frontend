@@ -70,7 +70,6 @@
 
 <script lang="ts">
 import { ethers } from 'ethers';
-import tldAbi from "../abi/PunkTLD.json";
 import { displayEther, useBoard, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
@@ -97,7 +96,7 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkName", "getNetworkCurrency", "getSupportedNetworks", "getSupportedNetworkNames"]),
-    ...mapGetters("punk", ["getTlds", "getTldAddresses", "getDomainPrices"]),
+    ...mapGetters("punk", ["getTlds", "getTldAddresses", "getDomainPrices", "getTldAbi"]),
 
     buyNotValid() {
       if (this.chosenDomainName === "") {
@@ -133,7 +132,7 @@ export default {
       const fullDomainName = this.chosenDomainName + this.selectedTld;
 
       // create TLD contract object
-      const intfc = new ethers.utils.Interface(tldAbi);
+      const intfc = new ethers.utils.Interface(this.getTldAbi);
       const contract = new ethers.Contract(this.getTldAddresses[this.selectedTld], intfc, this.signer);
 
       // check if price is missing
@@ -307,7 +306,7 @@ export default {
       if (this.getTlds) {
         for (let tld of this.getTlds) {
           // construct contract
-          const intfc = new ethers.utils.Interface(tldAbi);
+          const intfc = new ethers.utils.Interface(this.getTldAbi);
           const tldContract = new ethers.Contract(this.getTldAddresses[tld], intfc, this.signer);
 
           const canBuy = await tldContract.buyingEnabled();

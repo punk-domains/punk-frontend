@@ -51,7 +51,6 @@
 import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
 import { useEthers } from 'vue-dapp';
-import tldAbi from "../../abi/PunkTLD.json";
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../toasts/WaitingToast.vue";
 
@@ -69,7 +68,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses"]),
+    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl"]),
 
     isOwner() {
@@ -156,7 +155,7 @@ export default {
         const tldAddr = tldAddresses["."+this.tld];
 
         // construct contract
-        const intfc = new ethers.utils.Interface(tldAbi);
+        const intfc = new ethers.utils.Interface(this.getTldAbi);
         this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
       }
     }

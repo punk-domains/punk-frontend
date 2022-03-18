@@ -91,7 +91,6 @@
 
 <script>
 import { ethers } from 'ethers';
-import tldAbi from "../abi/PunkTLD.json";
 import { displayEther, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
@@ -124,7 +123,7 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkCurrency"]),
-    ...mapGetters("punk", ["getTldAddresses", "getTldAddressesKey", "getDomainPrices"]),
+    ...mapGetters("punk", ["getTldAddresses", "getTldAddressesKey", "getDomainPrices", "getTldAbi"]),
 
     buyNotValid() {
       if (this.chosenDomainName === "") {
@@ -358,7 +357,7 @@ export default {
         const tldAddr = tldAddresses["."+this.tld];
 
         // construct contract
-        const intfc = new ethers.utils.Interface(tldAbi);
+        const intfc = new ethers.utils.Interface(this.getTldAbi);
         this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
       }
     },
