@@ -166,11 +166,8 @@ export default {
           // v2
           let referral = localStorage.getItem("referral");
 
-          console.log("referral1: " + referral)
-
           if (!referral || !ethers.utils.isAddress(referral)) {
             referral = ethers.constants.AddressZero;
-            console.log("referral2: " + referral)
           }
 
           tx = await contract.mint(

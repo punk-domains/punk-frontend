@@ -39,8 +39,6 @@ export default {
         return "https://arbiscan.io";
       } else if (chainId.value === 80001) {
         return "https://mumbai.polygonscan.com";
-      } else if (chainId.value === 42161) {
-        return "https://arbiscan.io";
       } else if (chainId.value === 421611) {
         return "https://testnet.arbiscan.io";
       }
@@ -60,15 +58,25 @@ export default {
       } else if (networkId === 10) {
         // Optimism
         urls = [
-          "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY,
           "https://mainnet.optimism.io", 
+          "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
         ]; 
       } else if (networkId === 69) {
-        
+        // Optimism testnet
+        urls = [
+          "https://kovan.optimism.io"
+        ];
       } else if (networkId === 77) {
-        
+        // Gnosis Chain testnet (Sokol)
+        urls = [
+          "https://sokol.poa.network"
+        ];
       } else if (networkId === 100) {
-        
+        // Gnosis Chain
+        urls = [
+          "https://rpc.xdaichain.com",
+          "https://rpc.gnosischain.com"
+        ];
       } else if (networkId === 137) {
         // Polygon PoS Chain
         urls = [
@@ -76,17 +84,21 @@ export default {
           "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
         ];
       } else if (networkId === 42161) {
-        
+        // Arbitrum
+        urls = [
+          "https://arb1.arbitrum.io/rpc"
+        ];
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)
         urls = [
           "https://matic-mumbai.chainstacklabs.com",
           "https://polygon-mumbai.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_MUMBAI_KEY
         ]
-      } else if (networkId === 42161) {
-        
       } else if (networkId === 421611) {
-        
+        // Arbitrum testnet
+        urls = [
+          "https://kovan4.arbitrum.io/rpc"
+        ];
       }
 
       if (urls) {
