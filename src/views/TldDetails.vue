@@ -198,13 +198,34 @@ export default {
 
       try {
 
-        const tx = await this.tldContract["mint(string,address)"](
-          this.chosenDomainName,
-          this.address,
-          {
-            value: String(this.selectedPrice)
+        let tx = null;
+
+        if (this.chainId !== 80001) {
+          // v1
+          tx = await contract["mint(string,address)"](
+            this.chosenDomainName,
+            this.address,
+            {
+              value: String(this.selectedPrice)
+            }
+          );
+        } else {
+          // v2
+          let referral = localStorage.getItem("referral");
+
+          if (!referral || !ethers.utils.isAddress(referral)) {
+            referral = ethers.constants.AddressZero;
           }
-        );
+
+          tx = await contract.mint(
+            this.chosenDomainName,
+            this.address,
+            referral,
+            {
+              value: String(this.selectedPrice)
+            }
+          );
+        }
 
         const toastWait = this.toast(
           {

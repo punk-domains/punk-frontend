@@ -151,14 +151,37 @@ export default {
 
       // buy/mint domain
       try {
+        let tx = null;
 
-        const tx = await contract["mint(string,address)"](
-          this.chosenDomainName,
-          this.address,
-          {
-            value: String(this.selectedPrice)
+        if (this.chainId !== 80001) {
+          // v1
+          tx = await contract["mint(string,address)"](
+            this.chosenDomainName,
+            this.address,
+            {
+              value: String(this.selectedPrice)
+            }
+          );
+        } else {
+          // v2
+          let referral = localStorage.getItem("referral");
+
+          console.log("referral1: " + referral)
+
+          if (!referral || !ethers.utils.isAddress(referral)) {
+            referral = ethers.constants.AddressZero;
+            console.log("referral2: " + referral)
           }
-        );
+
+          tx = await contract.mint(
+            this.chosenDomainName,
+            this.address,
+            referral,
+            {
+              value: String(this.selectedPrice)
+            }
+          );
+        }
 
         const toastWait = this.toast(
           {

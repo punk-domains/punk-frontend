@@ -11,7 +11,8 @@
 </template>
 
 <script lang="ts">
-import { onMounted } from "vue"
+import { onMounted } from "vue";
+import { ethers } from 'ethers';
 import { useEthers, useWallet } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Navbar from './components/Navbar.vue';
@@ -21,6 +22,22 @@ export default {
   components: {
     Navbar,
     Footer
+  },
+
+  created() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referral = urlParams.get('ref');
+
+    // check if domain name or address
+    if (referral && referral.split(".").length === 2) {
+      console.log("Likely a domain name")
+      // TODO
+      // split referral into two (domain name and TLD)
+      // ...
+    } else if (referral && ethers.utils.isAddress(referral)) { // valid address
+      // the last found referral is considered
+      localStorage.setItem("referral", referral); // store referral address in local storafe
+    }
   },
 
   computed: {

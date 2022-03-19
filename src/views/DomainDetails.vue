@@ -49,6 +49,7 @@
               </div>
             </div>
 
+            <!--
             <EditUrl 
               :domainData="domainData" 
               :tld="tld" 
@@ -62,6 +63,7 @@
               :domainName="domainName" 
               @fetchData="fetchData"  
             />
+            -->
 
             <EditOtherData
               :domainData="domainData" 
