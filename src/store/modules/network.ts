@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import tokens from "../../abi/tokens.json";
 
@@ -47,6 +48,53 @@ export default {
     
     getChainId() {
       return chainId.value;
+    },
+
+    getFallbackProvider: (state) => (networkId) => {
+      let urls;
+
+      if (networkId === 3) {
+        // Ropsten testnet
+      } else if (networkId === 4) {
+        // Rinkeby testnet
+      } else if (networkId === 10) {
+        // Optimism
+        urls = [
+          "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY,
+          "https://mainnet.optimism.io", 
+        ]; 
+      } else if (networkId === 69) {
+        
+      } else if (networkId === 77) {
+        
+      } else if (networkId === 100) {
+        
+      } else if (networkId === 137) {
+        // Polygon PoS Chain
+        urls = [
+          "https://polygon-rpc.com/", 
+          "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
+        ];
+      } else if (networkId === 42161) {
+        
+      } else if (networkId === 80001) {
+        // Mumbai testnet (Polygon testnet)
+        urls = [
+          "https://matic-mumbai.chainstacklabs.com",
+          "https://polygon-mumbai.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_MUMBAI_KEY
+        ]
+      } else if (networkId === 42161) {
+        
+      } else if (networkId === 421611) {
+        
+      }
+
+      if (urls) {
+        const providers = urls.map(url => new ethers.providers.JsonRpcProvider(url));
+        return new ethers.providers.FallbackProvider(providers, 1); // return fallback provider
+      } else {
+        return null;
+      }
     },
 
     getNetworkCurrency(state) {

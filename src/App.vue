@@ -17,6 +17,8 @@ import { useEthers, useWallet } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
+import tldsJson from './abi/tlds.json';
+import tldAbi from './abi/PunkTLD.json';
 
 export default {
   components: {
@@ -25,23 +27,12 @@ export default {
   },
 
   created() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const referral = urlParams.get('ref');
-
-    // check if domain name or address
-    if (referral && referral.split(".").length === 2) {
-      console.log("Likely a domain name")
-      // TODO
-      // split referral into two (domain name and TLD)
-      // ...
-    } else if (referral && ethers.utils.isAddress(referral)) { // valid address
-      // the last found referral is considered
-      localStorage.setItem("referral", referral); // store referral address in local storafe
-    }
+    this.fetchReferrer();
   },
 
   computed: {
     ...mapGetters("user", ["getUserSelectedName"]),
+    ...mapGetters("network", ["getFallbackProvider"]),
   },
 
   methods: {
@@ -57,6 +48,38 @@ export default {
       this.setNetworkData();
       this.setFactoryContract();
       this.fetchTlds();
+    },
+
+    async fetchReferrer() {
+      // check if any referral is present: ?ref=...
+      const urlParams = new URLSearchParams(window.location.search);
+      const referral = urlParams.get('ref');
+
+      // check if domain name or address in the ref field
+      if (referral && referral.split(".").length === 2) { // likely a domain name
+        // split referral into two (domain name and TLD)
+        const domArr = referral.split(".");
+
+        for (let netId in tldsJson) { // iterate through different chains
+          if (tldsJson[netId]["."+domArr[1]]) { // find the correct TLD
+            // get fallback provider based on network ID
+            const fProvider = this.getFallbackProvider(Number(netId));
+            // create TLD contract (only new ABIs)
+            const intfc = new ethers.utils.Interface(tldAbi);
+            const refContract = new ethers.Contract(tldsJson[netId]["."+domArr[1]], intfc, fProvider);
+            // fetch domain holder
+            const refDomainHolder = await refContract.getDomainHolder(domArr[0]);
+
+            if (refDomainHolder !== ethers.constants.AddressZero) {
+              localStorage.setItem("referral", refDomainHolder); // store referral address in local storafe
+            }
+            break;
+          }
+        }
+      } else if (referral && ethers.utils.isAddress(referral)) { // valid address
+        // the last found referral is considered
+        localStorage.setItem("referral", referral); // store referral address in local storafe
+      }
     }
   },
 
