@@ -167,7 +167,8 @@ export default {
     ...mapMutations("user", ["addDomainManually"]),
 
     async addExistingDomain() {
-      const existingDomainParts = this.existingDomain.split(".");
+      const existingDomainLower = this.existingDomain.toLowerCase();
+      const existingDomainParts = existingDomainLower.split(".");
 
       // get TLD address and create contract
       const tldAddress = await this.getFactoryContract.tldNamesAddresses("."+existingDomainParts[1]);
@@ -179,7 +180,7 @@ export default {
         const checkDomainHolder = await contract.getDomainHolder(existingDomainParts[0]);
 
         if (String(checkDomainHolder)===String(this.address)) {
-          this.addDomainManually(this.existingDomain);
+          this.addDomainManually(existingDomainLower);
           this.toast("Domain successfully added.", {type: TYPE.SUCCESS});
         } else {
           this.toast("This domain is not owned by your currently connected address.", {type: TYPE.ERROR});

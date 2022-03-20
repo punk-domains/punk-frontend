@@ -121,6 +121,10 @@ export default {
 
       return false;
     },
+
+    domainLowerCase() {
+      return this.chosenDomainName.toLowerCase();
+    }
   },
 
   methods: {
@@ -129,7 +133,7 @@ export default {
 
     async buyDomain() {
       this.waiting = true;
-      const fullDomainName = this.chosenDomainName + this.selectedTld;
+      const fullDomainName = this.domainLowerCase + this.selectedTld;
 
       // create TLD contract object
       const intfc = new ethers.utils.Interface(this.getTldAbi);
@@ -141,7 +145,7 @@ export default {
       }
 
       // check if domain is already taken
-      const existingHolder = await contract.getDomainHolder(this.chosenDomainName);
+      const existingHolder = await contract.getDomainHolder(this.domainLowerCase);
 
       if (existingHolder !== ethers.constants.AddressZero) {
         this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
@@ -156,7 +160,7 @@ export default {
         if (this.chainId !== 80001) {
           // v1
           tx = await contract["mint(string,address)"](
-            this.chosenDomainName,
+            this.domainLowerCase,
             this.address,
             {
               value: String(this.selectedPrice)
@@ -171,7 +175,7 @@ export default {
           }
 
           tx = await contract.mint(
-            this.chosenDomainName,
+            this.domainLowerCase,
             this.address,
             referral,
             {

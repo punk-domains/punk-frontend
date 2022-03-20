@@ -67,6 +67,10 @@ export default {
     ...mapGetters("network", ["getChainId"]),
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
 
+    domainLowerCase() {
+      return this.query.toLowerCase();
+    },
+
     notValid() {
       if (!this.query) {
         return true;
@@ -95,8 +99,8 @@ export default {
       this.waiting = true;
 
       try {
-        const domainName = this.query.split(".")[0]
-        const tld = this.query.split(".")[1]
+        const domainName = this.domainLowerCase.split(".")[0]
+        const tld = this.domainLowerCase.split(".")[1]
 
         let tldAddresses = this.getTldAddresses;
 

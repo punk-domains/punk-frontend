@@ -98,7 +98,7 @@
         </div>
         <div class="modal-body">
           <p>
-            Please review the data before you send {{selectedToken}} to {{receiver}}.
+            Please review the data before you send {{selectedToken}} to {{domainLowerCase}}.
           </p>
 
           <div class="row mb-3 mt-4">
@@ -107,7 +107,7 @@
             </div>
 
             <div class="col-sm-9">
-              <span>{{receiver}}</span>
+              <span>{{domainLowerCase}}</span>
               <span class="domain-error" v-if="domainError">Error: {{domainError}}</span>
             </div>
           </div>
@@ -213,6 +213,10 @@ export default {
     ...mapGetters("user", ["getUserBalance"]),
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
 
+    domainLowerCase() {
+      return this.receiver.toLowerCase();
+    },
+
     formatTokenBalance() {
       if (this.tokenBalance > 100) {
         return Number(this.tokenBalance).toFixed(2);
@@ -301,7 +305,7 @@ export default {
       try {
         const sToken = this.selectedToken;
         const tAmount = this.tokenAmount;
-        const recDomain = this.receiver;
+        const recDomain = this.domainLowerCase;
 
         const valueWei = ethers.utils.parseUnits(tAmount, this.selectedTokenDecimals);
 
@@ -359,7 +363,7 @@ export default {
       try {
         const sToken = this.selectedToken;
         const tAmount = this.tokenAmount;
-        const recDomain = this.receiver;
+        const recDomain = this.domainLowerCase;
 
         const valueWei = ethers.utils.parseEther(tAmount);
         
@@ -413,8 +417,8 @@ export default {
       this.domainError = null;
 
       try {
-        const domainName = this.receiver.split(".")[0]
-        const tld = this.receiver.split(".")[1]
+        const domainName = this.domainLowerCase.split(".")[0]
+        const tld = this.domainLowerCase.split(".")[1]
 
         let tldAddresses = this.getTldAddresses;
 

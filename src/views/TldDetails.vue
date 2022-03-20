@@ -172,6 +172,14 @@ export default {
 
       return false;
     },
+
+    domainLowerCase() {
+      return this.chosenDomainName.toLowerCase();
+    },
+
+    domainLowerCaseFree() {
+      return this.chosenDomainNameFree.toLowerCase();
+    }
   },
 
   methods: {
@@ -180,14 +188,14 @@ export default {
 
     async buyDomain() {
       this.waiting = true;
-      const fullDomainName = this.chosenDomainName + "." + this.tld;
+      const fullDomainName = this.domainLowerCase + "." + this.tld;
 
       if (!this.tldContract) {
         this.setContract();
       }
 
       if (this.tldContract) {
-        const existingHolder = await this.tldContract.getDomainHolder(this.chosenDomainName);
+        const existingHolder = await this.tldContract.getDomainHolder(this.domainLowerCase);
 
         if (existingHolder !== ethers.constants.AddressZero) {
           this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
@@ -203,7 +211,7 @@ export default {
         if (this.chainId !== 80001) {
           // v1
           tx = await this.tldContract["mint(string,address)"](
-            this.chosenDomainName,
+            this.domainLowerCase,
             this.address,
             {
               value: String(this.selectedPrice)
@@ -218,7 +226,7 @@ export default {
           }
 
           tx = await this.tldContract.mint(
-            this.chosenDomainName,
+            this.domainLowerCase,
             this.address,
             referral,
             {
@@ -285,7 +293,7 @@ export default {
 
     async ownerMintDomain() {
       this.waitingFree = true;
-      const fullDomainName = this.chosenDomainNameFree + "." + this.tld;
+      const fullDomainName = this.domainLowerCaseFree + "." + this.tld;
       const recipient = this.freeDomainReceiver;
 
       if (!this.tldContract) {
@@ -293,7 +301,7 @@ export default {
       }
 
       if (this.tldContract) {
-        const existingHolder = await this.tldContract.getDomainHolder(this.chosenDomainNameFree);
+        const existingHolder = await this.tldContract.getDomainHolder(this.domainLowerCaseFree);
 
         if (existingHolder !== ethers.constants.AddressZero) {
           this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
@@ -311,7 +319,7 @@ export default {
           console.log("owner mint domain - not 80001")
           // v1
           tx = await this.tldContract.ownerMintDomain(
-            this.chosenDomainNameFree,
+            this.domainLowerCaseFree,
             recipient
           );
         } else {
@@ -324,7 +332,7 @@ export default {
           }
 
           tx = await this.tldContract.mint(
-            this.chosenDomainNameFree,
+            this.domainLowerCaseFree,
             recipient,
             referral,
             {
