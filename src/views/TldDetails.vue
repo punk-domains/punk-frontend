@@ -51,9 +51,9 @@
   </div>
 
   <div class="container text-center mt-3" v-if="tldOwner == address">
-    <h2 class="mt-1">Mint domain for free (only owner)</h2>
+    <h2 class="mt-1">Mint domain for a specific address</h2>
 
-    <p class="mt-5">TLD owner can mint a new domain for free:</p>
+    <p class="mt-5">Choose domain and the address that will own that domain:</p>
 
     <div class="d-flex justify-content-center">
       <div class="input-group mb-3 domain-input input-group-lg">
@@ -83,7 +83,7 @@
 
     <button class="btn btn-primary btn-lg mt-3 buy-button" @click="ownerMintDomain" :disabled="waitingFree || buyNotValidFree">
       <span v-if="waitingFree" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Mint domain for free
+      Mint domain for address
     </button>
 
   </div>
@@ -202,7 +202,7 @@ export default {
 
         if (this.chainId !== 80001) {
           // v1
-          tx = await contract["mint(string,address)"](
+          tx = await this.tldContract["mint(string,address)"](
             this.chosenDomainName,
             this.address,
             {
@@ -217,7 +217,7 @@ export default {
             referral = ethers.constants.AddressZero;
           }
 
-          tx = await contract.mint(
+          tx = await this.tldContract.mint(
             this.chosenDomainName,
             this.address,
             referral,
@@ -303,11 +303,35 @@ export default {
       }
 
       try {
+        let tx = null;
 
-        const tx = await this.tldContract.ownerMintDomain(
-          this.chosenDomainNameFree,
-          recipient
-        );
+        console.log("owner mint domain 1")
+
+        if (this.chainId !== 80001) {
+          console.log("owner mint domain - not 80001")
+          // v1
+          tx = await this.tldContract.ownerMintDomain(
+            this.chosenDomainNameFree,
+            recipient
+          );
+        } else {
+          console.log("owner mint domain - v2")
+          // v2
+          let referral = localStorage.getItem("referral");
+
+          if (!referral || !ethers.utils.isAddress(referral)) {
+            referral = ethers.constants.AddressZero;
+          }
+
+          tx = await this.tldContract.mint(
+            this.chosenDomainNameFree,
+            recipient,
+            referral,
+            {
+              value: String(this.selectedPrice)
+            }
+          );
+        }
 
         const toastWait = this.toast(
           {
@@ -443,10 +467,10 @@ export default {
   },
 
   setup() {
-    const { address, isActivated, signer } = useEthers()
+    const { address, chainId, isActivated, signer } = useEthers()
     const toast = useToast();
 
-    return { address, isActivated, displayEther, signer, toast }
+    return { address, chainId, isActivated, displayEther, signer, toast }
   },
 
   watch: {

@@ -10,6 +10,7 @@ import SearchDomains from './views/SearchDomains.vue'
 import SendTokens from './views/SendTokens.vue'
 import TldDetails from './views/TldDetails.vue'
 import Tlds from './views/Tlds.vue'
+import TransferDomain from './views/TransferDomain.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
 
@@ -54,6 +55,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/send-tokens',
     name: 'SendTokens',
     component: SendTokens,
+  },
+  {
+    path: '/transfer/:tld/:domainName',
+    name: 'TransferDomain',
+    component: TransferDomain,
+    props: true
   },
   {
     path: '/tld/:domainChain/:tld',
