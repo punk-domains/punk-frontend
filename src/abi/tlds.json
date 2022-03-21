@@ -5,5 +5,11 @@
   },
   "77": {
     ".testdao": "0x110cc3f64cdf8ffadc785dfa53906bcff76b3846"
+  },
+  "421611": {
+    ".arbitest": "0xC6a628b1FF1aD4e304bEeACAff915559786deA2e"
+  },
+  "69": {
+    ".optitest": "0xAc63b035e63d280c408549f5AFA64be7469470de"
   }
 }

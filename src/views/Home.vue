@@ -157,7 +157,7 @@ export default {
       try {
         let tx = null;
 
-        if (this.chainId !== 80001 || this.chainId !== 77) {
+        if (this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
           // v1
           tx = await contract["mint(string,address)"](
             this.domainLowerCase,
@@ -184,38 +184,40 @@ export default {
           );
         }
 
-        const toastWait = this.toast(
-          {
-            component: WaitingToast,
-            props: {
-              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+        if (tx) {
+          const toastWait = this.toast(
+            {
+              component: WaitingToast,
+              props: {
+                text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              }
+            },
+            {
+              type: TYPE.INFO,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
             }
-          },
-          {
-            type: TYPE.INFO,
-            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          );
+
+          const receipt = await tx.wait();
+
+          if (receipt.status === 1) {
+            this.toast.dismiss(toastWait);
+            this.toast("You have successfully bought the domain!", {
+              type: TYPE.SUCCESS,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            this.fetchTlds();
+            this.addDomainManually(fullDomainName);
+            this.waiting = false;
+          } else {
+            this.toast.dismiss(toastWait);
+            this.toast("Transaction has failed.", {
+              type: TYPE.ERROR,
+              onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+            });
+            console.log(receipt);
+            this.waiting = false;
           }
-        );
-
-        const receipt = await tx.wait();
-
-        if (receipt.status === 1) {
-          this.toast.dismiss(toastWait);
-          this.toast("You have successfully bought the domain!", {
-            type: TYPE.SUCCESS,
-            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-          });
-          this.fetchTlds();
-          this.addDomainManually(fullDomainName);
-          this.waiting = false;
-        } else {
-          this.toast.dismiss(toastWait);
-          this.toast("Transaction has failed.", {
-            type: TYPE.ERROR,
-            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-          });
-          console.log(receipt);
-          this.waiting = false;
         }
 
       } catch (e) {

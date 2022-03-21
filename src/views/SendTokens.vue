@@ -214,7 +214,11 @@ export default {
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
 
     domainLowerCase() {
-      return this.receiver.toLowerCase();
+      if (this.receiver) {
+        return this.receiver.toLowerCase();
+      }
+      
+      return null;
     },
 
     formatTokenBalance() {

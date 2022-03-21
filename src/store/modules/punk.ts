@@ -45,19 +45,19 @@ export default {
       } else if (chainId.value === 10) {
         return tldAbiOld;
       } else if (chainId.value === 69) {
-        return tldAbiOld;
+        return tldAbi;
       } else if (chainId.value === 77) {
-        return tldAbiOld;
+        return tldAbi;
       } else if (chainId.value === 100) {
         return tldAbiOld;
       } else if (chainId.value === 137) {
         return tldAbiOld;
       } else if (chainId.value === 42161) {
         return tldAbiOld;
-      } else if (chainId.value === 42161) {
-        return tldAbiOld;
+      } else if (chainId.value === 80001) {
+        return tldAbi;
       } else if (chainId.value === 421611) {
-        return tldAbiOld;
+        return tldAbi;
       } else {
         return tldAbi;
       } 
