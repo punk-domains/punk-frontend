@@ -100,7 +100,7 @@ export default {
       } else if (networkId === 421611) {
         // Arbitrum testnet
         urls = [
-          "https://kovan4.arbitrum.io/rpc"
+          "https://rinkeby.arbitrum.io/rpc"
         ];
       }
 
