@@ -2,5 +2,8 @@
   "80001": {
     ".disabled": "0x67fC1a264CDe126B707B984663C851F7439b6bFe",
     ".panda": "0x86418361568C76971725724884F2bbdBa4FB2103"
+  },
+  "77": {
+    ".testdao": "0x110cc3f64cdf8ffadc785dfa53906bcff76b3846"
   }
 }

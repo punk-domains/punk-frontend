@@ -155,8 +155,9 @@ export default {
         this.domainData = await this.tldContract.domains(this.domainName);
 
         if (this.domainData && this.domainData.holder !== ethers.constants.AddressZero) {
-          let metadata;
+          let metadata = await this.tldContract.tokenURI(this.domainData.tokenId);
             
+          /*
           if (this.domainData.pfpAddress && this.domainData.pfpAddress !== ethers.constants.AddressZero) {
             // fetch image URL of that PFP
             const pfpInterface = new ethers.utils.Interface([
@@ -185,7 +186,9 @@ export default {
               }
             }
           }
-          else if (metadata) {
+          else */
+          
+          if (metadata) {
             const json = atob(metadata.substring(29));
             const result = JSON.parse(json);
 

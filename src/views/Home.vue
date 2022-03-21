@@ -157,7 +157,7 @@ export default {
       try {
         let tx = null;
 
-        if (this.chainId !== 80001) {
+        if (this.chainId !== 80001 || this.chainId !== 77) {
           // v1
           tx = await contract["mint(string,address)"](
             this.domainLowerCase,

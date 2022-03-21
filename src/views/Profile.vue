@@ -24,14 +24,7 @@
 
       </div>
 
-      <div class="row" v-if="getUserSelectedNameData && (getUserSelectedNameData.data || getUserSelectedNameData.url)">
-
-        <div class="col-md-6 mb-3" v-if="getUserSelectedNameData.url">
-          <div class="container text-center">
-            <h3>Redirect URL</h3>
-            <p class="text-break">{{getUserSelectedNameData.url}}</p>
-          </div>
-        </div>
+      <div class="row" v-if="getUserSelectedNameData && getUserSelectedNameData.data">
 
         <div class="col-md-6 mb-3" v-for="(dataValue, dataKey) in customData">
           <div class="container text-center">

@@ -183,8 +183,10 @@ export default {
 
           commit("setSelectedNameData", nameData);
 
-          let metadata;
+          // get contract image for that token ID
+          const metadata = await contract.tokenURI(nameData.tokenId);
           
+          /*
           if (nameData.pfpAddress && nameData.pfpAddress != ethers.constants.AddressZero) {
             // fetch image URL of that PFP
             const pfpInterface = new ethers.utils.Interface([
@@ -193,8 +195,7 @@ export default {
             const pfpContract = new ethers.Contract(nameData.pfpAddress, pfpInterface, signer.value);
             metadata = await pfpContract.tokenURI(nameData.pfpTokenId);
           } else {
-            // get contract image for that token ID
-            metadata = await contract.tokenURI(nameData.tokenId);
+            
           }
 
           if (metadata.includes("ipfs://")) {
@@ -214,7 +215,9 @@ export default {
             } else {
               commit("setSelectedNameImageSvg", null);
             }
-          } else if (metadata) {
+          } else */
+          
+          if (metadata) {
             const json = atob(metadata.substring(29));
             const result = JSON.parse(json);
 
