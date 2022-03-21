@@ -239,7 +239,7 @@ export default {
       } else if (networkName == "Rinkeby") {
         method = "wallet_switchEthereumChain"
         params = [{ chainId: "0x4" }] 
-      } else if (networkName == "Mumbai") {
+      } else if (networkName == "Polygon Testnet") {
         method = "wallet_addEthereumChain"
         params = [{ 
           blockExplorerUrls: [ "https://mumbai.polygonscan.com" ],

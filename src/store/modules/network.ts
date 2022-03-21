@@ -15,7 +15,10 @@ export default {
       100: "Gnosis Chain",
       137: "Polygon",
       42161: "Arbitrum",
-      80001: "Mumbai"
+      421611: "Arbitrum Testnet",
+      69: "Optimism Testnet",
+      77: "Gnosis Testnet",
+      80001: "Polygon Testnet"
     }
   }),
 
@@ -177,7 +180,7 @@ export default {
         state.networkName = "Arbitrum Testnet";
         state.networkCurrency = "ETH";
       } else if (chainId.value === 80001) {
-        state.networkName = "Mumbai";
+        state.networkName = "Polygon Testnet";
         state.networkCurrency = "MATIC";
       } else if (chainId.value === 3) {
         state.networkName = "Ropsten";
