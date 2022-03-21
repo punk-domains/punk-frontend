@@ -28,6 +28,17 @@ export default {
 
   created() {
     this.fetchReferrer();
+
+    // uncomment the bottom lines when v2 is fully deployed, because people will need to reset their localStorage data
+    /*
+    const v2 = localStorage.setItem("v2");
+
+    if (!v2) {
+      localStorage.clear();
+      localStorage.setItem("connected", "null");
+      localStorage.setItem("v2", "true");
+    }
+    */
   },
 
   computed: {
