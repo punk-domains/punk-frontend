@@ -49,7 +49,7 @@ export default {
       } else if (chainId.value === 77) {
         return tldAbi;
       } else if (chainId.value === 100) {
-        return tldAbiOld;
+        return tldAbi;
       } else if (chainId.value === 137) {
         return tldAbiOld;
       } else if (chainId.value === 42161) {

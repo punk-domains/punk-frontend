@@ -208,7 +208,7 @@ export default {
 
         let tx = null;
 
-        if (this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
+        if (this.chainId !== 100 && this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
           // v1
           tx = await this.tldContract["mint(string,address)"](
             this.domainLowerCase,
@@ -315,7 +315,7 @@ export default {
 
         console.log("owner mint domain 1")
 
-        if (this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
+        if (this.chainId !== 100 && this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
           console.log("owner mint domain - not 80001")
           // v1
           tx = await this.tldContract.ownerMintDomain(
