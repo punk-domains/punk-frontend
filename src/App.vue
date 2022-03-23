@@ -30,12 +30,12 @@ export default {
     this.fetchReferrer();
 
     // reset localstorage
-    const v2 = localStorage.getItem("v2poly");
+    const v2 = localStorage.getItem("v2op");
 
     if (!v2) {
       localStorage.clear();
       localStorage.setItem("connected", "null");
-      localStorage.setItem("v2poly", "true");
+      localStorage.setItem("v2op", "true");
     }
   },
 
