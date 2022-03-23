@@ -10,6 +10,13 @@
     ".xdai": "0xbca24d86e4ad1e011278faefc4ff191a731411ec",
     ".bright": "0x3490c9817c45a2a394b11a3807f58a8325235ae0"
   },
+  "137": {
+    ".web3": "0xb6Cf2874588d0fdFAf9d1b5E254ee6C49110C68B",
+    ".polygon": "0xa450bc33d0940d25fB0961c592fb440Fa63ABE03",
+    ".ape": "0x794a8390D94E32b086908D2bA9D66300aA163C62",
+    ".poly": "0x70Ac07C50131b7bb2c8Bd9466D8d2add30B7759f",
+    ".degen": "0xC4999A3e91ef87c9EC5d8186D02B77F9A62458b9"
+  },
   "80001": {
     ".polytest": "0xebED27271230E8ED18fD3Ef96F0221D9DBC93750"
   },
