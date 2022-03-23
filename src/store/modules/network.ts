@@ -14,11 +14,7 @@ export default {
       10: "Optimism",
       100: "Gnosis Chain",
       137: "Polygon",
-      42161: "Arbitrum",
-      421611: "Arbitrum Testnet",
-      69: "Optimism Testnet",
-      77: "Gnosis Testnet",
-      80001: "Polygon Testnet"
+      42161: "Arbitrum"
     }
   }),
 
