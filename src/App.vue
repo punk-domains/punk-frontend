@@ -30,12 +30,12 @@ export default {
     this.fetchReferrer();
 
     // reset localstorage
-    const v2 = localStorage.getItem("v2op");
+    const v2 = localStorage.getItem("punkv2");
 
     if (!v2) {
       localStorage.clear();
       localStorage.setItem("connected", "null");
-      localStorage.setItem("v2op", "true");
+      localStorage.setItem("punkv2", "true");
     }
   },
 

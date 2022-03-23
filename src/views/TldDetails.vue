@@ -205,35 +205,20 @@ export default {
       }
 
       try {
+        let referral = localStorage.getItem("referral");
 
-        let tx = null;
-
-        if (this.chainId !== 10 && this.chainId !== 137 && this.chainId !== 100 && this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
-          // v1
-          tx = await this.tldContract["mint(string,address)"](
-            this.domainLowerCase,
-            this.address,
-            {
-              value: String(this.selectedPrice)
-            }
-          );
-        } else {
-          // v2
-          let referral = localStorage.getItem("referral");
-
-          if (!referral || !ethers.utils.isAddress(referral)) {
-            referral = ethers.constants.AddressZero;
-          }
-
-          tx = await this.tldContract.mint(
-            this.domainLowerCase,
-            this.address,
-            referral,
-            {
-              value: String(this.selectedPrice)
-            }
-          );
+        if (!referral || !ethers.utils.isAddress(referral)) {
+          referral = ethers.constants.AddressZero;
         }
+
+        const tx = await this.tldContract.mint(
+          this.domainLowerCase,
+          this.address,
+          referral,
+          {
+            value: String(this.selectedPrice)
+          }
+        );
 
         const toastWait = this.toast(
           {
@@ -311,35 +296,20 @@ export default {
       }
 
       try {
-        let tx = null;
+        let referral = localStorage.getItem("referral");
 
-        console.log("owner mint domain 1")
-
-        if (this.chainId !== 10 && this.chainId !== 137 && this.chainId !== 100 && this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
-          console.log("owner mint domain - not 80001")
-          // v1
-          tx = await this.tldContract.ownerMintDomain(
-            this.domainLowerCaseFree,
-            recipient
-          );
-        } else {
-          console.log("owner mint domain - v2")
-          // v2
-          let referral = localStorage.getItem("referral");
-
-          if (!referral || !ethers.utils.isAddress(referral)) {
-            referral = ethers.constants.AddressZero;
-          }
-
-          tx = await this.tldContract.mint(
-            this.domainLowerCaseFree,
-            recipient,
-            referral,
-            {
-              value: String(this.selectedPrice)
-            }
-          );
+        if (!referral || !ethers.utils.isAddress(referral)) {
+          referral = ethers.constants.AddressZero;
         }
+
+        const tx = await this.tldContract.mint(
+          this.domainLowerCaseFree,
+          recipient,
+          referral,
+          {
+            value: String(this.selectedPrice)
+          }
+        );
 
         const toastWait = this.toast(
           {

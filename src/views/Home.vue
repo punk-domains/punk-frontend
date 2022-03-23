@@ -155,34 +155,20 @@ export default {
 
       // buy/mint domain
       try {
-        let tx = null;
+        let referral = localStorage.getItem("referral");
 
-        if (this.chainId !== 10 && this.chainId !== 137 && this.chainId !== 100 && this.chainId !== 80001 && this.chainId !== 77 && this.chainId !== 421611 && this.chainId !== 69) {
-          // v1
-          tx = await contract["mint(string,address)"](
-            this.domainLowerCase,
-            this.address,
-            {
-              value: String(this.selectedPrice)
-            }
-          );
-        } else {
-          // v2
-          let referral = localStorage.getItem("referral");
-
-          if (!referral || !ethers.utils.isAddress(referral)) {
-            referral = ethers.constants.AddressZero;
-          }
-
-          tx = await contract.mint(
-            this.domainLowerCase,
-            this.address,
-            referral,
-            {
-              value: String(this.selectedPrice)
-            }
-          );
+        if (!referral || !ethers.utils.isAddress(referral)) {
+          referral = ethers.constants.AddressZero;
         }
+
+        const tx = await contract.mint(
+          this.domainLowerCase,
+          this.address,
+          referral,
+          {
+            value: String(this.selectedPrice)
+          }
+        );
 
         if (tx) {
           const toastWait = this.toast(

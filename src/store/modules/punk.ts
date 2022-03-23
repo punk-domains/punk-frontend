@@ -38,54 +38,10 @@ export default {
       return state.tldAddressesKey;
     },
     getTldAbi() {
-      if (chainId.value === 3) {
-        return tldAbiOld;
-      } else if (chainId.value === 4) {
-        return tldAbiOld;
-      } else if (chainId.value === 10) {
-        return tldAbi;
-      } else if (chainId.value === 69) {
-        return tldAbi;
-      } else if (chainId.value === 77) {
-        return tldAbi;
-      } else if (chainId.value === 100) {
-        return tldAbi;
-      } else if (chainId.value === 137) {
-        return tldAbi;
-      } else if (chainId.value === 42161) {
-        return tldAbiOld;
-      } else if (chainId.value === 80001) {
-        return tldAbi;
-      } else if (chainId.value === 421611) {
-        return tldAbi;
-      } else {
-        return tldAbi;
-      } 
+      return tldAbi;
     },
     getFactoryAbi() {
-      if (chainId.value === 3) {
-        return factoryAbiOld;
-      } else if (chainId.value === 4) {
-        return factoryAbiOld;
-      } else if (chainId.value === 10) {
-        return factoryAbiOld;
-      } else if (chainId.value === 69) {
-        return factoryAbiOld;
-      } else if (chainId.value === 77) {
-        return factoryAbiOld;
-      } else if (chainId.value === 100) {
-        return factoryAbiOld;
-      } else if (chainId.value === 137) {
-        return factoryAbiOld;
-      } else if (chainId.value === 42161) {
-        return factoryAbiOld;
-      } else if (chainId.value === 42161) {
-        return factoryAbiOld;
-      } else if (chainId.value === 421611) {
-        return factoryAbiOld;
-      } else {
-        return factoryAbi;
-      } 
+      return factoryAbi;
     }
   },
 
