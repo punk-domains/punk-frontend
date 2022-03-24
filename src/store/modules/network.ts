@@ -85,7 +85,8 @@ export default {
       } else if (networkId === 42161) {
         // Arbitrum
         urls = [
-          "https://arb1.arbitrum.io/rpc"
+          "https://arb1.arbitrum.io/rpc",
+          "https://arb-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ARBITRUM_KEY
         ];
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)

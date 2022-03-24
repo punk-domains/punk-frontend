@@ -15,6 +15,7 @@ jobs:
           VITE_ALCHEMY_POLYGON_KEY: ${{ secrets.ALCHEMY_POLYGON_KEY }}
           VITE_ALCHEMY_MUMBAI_KEY: ${{ secrets.ALCHEMY_MUMBAI_KEY }}
           VITE_ALCHEMY_OPTIMISM_KEY: ${{ secrets.ALCHEMY_OPTIMISM_KEY }}
+          VITE_ALCHEMY_ARBITRUM_KEY: ${{ secrets.ALCHEMY_ARBITRUM_KEY }}
         run: |
           npm install
           npm run build
