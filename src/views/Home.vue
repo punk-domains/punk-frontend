@@ -48,7 +48,7 @@
       Domain price: {{this.parseValue(this.selectedPrice)}} {{getNetworkCurrency}}
     </p>
 
-    <button class="btn btn-primary btn-lg mt-1 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid">
+    <button class="btn btn-primary btn-lg mt-1 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName)">
       <span v-if="waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Buy domain
     </button>
@@ -63,6 +63,7 @@ import { displayEther, useBoard, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
+import useDomainHelpers from "../hooks/useDomainHelpers";
 
 export default {
   name: "Home",
@@ -86,30 +87,6 @@ export default {
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkName", "getNetworkCurrency", "getSupportedNetworks", "getSupportedNetworkNames"]),
     ...mapGetters("punk", ["getTlds", "getTldAddresses", "getDomainPrices", "getTldAbi"]),
-
-    buyNotValid() {
-      if (this.chosenDomainName === "") {
-        return true;
-      } else if (this.chosenDomainName === null) {
-        return true;
-      } else if (this.chosenDomainName.includes(".")) {
-        return true;
-      } else if (this.chosenDomainName.includes(" ")) {
-        return true;
-      } else if (this.chosenDomainName.includes("%")) {
-        return true;
-      } else if (this.chosenDomainName.includes("&")) {
-        return true;
-      } else if (this.chosenDomainName.includes("?")) {
-        return true;
-      } else if (this.chosenDomainName.includes("#")) {
-        return true;
-      } else if (this.chosenDomainName.includes("/")) {
-        return true;
-      }
-
-      return false;
-    },
 
     domainLowerCase() {
       return this.chosenDomainName.toLowerCase();
@@ -341,8 +318,9 @@ export default {
     const { open } = useBoard()
     const { address, chainId, isActivated, signer } = useEthers()
     const toast = useToast();
+    const { buyNotValid } = useDomainHelpers();
 
-    return { address, chainId, isActivated, displayEther, open, signer, toast }
+    return { address, buyNotValid, chainId, isActivated, displayEther, open, signer, toast }
   },
 
   watch: {

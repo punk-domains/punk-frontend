@@ -20,7 +20,7 @@
       Domain price: {{this.parseValue(this.selectedPrice)}} {{getNetworkCurrency}}
     </p>
 
-    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid || !canBuy">
+    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName) || !canBuy">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
       <span v-if="canBuy">Buy domain</span>
       <span v-if="!canBuy">Buying disabled</span>
@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="ownerMintDomain" :disabled="waitingFree || buyNotValidFree">
+    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="ownerMintDomain" :disabled="waitingFree || buyNotValid(chosenDomainNameFree)">
       <span v-if="waitingFree" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Mint domain for address
     </button>
@@ -95,6 +95,7 @@ import { displayEther, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
+import useDomainHelpers from "../hooks/useDomainHelpers";
 
 export default {
   name: "TldDetails",
@@ -124,54 +125,6 @@ export default {
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkCurrency"]),
     ...mapGetters("punk", ["getTldAddresses", "getTldAddressesKey", "getDomainPrices", "getTldAbi"]),
-
-    buyNotValid() {
-      if (this.chosenDomainName === "") {
-        return true;
-      } else if (this.chosenDomainName === null) {
-        return true;
-      } else if (this.chosenDomainName.includes(".")) {
-        return true;
-      } else if (this.chosenDomainName.includes(" ")) {
-        return true;
-      } else if (this.chosenDomainName.includes("%")) {
-        return true;
-      } else if (this.chosenDomainName.includes("&")) {
-        return true;
-      } else if (this.chosenDomainName.includes("?")) {
-        return true;
-      } else if (this.chosenDomainName.includes("#")) {
-        return true;
-      } else if (this.chosenDomainName.includes("/")) {
-        return true;
-      }
-
-      return false;
-    },
-
-    buyNotValidFree() {
-      if (this.chosenDomainNameFree === "") {
-        return true;
-      } else if (this.chosenDomainNameFree === null) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes(".")) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes(" ")) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes("%")) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes("&")) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes("?")) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes("#")) {
-        return true;
-      } else if (this.chosenDomainNameFree.includes("/")) {
-        return true;
-      }
-
-      return false;
-    },
 
     domainLowerCase() {
       return this.chosenDomainName.toLowerCase();
@@ -447,8 +400,9 @@ export default {
   setup() {
     const { address, chainId, isActivated, signer } = useEthers()
     const toast = useToast();
+    const { buyNotValid } = useDomainHelpers();
 
-    return { address, chainId, isActivated, displayEther, signer, toast }
+    return { address, buyNotValid, chainId, isActivated, displayEther, signer, toast }
   },
 
   watch: {

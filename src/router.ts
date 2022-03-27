@@ -11,6 +11,7 @@ import SendTokens from './views/SendTokens.vue'
 import TldDetails from './views/TldDetails.vue'
 import Tlds from './views/Tlds.vue'
 import TransferDomain from './views/TransferDomain.vue'
+import L2Dao from './views/partners/L2Dao.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
 
@@ -40,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/how',
     name: 'HowItWorks',
     component: HowItWorks,
+  },
+  {
+    path: '/partners/l2dao',
+    name: 'L2Dao',
+    component: L2Dao,
   },
   {
     path: '/profile',
