@@ -16,11 +16,17 @@
       </div>
     </div>
 
+    <p class="error" v-if="buyNotValid(chosenDomainName).invalid">
+      <small>
+        <em>{{ buyNotValid(chosenDomainName).message }}</em>
+      </small>
+    </p>
+
     <p class="mt-4">
       Domain price: {{this.parseValue(this.selectedPrice)}} {{getNetworkCurrency}}
     </p>
 
-    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName) || !canBuy">
+    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || !canBuy">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
       <span v-if="canBuy">Buy domain</span>
       <span v-if="!canBuy">Buying disabled</span>
@@ -81,7 +87,13 @@
       </div>
     </div>
 
-    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="ownerMintDomain" :disabled="waitingFree || buyNotValid(chosenDomainNameFree)">
+    <p class="error" v-if="buyNotValid(chosenDomainName).invalid">
+      <small>
+        <em>{{ buyNotValid(chosenDomainName).message }}</em>
+      </small>
+    </p>
+
+    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="ownerMintDomain" :disabled="waitingFree || buyNotValid(chosenDomainNameFree).invalid">
       <span v-if="waitingFree" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Mint domain for address
     </button>

@@ -44,11 +44,17 @@
       </div>
     </div>
 
+    <p class="error" v-if="buyNotValid(chosenDomainName).invalid">
+      <small>
+        <em>{{ buyNotValid(chosenDomainName).message }}</em>
+      </small>
+    </p>
+
     <p class="mt-3">
       Domain price: {{this.parseValue(this.selectedPrice)}} {{getNetworkCurrency}}
     </p>
 
-    <button class="btn btn-primary btn-lg mt-1 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName)">
+    <button class="btn btn-primary btn-lg mt-1 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid">
       <span v-if="waiting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
       Buy domain
     </button>

@@ -1,14 +1,14 @@
 <template>
   <div class="container text-center">
-    <h1 class="mt-3">L2DAO & Punk Domains</h1>
+    <h1 class="mt-5">Exclusively For L2DAO Community!</h1>
 
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
           Layer2DAO and Punk Domains have partnered up to offer L2DAO NFT holders the exclusive chance to mint .L2 
-          domains before anyone else!
+          domains before anyone else...
           <br />
-          <small><em>(and for a discounted price)</em></small>
+          <small><em>(... and for a discounted price)</em></small>
         </p>
       </div>
     </div>
@@ -27,11 +27,17 @@
       </div>
     </div>
 
+    <p class="error" v-if="buyNotValid(chosenDomainName).invalid">
+      <small>
+        <em>{{ buyNotValid(chosenDomainName).message }}</em>
+      </small>
+    </p>
+
     <p class="mt-4" v-if="!paused">
       Domain price: {{domainPrice}} ETH
     </p>
 
-    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName) || !canBuy || paused">
+    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || !canBuy || paused">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
       <span v-if="canBuy && !paused">Buy domain</span>
       <span v-if="paused">Buying disabled</span>
@@ -134,6 +140,10 @@ export default {
 
 .domain-input-container {
   margin-top: 30px;
+}
+
+.error {
+  color: #DBDFEA;
 }
 
 .tld-addon {
