@@ -88,6 +88,10 @@ export default {
   computed: {
     ...mapGetters("network", ["getFallbackProvider"]),
 
+    domainLowerCase() {
+      return this.chosenDomainName.toLowerCase();
+    },
+
     isNetworkSupported() {
       if (this.isActivated) {
         if (this.chainId === 10 || this.chainId === 69) {
@@ -100,6 +104,103 @@ export default {
   },
 
   methods: {
+    ...mapMutations("user", ["addDomainManually"]),
+
+    async buyDomain() {
+      this.waiting = true;
+      const fullDomainName = this.domainLowerCase + ".l2"
+
+      // connect contract with metamask signer
+      this.mintContract = this.mintContract.connect(this.signer);
+
+      if (this.tldContract) {
+        const existingHolder = await this.tldContract.getDomainHolder(this.domainLowerCase);
+
+        if (existingHolder !== ethers.constants.AddressZero) {
+          this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
+          this.waiting = false;
+          return;
+        }
+      }
+
+      try {
+        let referral = localStorage.getItem("referral");
+
+        if (!referral || !ethers.utils.isAddress(referral)) {
+          referral = ethers.constants.AddressZero;
+        }
+
+        const tx = await this.mintContract.mint(
+          this.domainLowerCase,
+          referral,
+          {
+            value: String(this.selectedPrice)
+          }
+        );
+
+        const toastWait = this.toast(
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
+          {
+            type: TYPE.INFO,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+
+        const receipt = await tx.wait();
+
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully bought the domain!", {
+            type: TYPE.SUCCESS,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.fetchTlds();
+          this.addDomainManually(fullDomainName);
+          this.waiting = false;
+        } else {
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {
+            type: TYPE.ERROR,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          console.log(receipt);
+          this.waiting = false;
+        }
+
+      } catch (e) {
+        console.log(e)
+        this.waiting = false;
+        this.toast(e.message, {type: TYPE.ERROR});
+      }
+
+      this.waiting = false;
+    },
+
+    changeNetwork(networkName) {
+      const networkData = this.switchNetwork(networkName); 
+
+      window.ethereum.request({ 
+        method: networkData.method, 
+        params: networkData.params
+      });
+    },
+
+    async checkNftHoldings() {
+      if (!this.mintContract) {
+        this.setContracts();
+      }
+      
+      // check if user has L2DAO NFTs
+      if (this.isActivated && this.mintContract) {
+        this.canBuy = await this.mintContract.canUserMint(this.address);
+      }
+    },
+
     async setContracts() {
       let tldAddr = "";
       let mintAddr = "";
@@ -131,28 +232,6 @@ export default {
       }
       
     },
-
-    changeNetwork(networkName) {
-      const networkData = this.switchNetwork(networkName); 
-
-      window.ethereum.request({ 
-        method: networkData.method, 
-        params: networkData.params
-      });
-    },
-
-    async checkNftHoldings() {
-      if (!this.mintContract) {
-        this.setContracts();
-      }
-      
-      // check if user has L2DAO NFTs
-      if (this.isActivated && this.mintContract) {
-        console.log("checkNftHoldings before: " + this.canBuy);
-        this.canBuy = await this.mintContract.canUserMint(this.address);
-        console.log("checkNftHoldings after: " + this.canBuy);
-      }
-    }
   },
 
   setup() {
