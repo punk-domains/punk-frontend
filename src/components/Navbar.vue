@@ -58,7 +58,8 @@
 
 <script lang="ts">
 import { mapGetters } from 'vuex';
-import { useBoard, useEthers, useWallet } from 'vue-dapp'
+import { useBoard, useEthers, useWallet } from 'vue-dapp';
+import useChainHelpers from "../hooks/useChainHelpers";
 
 export default {
   name: "Navbar",
@@ -79,92 +80,11 @@ export default {
 
   methods: {
     changeNetwork(networkName) {
-      let method;
-      let params;
-
-      if (networkName == "Ropsten") {
-        method = "wallet_switchEthereumChain"
-        params = [{ chainId: "0x3" }] 
-      } else if (networkName == "Rinkeby") {
-        method = "wallet_switchEthereumChain"
-        params = [{ chainId: "0x4" }] 
-      } else if (networkName == "Polygon Testnet") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://mumbai.polygonscan.com" ],
-          chainId: "0x13881",
-          chainName: "Mumbai Testnet",
-          nativeCurrency: { decimals: 18, name: "Matic", symbol: "MATIC" }, 
-          rpcUrls: ["https://matic-mumbai.chainstacklabs.com"]
-        }] 
-      } else if (networkName == "Arbitrum Testnet") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://testnet.arbiscan.io" ],
-          chainId: "0x66EEB",
-          chainName: "Arbitrum Testnet",
-          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-          rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
-        }] 
-      } else if (networkName == "Arbitrum") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://arbiscan.io" ],
-          chainId: "0xA4B1",
-          chainName: "Arbitrum One",
-          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-          rpcUrls: ["https://arb1.arbitrum.io/rpc"]
-        }] 
-      } else if (networkName == "Optimism") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://optimistic.etherscan.io/" ],
-          chainId: "0xA",
-          chainName: "Optimism",
-          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-          rpcUrls: ["https://mainnet.optimism.io"]
-        }] 
-      } else if (networkName == "Optimism Testnet") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://kovan-optimistic.etherscan.io/" ],
-          chainId: "0x45",
-          chainName: "Optimism Testnet",
-          nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-          rpcUrls: ["https://kovan.optimism.io"]
-        }] 
-      } else if (networkName == "Polygon") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://polygonscan.com/" ],
-          chainId: "0x89",
-          chainName: "Polygon PoS Chain",
-          nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
-          rpcUrls: ["https://polygon-rpc.com/"]
-        }] 
-      } else if (networkName == "Gnosis Testnet") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://blockscout.com/poa/sokol" ],
-          chainId: "0x4D",
-          chainName: "Gnosis Testnet",
-          nativeCurrency: { decimals: 18, name: "SPOA", symbol: "SPOA" }, 
-          rpcUrls: ["https://sokol.poa.network"]
-        }] 
-      } else if (networkName == "Gnosis Chain") {
-        method = "wallet_addEthereumChain"
-        params = [{ 
-          blockExplorerUrls: [ "https://blockscout.com/xdai/mainnet" ],
-          chainId: "0x64",
-          chainName: "Gnosis Chain",
-          nativeCurrency: { decimals: 18, name: "XDAI", symbol: "XDAI" }, 
-          rpcUrls: ["https://rpc.gnosischain.com"]
-        }] 
-      }
+      const networkData = this.switchNetwork(networkName); 
 
       window.ethereum.request({ 
-        method: method, 
-        params: params
+        method: networkData.method, 
+        params: networkData.params
       });
     },
 
@@ -183,9 +103,10 @@ export default {
     const { open } = useBoard();
     const { disconnect } = useWallet();
     const { isActivated } = useEthers();
+    const { switchNetwork } = useChainHelpers();
 
     return {
-      isActivated, disconnect, open
+      isActivated, disconnect, open, switchNetwork
     }
   }
 }

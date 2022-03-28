@@ -1,5 +1,4 @@
 export default function useDomainHelpers() {
-  // COMPUTED
   function buyNotValid(domainName: string) {
     if (domainName === "") {
       return {invalid: true, message: null};
@@ -19,6 +18,8 @@ export default function useDomainHelpers() {
       return {invalid: true, message: "# not allowed"};
     } else if (domainName.includes("/")) {
       return {invalid: true, message: "/ not allowed"};
+    } else if (domainName.includes(",")) {
+      return {invalid: true, message: "Comma not allowed"};
     }
 
     return false;

@@ -37,22 +37,32 @@
       Domain price: {{domainPrice}} ETH
     </p>
 
-    <button class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || !canBuy || paused">
+    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || !canBuy || paused">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
       <span v-if="canBuy && !paused">Buy domain</span>
       <span v-if="paused">Buying disabled</span>
       <span v-if="!canBuy && !paused">Not eligible</span>
     </button>
+
+    <div v-if="!isActivated" class="mt-4 buy-button">
+      <button class="btn btn-primary btn-lg" @click="open">Connect wallet</button>
+    </div>
+
+    <div v-if="isActivated && !isNetworkSupported" class="mt-4 buy-button">
+      <button class="btn btn-primary btn-lg" @click="changeNetwork('Optimism Testnet')">Switch to Optimism</button>
+    </div>
+
   </div>
 </template>
 
 <script>
 import { ethers } from 'ethers';
-import { displayEther, useEthers } from 'vue-dapp';
+import { useBoard, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../../components/toasts/WaitingToast.vue";
 import useDomainHelpers from "../../hooks/useDomainHelpers";
+import useChainHelpers from "../../hooks/useChainHelpers";
 import L2DaoPunkDomainsAbi from "../../abi/partners/l2dao/L2DaoPunkDomains.json";
 import tldAbi from '../../abi/PunkTLD.json';
 
@@ -77,6 +87,16 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getFallbackProvider"]),
+
+    isNetworkSupported() {
+      if (this.isActivated) {
+        if (this.chainId === 10 || this.chainId === 69) {
+          return true;
+        }
+      }
+
+      return false;
+    }
   },
 
   methods: {
@@ -110,15 +130,26 @@ export default {
         this.paused = await this.mintContract.paused();
       }
       
-    }
+    },
+
+    changeNetwork(networkName) {
+      const networkData = this.switchNetwork(networkName); 
+
+      window.ethereum.request({ 
+        method: networkData.method, 
+        params: networkData.params
+      });
+    },
   },
 
   setup() {
-    const { address, chainId, isActivated, signer } = useEthers()
+    const { open } = useBoard();
+    const { address, chainId, isActivated, signer } = useEthers();
     const toast = useToast();
     const { buyNotValid } = useDomainHelpers();
+    const { switchNetwork } = useChainHelpers();
 
-    return { address, buyNotValid, chainId, isActivated, displayEther, signer, toast }
+    return { address, buyNotValid, chainId, isActivated, open, signer, switchNetwork, toast }
   },
 
   watch: {
