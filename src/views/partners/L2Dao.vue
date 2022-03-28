@@ -1,5 +1,9 @@
 <template>
   <div class="container text-center">
+    <img class="img-fluid l2dao" src="../../assets/partners/l2dao.png" />
+    <span class="and">&amp;</span>
+    <img class="img-fluid l2dao" src="../../assets/logo.png" />
+
     <h1 class="mt-5">Exclusively For L2DAO Community!</h1>
 
     <div class="row mt-5">
@@ -23,7 +27,10 @@
           aria-label="Text input with dropdown button"
         >
 
-        <span class="input-group-text tld-addon">.L2</span>
+        <span class="input-group-text tld-addon">
+          <span v-if="loading" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
+          <span v-if="!loading">{{tld}}</span>
+        </span>
       </div>
     </div>
 
@@ -71,12 +78,14 @@ export default {
 
   data() {
     return {
-      paused: true,
       canBuy: false,
       chosenDomainName: null,
       domainPrice: null,
-      tldContract: null,
+      loading: false, // loading data
       mintContract: null,
+      paused: true,
+      tld: ".l2",
+      tldContract: null,
       waiting: false, // waiting for TX to complete
     }
   },
@@ -86,7 +95,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getFallbackProvider"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getFallbackProvider"]),
 
     domainLowerCase() {
       return this.chosenDomainName.toLowerCase();
@@ -108,10 +117,17 @@ export default {
 
     async buyDomain() {
       this.waiting = true;
-      const fullDomainName = this.domainLowerCase + ".l2"
+      const fullDomainName = this.domainLowerCase + this.tld
 
-      // connect contract with metamask signer
-      this.mintContract = this.mintContract.connect(this.signer);
+      // mint contract
+      let mintAddr = "";
+
+      if (this.chainId === 69) {
+        mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9";
+      }
+
+      const mintIntfc = new ethers.utils.Interface(L2DaoPunkDomainsAbi);
+      const mintContract2 = new ethers.Contract(mintAddr, mintIntfc, this.signer);
 
       if (this.tldContract) {
         const existingHolder = await this.tldContract.getDomainHolder(this.domainLowerCase);
@@ -130,11 +146,11 @@ export default {
           referral = ethers.constants.AddressZero;
         }
 
-        const tx = await this.mintContract.mint(
+        const tx = await mintContract2.mint(
           this.domainLowerCase,
           referral,
           {
-            value: String(this.selectedPrice)
+            value: ethers.utils.parseEther(this.domainPrice)
           }
         );
 
@@ -159,7 +175,7 @@ export default {
             type: TYPE.SUCCESS,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
-          this.fetchTlds();
+          this.setContracts();
           this.addDomainManually(fullDomainName);
           this.waiting = false;
         } else {
@@ -190,18 +206,11 @@ export default {
       });
     },
 
-    async checkNftHoldings() {
-      if (!this.mintContract) {
-        this.setContracts();
-      }
-      
-      // check if user has L2DAO NFTs
-      if (this.isActivated && this.mintContract) {
-        this.canBuy = await this.mintContract.canUserMint(this.address);
-      }
-    },
-
     async setContracts() {
+      if (this.address) {
+        this.loading = true;
+      }
+
       let tldAddr = "";
       let mintAddr = "";
       let networkId = 10;
@@ -210,12 +219,13 @@ export default {
         networkId = 69; // Optimism Testnet
         tldAddr = "0xB5B8AF8199777d471c0320BC11022433df6D100e"; // .L2TEST
         mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9";
+        this.tld = ".l2test";
       }
 
       const fProvider = this.getFallbackProvider(networkId);
 
       // TLD contract
-      if (tldAddr && !this.paused) {
+      if (tldAddr) {
         const tldIntfc = new ethers.utils.Interface(tldAbi);
         this.tldContract = new ethers.Contract(tldAddr, tldIntfc, fProvider);
 
@@ -229,6 +239,13 @@ export default {
         this.mintContract = new ethers.Contract(mintAddr, mintIntfc, fProvider);
 
         this.paused = await this.mintContract.paused();
+
+        if (this.address) {
+          this.canBuy = await this.mintContract.canUserMint(this.address);
+          this.loading = false;
+        } else {
+          this.loading = false;
+        }
       }
       
     },
@@ -245,16 +262,27 @@ export default {
   },
 
   watch: {
-    isActivated() {
-      this.checkNftHoldings();
+    address() {
+      this.setContracts();
+    },
+
+    chainId() {
+      this.setContracts();
     },
   }
 }
 </script>
 
 <style scoped>
+.and {
+  font-size: 1.7em;
+  vertical-align: bottom;
+  padding-left: 0.2em;
+  padding-right: 0.1em;
+}
+
 .buy-button {
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 
 .domain-input {
@@ -267,6 +295,10 @@ export default {
 
 .error {
   color: #DBDFEA;
+}
+
+.l2dao {
+  width: 50px;
 }
 
 .tld-addon {
