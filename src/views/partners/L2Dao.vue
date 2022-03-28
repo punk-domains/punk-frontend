@@ -140,6 +140,19 @@ export default {
         params: networkData.params
       });
     },
+
+    async checkNftHoldings() {
+      if (!this.mintContract) {
+        this.setContracts();
+      }
+      
+      // check if user has L2DAO NFTs
+      if (this.isActivated && this.mintContract) {
+        console.log("checkNftHoldings before: " + this.canBuy);
+        this.canBuy = await this.mintContract.canUserMint(this.address);
+        console.log("checkNftHoldings after: " + this.canBuy);
+      }
+    }
   },
 
   setup() {
@@ -154,7 +167,7 @@ export default {
 
   watch: {
     isActivated() {
-      //this.fetchData();
+      this.checkNftHoldings();
     },
   }
 }
