@@ -14,6 +14,10 @@
 
     <a target="_blank" href="https://icons8.com/icon/f34LtRddK1jj/man">Man</a> 
     icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+    <span> | </span>
+
+    <router-link to="/partners/l2dao">L2DAO</router-link>
   </div>
 
   <div class="container-fluid text-center">
