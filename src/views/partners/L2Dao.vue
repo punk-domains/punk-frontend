@@ -60,6 +60,8 @@
     </div>
 
   </div>
+
+  <Referral v-if="isActivated" />
 </template>
 
 <script>
@@ -68,6 +70,7 @@ import { useBoard, useEthers } from 'vue-dapp';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../../components/toasts/WaitingToast.vue";
+import Referral from '../../components/Referral.vue';
 import useDomainHelpers from "../../hooks/useDomainHelpers";
 import useChainHelpers from "../../hooks/useChainHelpers";
 import L2DaoPunkDomainsAbi from "../../abi/partners/l2dao/L2DaoPunkDomains.json";
@@ -88,6 +91,10 @@ export default {
       tldContract: null,
       waiting: false, // waiting for TX to complete
     }
+  },
+
+  components: {
+    Referral
   },
 
   created() {
