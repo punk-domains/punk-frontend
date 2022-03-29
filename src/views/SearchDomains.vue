@@ -43,9 +43,10 @@
 <script lang="ts">
 import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
-import { useEthers } from 'vue-dapp';
 import { useToast, TYPE } from "vue-toastification";
 
+import tldsJson from '../abi/tlds.json';
+import tldAbi from '../abi/PunkTLD.json';
 import Sidebar from '../components/Sidebar.vue';
 import WaitingToast from "../components/toasts/WaitingToast.vue";
 
@@ -64,8 +65,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getChainId"]),
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
+    ...mapGetters("network", ["getFallbackProvider"]),
 
     domainLowerCase() {
       return this.query.toLowerCase();
@@ -97,48 +97,41 @@ export default {
   methods: {
     async findDomain() {
       this.waiting = true;
+      const intfc = new ethers.utils.Interface(tldAbi);
 
-      try {
-        const domainName = this.domainLowerCase.split(".")[0]
-        const tld = this.domainLowerCase.split(".")[1]
+      // check if domain name/address is valid
+      if (this.domainLowerCase && this.domainLowerCase.split(".").length === 2) { // likely a domain name
+        // split into two (domain name and TLD)
+        const domArr = this.domainLowerCase.split(".");
 
-        let tldAddresses = this.getTldAddresses;
+        for (let netId in tldsJson) { // iterate through different chains
+          if (tldsJson[netId]["."+domArr[1]]) { // find the correct TLD
+            // get fallback provider based on network ID
+            const fProvider = this.getFallbackProvider(Number(netId));
+            // create TLD contract
+            const tldContractRead = new ethers.Contract(tldsJson[netId]["."+domArr[1]], intfc, fProvider);
+            // fetch domain holder
+            const domainHolder = await tldContractRead.getDomainHolder(domArr[0]);
 
-        if (!tldAddresses) {
-          const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
-
-          if (tldAddressesStorage) {
-            tldAddresses = JSON.parse(tldAddressesStorage);
+            if (domainHolder !== ethers.constants.AddressZero) {
+              // if domain exists, redirect to the Domain Details page
+              this.$router.push({name: 'DomainDetails', params: {domainChain: netId, tld: domArr[1], domainName: domArr[0]}});
+              return;
+            } else {
+              // if not exists (holder is 0x0), show a toast
+              this.toast("This domain name has not been registered yet.", {type: TYPE.INFO});
+              this.waiting = false;
+              return;
+            }
+            break;
           }
         }
 
-        if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
-          const tldAddr = tldAddresses["."+tld];
-
-          if (!tldAddr) {
-            this.toast("This TLD does not exist.", {type: TYPE.ERROR});
-            this.waiting = false;
-            return;
-          }
-
-          // construct contract
-          const intfc = new ethers.utils.Interface(this.getTldAbi);
-          const tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
-
-          const existingHolder = await tldContract.getDomainHolder(domainName);
-
-          if (existingHolder === ethers.constants.AddressZero) {
-            // if not exists (holder is 0x0), show a toast
-            this.toast("This domain name has not been registered yet.", {type: TYPE.INFO});
-            this.waiting = false;
-            return;
-          } else {
-            // if domain exists, redirect to the Domain Details page
-            this.$router.push({name: 'DomainDetails', params: {domainChain: this.getChainId, tld: tld, domainName: domainName}});
-          }
-        }
-      } catch {
-        this.toast("You have entered an incorrect domain.", {type: TYPE.ERROR});
+        this.toast("Top-level domain ." + domArr[1] + " does not exist (if this is a mistake, contact us on Discord).", {type: TYPE.ERROR});
+        this.waiting = false;
+        return;
+      } else {
+        this.toast("This is not a valid domain.", {type: TYPE.ERROR});
         this.waiting = false;
         return;
       }
@@ -146,10 +139,9 @@ export default {
   },
 
   setup() {
-    const { signer } = useEthers()
     const toast = useToast();
 
-    return { signer, toast }
+    return { toast }
   },
 }
 </script>

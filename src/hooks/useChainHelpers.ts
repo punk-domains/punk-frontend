@@ -1,4 +1,33 @@
 export default function useChainHelpers() {
+
+  function getChainName(chainId) {
+    if (chainId === 137) {
+      return "Polygon";
+    } else if (chainId === 10) {
+      return "Optimism";
+    } else if (chainId === 69) {
+      return "Optimism Testnet";
+    } else if (chainId === 77) {
+      return "Gnosis Testnet";
+    } else if (chainId === 100) {
+      return "Gnosis Chain";
+    } else if (chainId === 137) {
+      return "Polygon";
+    } else if (chainId === 42161) {
+      return "Arbitrum";
+    } else if (chainId === 421611) {
+      return "Arbitrum Testnet";
+    } else if (chainId === 80001) {
+      return "Polygon Testnet";
+    } else if (chainId === 3) {
+      return "Ropsten";
+    } else if (chainId === 4) {
+      return "Rinkeby";
+    } else {
+      return "Unsupported Network";
+    }
+  }
+
   function switchNetwork(networkName) {
     let method;
     let params;
@@ -91,6 +120,7 @@ export default function useChainHelpers() {
 
   // RETURN
   return {
+    getChainName,
     switchNetwork
   }
 }

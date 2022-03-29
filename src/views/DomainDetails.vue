@@ -22,14 +22,6 @@
           </div>
         </div>
       </div>
-
-      <div class="row" v-if="!isCorrectChainForDomain">
-        <div class="col-md-12">
-          <div class="alert alert-warning" role="alert">
-            Please switch your network to {{getSupportedNetworks[domainChain]}}.
-          </div>
-        </div>
-      </div>
       <!-- End Alerts -->
 
       <div class="row">
@@ -39,6 +31,10 @@
 
             <img class="img-thumbnail domain-image" :src="pfpImage" />
 
+            <div class="mb-3 text-center mt-4" v-if="loadingData">
+              <span class="spinner-border spinner-border-lg" role="status" aria-hidden="true"></span>
+            </div>
+
             <div class="mb-3 row domain-data mt-4" v-if="domainData">
               <div class="col-sm-3 punk-title">
                 Holder address
@@ -46,6 +42,16 @@
 
               <div class="col-sm-9 punk-text text-break">
                 {{holderData}}
+              </div>
+            </div>
+
+            <div class="mb-3 row domain-data mt-4">
+              <div class="col-sm-3 punk-title">
+                Network
+              </div>
+
+              <div class="col-sm-9 punk-text text-break">
+                {{getChainName(Number(domainChain))}} (this is where domain is registered)
               </div>
             </div>
 
@@ -66,6 +72,7 @@
             -->
 
             <EditOtherData
+              v-if="isCorrectChainForDomain"
               :domainData="domainData" 
               :tld="tld" 
               :domainName="domainName" 
@@ -87,12 +94,14 @@ import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
 import { useEthers } from 'vue-dapp';
 import { useToast, TYPE } from "vue-toastification";
-
+import tldsJson from '../abi/tlds.json';
+import tldAbi from '../abi/PunkTLD.json';
 import EditOtherData from "../components/domainEdit/EditOtherData.vue";
 import EditPfp from "../components/domainEdit/EditPfp.vue";
 import EditUrl from "../components/domainEdit/EditUrl.vue";
 import Sidebar from '../components/Sidebar.vue';
 import WaitingToast from "../components/toasts/WaitingToast.vue";
+import useChainHelpers from "../hooks/useChainHelpers";
 
 export default {
   name: "DomainDetails",
@@ -106,6 +115,7 @@ export default {
 
   data() {
     return {
+      loadingData: false,
       tldContract: null,
       domainData: null,
       pfpImage: "https://upload.wikimedia.org/wikipedia/commons/b/bc/Unknown_person.jpg",
@@ -114,18 +124,16 @@ export default {
 
   created() {
     // fetch existing data from blockchain
-    if (!this.tldContract) {
+    if (!this.tldContract && this.isCorrectChainForDomain) {
       this.setContract();
     }
-      
-    if (this.getTldAddresses && JSON.stringify(this.getTldAddresses) != "{}") {
-      this.fetchData();
-    }
+
+    this.fetchData();
   },
 
   computed: {
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
-    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getSupportedNetworks", "isNetworkSupported"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getFallbackProvider", "getSupportedNetworks", "isNetworkSupported"]),
 
     holderData() {
       if (this.domainData.holder !== ethers.constants.AddressZero) {
@@ -146,16 +154,21 @@ export default {
 
   methods: {
     async fetchData() {
-      if (!this.tldContract) {
-        this.setContract();
-      }
+      this.loadingData = true;
 
-      if (this.tldContract) {
+      // get fallback provider based on network ID
+      const fProvider = this.getFallbackProvider(Number(this.domainChain));
+
+      // create TLD contract
+      const intfc = new ethers.utils.Interface(tldAbi);
+      const tldContractRead = new ethers.Contract(tldsJson[this.domainChain]["."+this.tld], intfc, fProvider);
+
+      if (tldContractRead) {
         // get domain data
-        this.domainData = await this.tldContract.domains(this.domainName);
+        this.domainData = await tldContractRead.domains(this.domainName);
 
         if (this.domainData && this.domainData.holder !== ethers.constants.AddressZero) {
-          let metadata = await this.tldContract.tokenURI(this.domainData.tokenId);
+          let metadata = await tldContractRead.tokenURI(this.domainData.tokenId);
             
           /*
           if (this.domainData.pfpAddress && this.domainData.pfpAddress !== ethers.constants.AddressZero) {
@@ -167,7 +180,7 @@ export default {
             metadata = await pfpContract.tokenURI(this.domainData.pfpTokenId);
           } else {
             // get contract image for that token ID
-            metadata = await this.tldContract.tokenURI(this.domainData.tokenId);
+            metadata = await tldContractRead.tokenURI(this.domainData.tokenId);
           }
 
           if (metadata.includes("ipfs://")) {
@@ -199,6 +212,8 @@ export default {
           }
         }
       }
+
+      this.loadingData = false;
     },
 
     setContract() {
@@ -223,22 +238,12 @@ export default {
   },
 
   setup() {
-    const { chainId, isActivated, signer } = useEthers();
+    const { isActivated, signer } = useEthers();
     const toast = useToast();
+    const { getChainName } = useChainHelpers();
 
-    return { chainId, isActivated, signer, toast }
+    return { getChainName, isActivated, signer, toast }
   },
-
-  watch: {
-    getTldAddresses(newVal, oldVal) {
-      if (newVal && JSON.stringify(newVal) != "{}") {
-        this.fetchData();
-      }
-    },
-    chainId() {
-      this.fetchData();
-    }
-  }
 }
 </script>
 
