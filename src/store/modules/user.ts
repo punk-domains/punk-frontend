@@ -233,6 +233,38 @@ export default {
         }
       }
       
+    },
+
+    async removeDomainFromUserDomains({commit, state}, domainName) {
+      if (chainId.value) {
+        this.userDomainNamesKey = "userDomainNames" + String(chainId.value) + String(shortenAddress(address.value));
+        this.selectedNameKey = "selectedName" + String(chainId.value) + String(shortenAddress(address.value));
+
+        if (localStorage.getItem(this.userDomainNamesKey)) {
+          const userDomainNames = JSON.parse(localStorage.getItem(this.userDomainNamesKey));
+          state.userAllDomainNames = [];
+
+          let newDomainNamesArray = [];
+          for (let udName of userDomainNames) {
+            if (udName != domainName) {
+              newDomainNamesArray.push(udName);
+              state.userAllDomainNames.push(udName);
+            }
+          }
+
+          localStorage.setItem(this.userDomainNamesKey, JSON.stringify(newDomainNamesArray));
+
+          // if the removed domain name is currently marked as selected name, replace it with another or null
+          if (localStorage.getItem(this.selectedNameKey) && localStorage.getItem(this.selectedNameKey)==domainName) {
+            if (newDomainNamesArray.length > 0) {
+              commit('setSelectedName', newDomainNamesArray[0]);
+            }
+            commit('setSelectedName', null);
+          }
+        }
+  
+        
+      }
     }
   }
 
