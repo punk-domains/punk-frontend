@@ -159,8 +159,12 @@
             type="button" 
             class="btn btn-secondary" 
             @click="send" 
-            :disabled="waiting || domainError"
-          >Send {{selectedToken}}</button>
+            :disabled="waiting || domainError || validating"
+          >
+            <span v-if="validating">Validating...</span>
+            <span v-if="validating" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span v-if="!validating">Send {{selectedToken}}</span>
+          </button>
 
           <button id="closeSendModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
@@ -178,6 +182,8 @@ import { useToast, TYPE } from "vue-toastification";
 
 import Sidebar from '../components/Sidebar.vue';
 import Erc20Abi from "../abi/Erc20.json";
+import tldsJson from '../abi/tlds.json';
+import tldAbi from '../abi/PunkTLD.json';
 import WaitingToast from "../components/toasts/WaitingToast.vue";
 
 export default {
@@ -197,7 +203,8 @@ export default {
       selectedToken: null,
       selectedTokenDecimals: null,
       tokenAmount: null, // amount to be sent
-      waiting: false
+      waiting: false,
+      validating: false
     }
   },
 
@@ -209,7 +216,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getNetworkName", "getTokens"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getFallbackProvider", "getNetworkName", "getTokens"]),
     ...mapGetters("user", ["getUserBalance"]),
     ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
 
@@ -418,8 +425,53 @@ export default {
     },
 
     async validateDomainName() {
+      this.validating = true;
       this.domainError = null;
+      this.receiverAddress = null;
 
+      const intfc = new ethers.utils.Interface(tldAbi);
+
+      try {
+        if (this.domainLowerCase && this.domainLowerCase.split(".").length === 2) { // likely a domain name
+          // split into two (domain name and TLD)
+          const domArr = this.domainLowerCase.split(".");
+
+          for (let netId in tldsJson) { // iterate through different chains
+            if (tldsJson[netId]["."+domArr[1]]) { // find the correct TLD
+              // get fallback provider based on network ID
+              const fProvider = this.getFallbackProvider(Number(netId));
+              // create TLD contract
+              const tldContractRead = new ethers.Contract(tldsJson[netId]["."+domArr[1]], intfc, fProvider);
+              // fetch domain holder
+              const recDomainHolder = await tldContractRead.getDomainHolder(domArr[0]);
+
+              if (recDomainHolder !== ethers.constants.AddressZero) {
+                // if domain exists, set as receiver address
+                this.receiverAddress = recDomainHolder;
+                this.validating = false;
+                return
+              } else {
+                this.domainError = "This domain name has not been registered yet.";
+                this.validating = false;
+                return
+              }
+              break;
+            }
+          }
+
+          if (!ethers.utils.isAddress(this.recipient)) {
+            this.domainError = "This TLD does not exist.";
+            this.validating = false;
+            return;
+          }
+        }
+      } catch {
+        this.domainError = "You have entered an incorrect domain.";
+        this.validating = false;
+        return;
+      }
+
+      /*
       try {
         const domainName = this.domainLowerCase.split(".")[0]
         const tld = this.domainLowerCase.split(".")[1]
@@ -449,11 +501,11 @@ export default {
           const existingHolder = await tldContract.getDomainHolder(domainName);
 
           if (existingHolder === ethers.constants.AddressZero) {
-            // if not exists (holder is 0x0), show a toast
+            // if not exists (holder is 0x0), show an error
             this.domainError = "This domain name has not been registered yet.";
             return;
           } else {
-            // if domain exists, redirect to the Domain Details page
+            // if domain exists, set as receiver address
             this.receiverAddress = existingHolder;
             return;
           }
@@ -461,7 +513,7 @@ export default {
       } catch {
         this.domainError = "You have entered an incorrect domain.";
         return;
-      }
+      }*/
     }
   },
 
