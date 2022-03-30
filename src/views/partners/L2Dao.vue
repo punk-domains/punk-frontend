@@ -4,15 +4,15 @@
     <span class="and">&amp;</span>
     <img class="img-fluid l2dao" src="../../assets/logo.png" />
 
-    <h1 class="mt-5">Exclusively For L2DAO Community!</h1>
+    <h1 class="mt-5">Early Access to Mint Your .L2 Domain</h1>
 
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
-          Layer2DAO and Punk Domains have partnered up to offer L2DAO NFT holders the exclusive chance to mint .L2 
-          domains before anyone else.
+          Layer2DAO and Punk Domains have partnered up to offer L2DAO Early Adopter NFT holders the exclusive 
+          chance to mint .L2 domains before anyone else.
           <br />
-          <small><em>(and for a discounted price)</em></small>
+          <small><em>Read all about the .L2 domain launch on Medium.</em></small>
         </p>
       </div>
     </div>
@@ -232,7 +232,6 @@ export default {
         tldAddr = "0xB5B8AF8199777d471c0320BC11022433df6D100e"; // .L2TEST
         mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9";
         this.tld = ".L2test";
-        
       }
 
       // TLD contract
