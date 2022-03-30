@@ -10,9 +10,9 @@
       <div class="col-md-8 offset-md-2">
         <p>
           Layer2DAO and Punk Domains have partnered up to offer L2DAO NFT holders the exclusive chance to mint .L2 
-          domains before anyone else...
+          domains before anyone else.
           <br />
-          <small><em>(... and for a discounted price)</em></small>
+          <small><em>(and for a discounted price)</em></small>
         </p>
       </div>
     </div>
@@ -56,7 +56,7 @@
     </div>
 
     <div v-if="isActivated && !isNetworkSupported" class="mt-4 buy-button">
-      <button class="btn btn-primary btn-lg" @click="changeNetwork('Optimism Testnet')">Switch to Optimism</button>
+      <button class="btn btn-primary btn-lg" @click="changeNetwork('Optimism')">Switch to Optimism</button>
     </div>
 
   </div>
@@ -87,7 +87,7 @@ export default {
       loading: false, // loading data
       mintContract: null,
       paused: true,
-      tld: ".l2",
+      tld: ".L2",
       tldContract: null,
       waiting: false, // waiting for TX to complete
     }
@@ -124,13 +124,13 @@ export default {
 
     async buyDomain() {
       this.waiting = true;
-      const fullDomainName = this.domainLowerCase + this.tld
+      const fullDomainName = this.domainLowerCase + this.tld.toLowerCase();
 
       // mint contract
-      let mintAddr = "";
+      let mintAddr = "0x373bd1e154FDa2a43A8696B1434a793576460593"; // on Optimism Mainnet
 
       if (this.chainId === 69) {
-        mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9";
+        mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9"; // on Optimism Testnet
       }
 
       const mintIntfc = new ethers.utils.Interface(L2DaoPunkDomainsAbi);
@@ -218,18 +218,22 @@ export default {
         this.loading = true;
       }
 
-      let tldAddr = "";
-      let mintAddr = "";
-      let networkId = 10;
-
-      if (this.chainId === 69) {
-        networkId = 69; // Optimism Testnet
+      let tldAddr;
+      let mintAddr;
+      let fProvider;
+      
+      if (this.chainId === 10) { // Optimism Mainnet
+        fProvider = this.getFallbackProvider(10);
+        tldAddr = "0x9A7657d1593032C75d70950707870c3cC7ca45DC"; // .L2
+        mintAddr = "0x373bd1e154FDa2a43A8696B1434a793576460593"; // wrapper contract
+        this.tld = ".L2";
+      } else if (this.chainId === 69) { // Optimism Testnet
+        fProvider = this.getFallbackProvider(69);
         tldAddr = "0xB5B8AF8199777d471c0320BC11022433df6D100e"; // .L2TEST
         mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9";
-        this.tld = ".l2test";
+        this.tld = ".L2test";
+        
       }
-
-      const fProvider = this.getFallbackProvider(networkId);
 
       // TLD contract
       if (tldAddr) {
