@@ -9,10 +9,14 @@
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
-          Layer2DAO and Punk Domains have partnered up to offer L2DAO Early Adopter NFT holders the exclusive 
+          Layer2DAO and Punk Domains have partnered up to offer 
+          <a href="https://www.layer2dao.org/#/nftdrop" target="_blank">L2 Early Adopter NFT holders</a> the exclusive 
           chance to mint .L2 domains before anyone else.
           <br />
-          <small><em>Read all about the .L2 domain launch on Medium.</em></small>
+          <small><em>
+            Read all about the .L2 domain launch 
+            <a href="https://medium.com/@layer2dao" target="_blank">on Medium</a>.
+          </em></small>
         </p>
       </div>
     </div>
