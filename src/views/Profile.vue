@@ -6,8 +6,21 @@
     </div>
 
     <div class="col-md-9">
-      <div class="row">
 
+      <!-- Show this if user is not connected -->
+      <div class="row" v-if="!isActivated">
+        <div class="col-md-12 mb-3">
+          <div class="container text-center">
+            <h3><i class="bi bi-exclamation-triangle"></i> Not connected <i class="bi bi-exclamation-triangle"></i></h3>
+            <p class="text-break">
+              Please connect with your wallet to see your profile data.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address and balance -->
+      <div class="row" v-if="isActivated">
         <div class="col-md-6 mb-3">
           <div class="container text-center">
             <h3>Address</h3>
@@ -21,7 +34,6 @@
             <p class="text-break">{{ getUserBalance }} {{getNetworkCurrency}}</p>
           </div>
         </div>
-
       </div>
 
       <div class="row">
@@ -177,10 +189,10 @@ export default {
   },
 
   setup() {
-    const { address, signer } = useEthers();
+    const { address, isActivated, signer } = useEthers();
     const toast = useToast();
 
-    return { address, signer, toast }
+    return { address, isActivated, signer, toast }
   },
 
 }

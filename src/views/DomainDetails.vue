@@ -53,10 +53,10 @@
             -->
 
             <EditOtherData
-              v-if="isCorrectChainForDomain"
               :domainData="domainData" 
               :tld="tld" 
-              :domainName="domainName" 
+              :domainName="domainName"
+              :isCorrectChainForDomain="isCorrectChainForDomain"  
               @fetchData="fetchData" 
             />
 

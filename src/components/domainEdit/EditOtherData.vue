@@ -10,7 +10,7 @@
   </div>
 
   <button 
-    v-if="isOwner"
+    v-if="isOwner && isCorrectChainForDomain"
     class="btn btn-primary btn-lg mx-3 mt-3"
     data-bs-toggle="modal" data-bs-target="#editDataModal"
   >
@@ -83,7 +83,7 @@ import WaitingToast from "../toasts/WaitingToast.vue";
 export default {
   name: "EditOtherData",
   emits: ["fetchData"],
-  props: ["domainData", "tld", "domainName"],
+  props: ["domainData", "tld", "domainName", "isCorrectChainForDomain"],
 
   data() {
     return {
@@ -237,7 +237,9 @@ export default {
         this.fields.push({dataKey: "imgTokenId", dataValue: "", valuePlaceholder: "Only needed if img is NFT"});
       }
 
-      this.setContract();
+      if (this.isOwner && this.isCorrectChainForDomain) {
+        this.setContract();
+      }
     }
   }
 }
