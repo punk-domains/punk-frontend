@@ -5,25 +5,6 @@
     </div>
 
     <div class="col-md-9">
-
-      <!-- Alerts -->
-      <div class="row" v-if="!isActivated">
-        <div class="col-md-12">
-          <div class="alert alert-warning" role="alert">
-            Connect wallet to see more data.
-          </div>
-        </div>
-      </div>
-
-      <div class="row" v-if="isActivated && isCorrectChainForDomain && !domainData">
-        <div class="col-md-12">
-          <div class="alert alert-warning" role="alert">
-            If data does not show in a reasonable amount of time, reload the page.
-          </div>
-        </div>
-      </div>
-      <!-- End Alerts -->
-
       <div class="row">
         <div class="col-md-12">
           <div class="container text-center">
@@ -169,46 +150,48 @@ export default {
 
         if (this.domainData && this.domainData.holder !== ethers.constants.AddressZero) {
           let metadata = await tldContractRead.tokenURI(this.domainData.tokenId);
+          let noImg = true;
+
+          if (this.domainData.data) {
+            const customData = JSON.parse(this.domainData.data);
+
+            if (customData.imgAddress && !customData.imgAddress.startsWith("0x")) {
+              this.pfpImage = customData.imgAddress.replace("ipfs://", "https://ipfs.io/ipfs/");
+              noImg = false;
+            } else if (customData.imgAddress) {
+              // fetch image URL of that PFP
+              const pfpInterface = new ethers.utils.Interface([
+                "function tokenURI(uint256 tokenId) public view returns (string memory)"
+              ]);
+              const pfpContract = new ethers.Contract(customData.imgAddress, pfpInterface, fProvider);
+              metadata = await pfpContract.tokenURI(customData.imgTokenId);
+            } else {
+              // get contract image for that token ID
+              metadata = await tldContractRead.tokenURI(customData.imgTokenId);
+            }
+
+            if (metadata.includes("ipfs://")) {
+              metadata = metadata.replace("ipfs://", "https://ipfs.io/ipfs/");
+            }
             
-          /*
-          if (this.domainData.pfpAddress && this.domainData.pfpAddress !== ethers.constants.AddressZero) {
-            // fetch image URL of that PFP
-            const pfpInterface = new ethers.utils.Interface([
-              "function tokenURI(uint256 tokenId) public view returns (string memory)"
-            ]);
-            const pfpContract = new ethers.Contract(this.domainData.pfpAddress, pfpInterface, this.signer);
-            metadata = await pfpContract.tokenURI(this.domainData.pfpTokenId);
-          } else {
-            // get contract image for that token ID
-            metadata = await tldContractRead.tokenURI(this.domainData.tokenId);
-          }
+            if (metadata.includes("http")) {
+              const response = await fetch(metadata);
+              const result = await response.json();
 
-          if (metadata.includes("ipfs://")) {
-            metadata = metadata.replace("ipfs://", "https://ipfs.io/ipfs/");
-          }
-          
-          if (metadata.includes("http")) {
-            const response = await fetch(metadata);
-            const result = await response.json();
-
-            if (result && result.image) {
-              if (result.image.includes("ipfs://")) {
-                this.pfpImage = result.image.replace("ipfs://", "https://ipfs.io/ipfs/")
-              } else {
-                this.pfpImage = result.image;
+              if (result && result.image) {
+                this.pfpImage = result.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+                noImg = false;
               }
             }
           }
-          else */
-          
-          if (metadata) {
+
+          if (metadata && noImg) {
             const json = atob(metadata.substring(29));
             const result = JSON.parse(json);
 
             if (result && result.image) {
               this.pfpImage = result.image;
             }
-            
           }
         }
       }

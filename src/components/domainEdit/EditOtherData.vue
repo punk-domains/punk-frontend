@@ -31,7 +31,7 @@
           </p>
 
           <p>
-            Example: twitter -> myhandle
+            Example: twitter -> @myhandle
           </p>
 
           <div class="input-group mb-3 mt-4" v-if="fields" v-for="(item, index) in fields">
@@ -50,7 +50,7 @@
               class="form-control" 
               :key="'dataValue'+index"
               v-model="item.dataValue"
-              placeholder="Enter value"
+              :placeholder="item.valuePlaceholder ? item.valuePlaceholder : 'Enter value'"
             >
 
             <span class="input-group-text" @click="removeField(index)"><i class="bi bi-x-circle"></i></span>
@@ -88,7 +88,9 @@ export default {
   data() {
     return {
       btnInactive: false, // make the submit button inactive so that the user does not click on it multiple times while waiting for MetaMask to show up
-      fields: [],
+      fields: [
+        
+      ],
       tldContract: null
     }
   },
@@ -217,12 +219,22 @@ export default {
 
   watch: {
     domainData() {
-      if (this.domainData && this.domainData.data && this.fields.length === 0) {
+      if (this.domainData && this.domainData.data) {
         const cstmData = JSON.parse(this.domainData.data);
 
         for (const [key, value] of Object.entries(cstmData)) {
-          this.fields.push({dataKey: key, dataValue: value})
+          if(this.fields.findIndex(x => x.dataKey == key) === -1) {
+            this.fields.push({dataKey: key, dataValue: value});
+          }
         }
+      }
+
+      if(this.fields.findIndex(x => x.dataKey == "imgAddress") === -1) {
+        this.fields.push({dataKey: "imgAddress", dataValue: "", valuePlaceholder: "HTTP, or 0x address if NFT"});
+      }
+
+      if(this.fields.findIndex(x => x.dataKey == "imgTokenId") === -1) {
+        this.fields.push({dataKey: "imgTokenId", dataValue: "", valuePlaceholder: "Only needed if img is NFT"});
       }
 
       this.setContract();

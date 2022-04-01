@@ -184,40 +184,42 @@ export default {
           commit("setSelectedNameData", nameData);
 
           // get contract image for that token ID
-          const metadata = await contract.tokenURI(nameData.tokenId);
-          
-          /*
-          if (nameData.pfpAddress && nameData.pfpAddress != ethers.constants.AddressZero) {
-            // fetch image URL of that PFP
-            const pfpInterface = new ethers.utils.Interface([
-              "function tokenURI(uint256 tokenId) public view returns (string memory)"
-            ]);
-            const pfpContract = new ethers.Contract(nameData.pfpAddress, pfpInterface, signer.value);
-            metadata = await pfpContract.tokenURI(nameData.pfpTokenId);
-          } else {
-            
-          }
+          let metadata = await contract.tokenURI(nameData.tokenId);
+          let imgFound = false;
 
-          if (metadata.includes("ipfs://")) {
-            metadata = metadata.replace("ipfs://", "https://ipfs.io/ipfs/");
-          }
+          if (nameData.data) {
+            const customData = JSON.parse(nameData.data);
           
-          if (metadata.includes("http")) {
-            const response = await fetch(metadata);
-            const result = await response.json();
-
-            if (result && result.image) {
-              if (result.image.includes("ipfs://")) {
-                commit("setSelectedNameImageSvg", result.image.replace("ipfs://", "https://ipfs.io/ipfs/"));
-              } else {
-                commit("setSelectedNameImageSvg", result.image);
-              }
-            } else {
-              commit("setSelectedNameImageSvg", null);
+            if (customData.imgAddress && !customData.imgAddress.startsWith("0x")) {
+              commit("setSelectedNameImageSvg", customData.imgAddress.replace("ipfs://", "https://ipfs.io/ipfs/"));
+              imgFound = true;
+            } else if (customData.imgAddress) {
+              // fetch image URL of that PFP
+              const pfpInterface = new ethers.utils.Interface([
+                "function tokenURI(uint256 tokenId) public view returns (string memory)"
+              ]);
+              const pfpContract = new ethers.Contract(customData.imgAddress, pfpInterface, signer.value);
+              metadata = await pfpContract.tokenURI(customData.imgTokenId);
             }
-          } else */
-          
-          if (metadata) {
+
+            if (metadata.includes("ipfs://")) {
+              metadata = metadata.replace("ipfs://", "https://ipfs.io/ipfs/");
+            } 
+            
+            if (metadata.includes("http")) {
+              const response = await fetch(metadata);
+              const result = await response.json();
+
+              if (result && result.image) {
+                commit("setSelectedNameImageSvg", result.image.replace("ipfs://", "https://ipfs.io/ipfs/"));
+                imgFound = true;
+              } else {
+                commit("setSelectedNameImageSvg", null);
+              }
+            }
+          }
+
+          if (metadata && !imgFound) {
             const json = atob(metadata.substring(29));
             const result = JSON.parse(json);
 
@@ -226,9 +228,6 @@ export default {
             } else {
               commit("setSelectedNameImageSvg", null);
             }
-            
-          } else {
-            commit("setSelectedNameImageSvg", null);
           }
         }
       }

@@ -24,17 +24,6 @@
 
       </div>
 
-      <div class="row" v-if="getUserSelectedNameData && getUserSelectedNameData.data">
-
-        <div class="col-md-6 mb-3" v-for="(dataValue, dataKey) in customData">
-          <div class="container text-center">
-            <h3>{{dataKey.charAt(0).toUpperCase() + dataKey.slice(1)}}</h3>
-            <p class="text-break">{{dataValue}}</p>
-          </div>
-        </div>
-
-      </div>
-
       <div class="row">
         <div class="col-md-12">
           <div class="container">
