@@ -15,7 +15,7 @@
           <br />
           <small><em>
             Read all about the .L2 domain launch 
-            <a href="https://medium.com/@layer2dao" target="_blank">on Medium</a>.
+            <a href="https://medium.com/@layer2dao/announcing-the-layer2dao-l2-domain-sale-with-punk-domains-on-optimism-edebf7bb5f18" target="_blank">on Medium</a>.
           </em></small>
         </p>
       </div>
