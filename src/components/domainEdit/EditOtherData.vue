@@ -5,7 +5,9 @@
     </div>
 
     <div class="col-sm-9 punk-text">
-      {{dataValue}}
+      <span v-if="dataKey=='url'"><a target="_blank" :href="dataValue">{{dataValue}}</a></span>
+      <span v-else-if="dataKey=='twitter'"><a target="_blank" :href="getTwitterUrl(dataValue)">{{dataValue}}</a></span>
+      <span v-else>{{dataValue}}</span>
     </div>
   </div>
 
@@ -189,6 +191,22 @@ export default {
       }
     },
 
+    getTwitterUrl(entry) {
+      if (typeof entry === 'string') {
+        if (entry.startsWith("http")) {
+          return entry;
+        } else if (entry.startsWith("www")) {
+          return "https://" + entry;
+        } else if (entry.startsWith("twitter.com")) {
+          return "https://" + entry;
+        } else if (entry.startsWith("@")) {
+          return "https://twitter.com/" + entry;
+        } else {
+          return "https://twitter.com/" + entry;
+        }
+      }
+    },
+
     setContract() {
       let tldAddresses = this.getTldAddresses;
 
@@ -235,6 +253,14 @@ export default {
 
       if(this.fields.findIndex(x => x.dataKey == "imgTokenId") === -1) {
         this.fields.push({dataKey: "imgTokenId", dataValue: "", valuePlaceholder: "Only needed if img is NFT"});
+      }
+
+      if(this.fields.findIndex(x => x.dataKey == "url") === -1) {
+        this.fields.push({dataKey: "url", dataValue: "", valuePlaceholder: "Add any URL to redirect domain to"});
+      }
+
+      if(this.fields.findIndex(x => x.dataKey == "twitter") === -1) {
+        this.fields.push({dataKey: "twitter", dataValue: "", valuePlaceholder: "Enter your Twitter handle"});
       }
 
       if (this.isOwner && this.isCorrectChainForDomain) {
