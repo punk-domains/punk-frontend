@@ -1,8 +1,8 @@
-# Punk Domains frontend
+# Klima Name Service frontend
 
-Punk Domains - Web3 Domains for DAOs
+KNS - Klima Name Service
 
-https://punk.domains 
+https://www.kns.earth
 
 ## Quickstart
 
