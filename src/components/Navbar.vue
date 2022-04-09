@@ -1,9 +1,9 @@
 <template>
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="../assets/logo.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
-        Punk Domains
+        <img src="../assets/kns-black-logo-big.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
+        Klima Name Service
       </router-link>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -118,16 +118,17 @@ export default {
 }
 
 .navbar-brand {
-  font-family: 'Cyber', cursive;
+  /*font-family: 'Cyber', cursive;*/
 }
 
-.navbar-dark .navbar-brand {
-  color: #DBDFEA;
+.navbar-light .navbar-brand {
+  color: #004300;
 }
 
-.navbar-dark {
+.navbar-light {
   /*background-color: #24263A;*/
-  background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
+  background: white;
+  border-color: #004300;
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
@@ -135,6 +136,6 @@ export default {
 
 .navbar-img {
   margin-right: 5px;
-  color: #DBDFEA;
+  color: #004300;
 }
 </style>

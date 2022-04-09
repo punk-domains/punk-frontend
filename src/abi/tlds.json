@@ -1,38 +1,8 @@
 {
-  "10": {
-    ".wagmi": "0xC3E8922657686EC63eaaa9FC1Fe06826802e7e0f",
-    ".optimism": "0xBca24d86e4Ad1e011278FaEFc4fF191a731411EC",
-    ".spartan": "0x3490C9817C45A2a394b11A3807f58a8325235aE0",
-    ".l2": "0x9A7657d1593032C75d70950707870c3cC7ca45DC"
-  },
-  "69": {
-    ".optitest": "0xAc63b035e63d280c408549f5AFA64be7469470de",
-    ".l2test": "0xB5B8AF8199777d471c0320BC11022433df6D100e"
-  },
-  "77": {
-    ".testdao": "0x110cc3f64cdf8ffadc785dfa53906bcff76b3846"
-  },
-  "100": {
-    ".gnosis": "0xC3E8922657686EC63eaaa9FC1Fe06826802e7e0f",
-    ".xdai": "0xbca24d86e4ad1e011278faefc4ff191a731411ec",
-    ".bright": "0x3490c9817c45a2a394b11a3807f58a8325235ae0"
-  },
   "137": {
-    ".web3": "0xb6Cf2874588d0fdFAf9d1b5E254ee6C49110C68B",
-    ".polygon": "0xa450bc33d0940d25fB0961c592fb440Fa63ABE03",
-    ".ape": "0x794a8390D94E32b086908D2bA9D66300aA163C62",
-    ".poly": "0x70Ac07C50131b7bb2c8Bd9466D8d2add30B7759f",
-    ".degen": "0xC4999A3e91ef87c9EC5d8186D02B77F9A62458b9",
     ".klima": "0xe8b97542A433e7eCc7bB791872af04DF02A1a6E4"
   },
   "80001": {
     ".polytest": "0xebED27271230E8ED18fD3Ef96F0221D9DBC93750"
-  },
-  "42161": {
-    ".arbi": "0xe97456E0fB121F65422F43ccbd4A07a0e269B534",
-    ".arbitrum": "0x337EB5061943ECd247649d58D35Dbab0b40D67E0"
-  },
-  "421611": {
-    ".arbitest": "0xC6a628b1FF1aD4e304bEeACAff915559786deA2e"
   }
 }

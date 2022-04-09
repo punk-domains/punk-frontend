@@ -1,23 +1,6 @@
 <template>
   <div class="container text-center">
-    <h1 class="mt-5">Permissionless Web3 Domains</h1>
-
-    <div v-if="isActivated" class="dropdown mt-5">
-      Choose network: 
-
-      <button class="mx-3 btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        {{getNetworkName}}
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li>
-          <span 
-            class="dropdown-item" 
-            v-for="network in getSupportedNetworkNames"
-            @click="changeNetwork(network)"
-          >{{network}}</span>
-        </li>
-      </ul>
-    </div>
+    <h1 class="mt-5">Klima Name Service</h1>
 
     <div v-if="!isActivated" class="mt-5">
       <button class="btn btn-primary" @click="open">Connect wallet</button>
@@ -35,7 +18,7 @@
         
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <span v-if="isActivated && !selectedTld" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          {{selectedTld}}
+          .klima
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end">
