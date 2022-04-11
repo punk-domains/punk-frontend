@@ -3,8 +3,9 @@
   <h1 class="text-center">About KNS</h1>
   
   <div class="row mt-3">
-    <div class="col-md-8 offset-md-2">
-    
+    <div class="col-md-8 offset-md-2 text-center">
+
+      <img class="img-fluid" src="../assets/KNSWHITE.png" width="500" />
 
     </div>
   </div>

@@ -30,12 +30,12 @@ export default {
     this.fetchReferrer();
 
     // reset localstorage
-    const v2 = localStorage.getItem("punkv2");
+    const v2 = localStorage.getItem("klimav1");
 
     if (!v2) {
       localStorage.clear();
       localStorage.setItem("connected", "null");
-      localStorage.setItem("punkv2", "true");
+      localStorage.setItem("klimav1", "true");
     }
   },
 

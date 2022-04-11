@@ -10,6 +10,10 @@
 
     <router-link to="/how">How it works</router-link>
     
+    <span> | </span>
+
+    <a target="_blank" href="https://punk.domains">Powered by Punk Domains</a>
+    
   </div>
 
   <div class="container-fluid text-center">
