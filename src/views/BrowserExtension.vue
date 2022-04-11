@@ -13,9 +13,9 @@
             <h3>Browser Extension/Plugin</h3>
 
             <p class="text-wrap p-4">
-              Punk Domains browser extension allows you to enter a Punk domain name in the URL bar and the 
+              Punk Domains browser extension allows you to enter a .klima domain name in the URL bar and the 
               extension will redirect you to the URL that is set for that domain. If no URL is set, the extension 
-              will redirect you to the domain page on the Punk Domains website.
+              will redirect you to the domain page on the Klima Name Service website.
             </p>
           </div>
         </div>
