@@ -6,17 +6,17 @@
 }
 
 a {
-  color: black;
+  color: #DBDFEA;
 }
 
 a:hover {
-  color: black;
+  color: #ffffff;
 }
 
 body {
   font-family: 'Roboto Condensed', sans-serif;
-  background: white;
-  color: black;
+  background: linear-gradient(90deg, hsla(173, 100%, 25%, 1) 0%, hsla(120, 100%, 13%, 1) 100%);
+  color: #DBDFEA;
 }
 
 p {
@@ -28,40 +28,40 @@ div {
 }
 
 hr {
-  background-color: black;
+  background-color: #DBDFEA;
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:focus, .btn-primary:disabled {
   background: transparent;
-  border-color: #004300;
+  border-color: #DBDFEA;
   box-shadow: none;
-  color: #004300;
+  color: #DBDFEA;
 }
 
 .btn-primary:hover {
-  color: white;
-  border-color: #004300;
-  background: #004300;
+  color: black;
+  border-color: #ffffff;
+  background: #ffffff;
 }
 
 .btn-secondary, .btn-secondary:active, .btn-secondary:focus, .btn-secondary:disabled {
-  background: #004300;
+  background: white;
   border-color: black;
   box-shadow: none;
   color: black;
 }
 
 .btn-secondary:hover {
-  color: white;
-  border-color: #004300;
-  background: #004300;
+  color: black;
+  border-color: #ffffff;
+  background: #ffffff;
 }
 
 .container {
   background: transparent;
   padding: 20px;
   border-radius: 10px;
-  border: 1px solid #004300;
+  border: 1px solid #DBDFEA;
 }
 
 .img-thumbnail {
@@ -73,7 +73,7 @@ hr {
 }
 
 .span-link:hover {
-  color: #004300;
+  color: white;
   text-decoration: none;
   cursor: pointer;
 }
@@ -88,7 +88,7 @@ hr {
 }
 
 .Vue-Toastification__toast--success {
-  background-color: #004300;
+  background-color: #4b7411;
   border: 1px solid #DBDFEA;
 }
 

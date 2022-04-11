@@ -1,8 +1,8 @@
 <template>
-  <nav class="navbar sticky-top navbar-expand-lg navbar-light">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
-        <img src="../assets/kns-black-logo-big.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
+        <img src="../assets/kns-white-logo-big.png" alt="" width="30" class="d-inline-block align-bottom navbar-img">
         Klima Name Service
       </router-link>
 
@@ -116,26 +116,20 @@ export default {
 .dropdown-item {
   cursor: pointer;
 }
-
 .navbar-brand {
   /*font-family: 'Cyber', cursive;*/
 }
-
-.navbar-light .navbar-brand {
-  color: #004300;
+.navbar-dark .navbar-brand {
+  color: white;
 }
-
-.navbar-light {
-  /*background-color: #24263A;*/
-  background: white;
-  border-color: #004300;
+.navbar-dark {
+  background: linear-gradient(90deg, hsla(173, 100%, 25%, 1) 0%, hsla(120, 100%, 13%, 1) 100%);
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
 }
-
 .navbar-img {
   margin-right: 5px;
-  color: #004300;
+  color: #DBDFEA;
 }
 </style>
