@@ -106,6 +106,8 @@ import { useToast, TYPE } from "vue-toastification";
 import MyDomain from '../components/MyDomain.vue';
 import Sidebar from '../components/Sidebar.vue';
 import Referral from '../components/Referral.vue';
+import tlds from '../abi/tlds.json';
+import tldAbi from '../abi/PunkTLD.json';
 
 export default {
   name: "Profile",
@@ -125,7 +127,7 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
-    ...mapGetters("punk", ["getFactoryContract", "getTlds", "getTldAddresses", "getTldAbi"]),
+    ...mapGetters("klima", ["getKlimaTldAddress"]),
 
     customData() {
       if (this.getUserSelectedNameData) {
@@ -156,6 +158,8 @@ export default {
         return true;
       } else if (this.existingDomain.includes("#")) {
         return true;
+      } else if (!this.existingDomain.includes(".klima")) {
+        return true;
       }
     }
   },
@@ -167,23 +171,16 @@ export default {
       const existingDomainLower = this.existingDomain.toLowerCase();
       const existingDomainParts = existingDomainLower.split(".");
 
-      // get TLD address and create contract
-      const tldAddress = await this.getFactoryContract.tldNamesAddresses("."+existingDomainParts[1]);
+      const intfc = new ethers.utils.Interface(tldAbi);
+      const contract = new ethers.Contract(this.getKlimaTldAddress, intfc, this.signer);
 
-      if (tldAddress !== ethers.constants.AddressZero) {
-        const intfc = new ethers.utils.Interface(this.getTldAbi);
-        const contract = new ethers.Contract(tldAddress, intfc, this.signer);
+      const checkDomainHolder = await contract.getDomainHolder(existingDomainParts[0]);
 
-        const checkDomainHolder = await contract.getDomainHolder(existingDomainParts[0]);
-
-        if (String(checkDomainHolder)===String(this.address)) {
-          this.addDomainManually(existingDomainLower);
-          this.toast("Domain successfully added.", {type: TYPE.SUCCESS});
-        } else {
-          this.toast("This domain is not owned by your currently connected address.", {type: TYPE.ERROR});
-        }
+      if (String(checkDomainHolder)===String(this.address)) {
+        this.addDomainManually(existingDomainLower);
+        this.toast("Domain successfully added.", {type: TYPE.SUCCESS});
       } else {
-        this.toast("This TLD does not exist.", {type: TYPE.ERROR});
+        this.toast("This domain is not owned by your currently connected address.", {type: TYPE.ERROR});
       }
     }
   },

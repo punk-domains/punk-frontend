@@ -36,22 +36,6 @@
               </div>
             </div>
 
-            <!--
-            <EditUrl 
-              :domainData="domainData" 
-              :tld="tld" 
-              :domainName="domainName" 
-              @fetchData="fetchData" 
-            />
-
-            <EditPfp
-              :domainData="domainData" 
-              :tld="tld" 
-              :domainName="domainName" 
-              @fetchData="fetchData"  
-            />
-            -->
-
             <EditOtherData
               :domainData="domainData" 
               :tld="tld" 
@@ -78,8 +62,6 @@ import { useToast, TYPE } from "vue-toastification";
 import tldsJson from '../abi/tlds.json';
 import tldAbi from '../abi/PunkTLD.json';
 import EditOtherData from "../components/domainEdit/EditOtherData.vue";
-import EditPfp from "../components/domainEdit/EditPfp.vue";
-import EditUrl from "../components/domainEdit/EditUrl.vue";
 import Sidebar from '../components/Sidebar.vue';
 import WaitingToast from "../components/toasts/WaitingToast.vue";
 import useChainHelpers from "../hooks/useChainHelpers";
@@ -89,8 +71,6 @@ export default {
   props: ["domainChain", "tld", "domainName"],
   components: { 
     EditOtherData,
-    EditPfp,
-    EditUrl, 
     Sidebar 
   },
 
@@ -113,7 +93,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
+    ...mapGetters("punk", ["getTldAbi"]),
+    ...mapGetters("klima", ["getKlimaTldAddress"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getFallbackProvider", "getSupportedNetworks", "isNetworkSupported"]),
 
     holderData() {
@@ -200,22 +181,10 @@ export default {
     },
 
     setContract() {
-      let tldAddresses = this.getTldAddresses;
-
-      if (!tldAddresses) {
-        const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
-
-        if (tldAddressesStorage) {
-          tldAddresses = JSON.parse(tldAddressesStorage);
-        }
-      }
-
-      if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
-        const tldAddr = tldAddresses["."+this.tld];
-
+      if (this.isActivated) {
         // construct contract
         const intfc = new ethers.utils.Interface(this.getTldAbi);
-        this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
+        this.tldContract = new ethers.Contract(this.getKlimaTldAddress, intfc, this.signer);
       }
     }
   },

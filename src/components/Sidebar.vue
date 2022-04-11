@@ -25,10 +25,6 @@
       <i class="bi bi-send"></i> Send tokens
     </router-link>
 
-    <router-link class="btn btn-sidebar text-start" to="/tlds">
-      <i class="bi bi-align-top"></i> TLDs
-    </router-link>
-
     <router-link class="btn btn-sidebar text-start" to="/browser">
       <i class="bi bi-window-plus"></i> Browser extension
     </router-link>

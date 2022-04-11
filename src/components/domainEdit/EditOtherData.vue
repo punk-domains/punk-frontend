@@ -98,8 +98,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
+    ...mapGetters("punk", ["getTldAbi"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl"]),
+    ...mapGetters("klima", ["getKlimaTldAddress"]),
 
     customData() {
       if (this.domainData) {
@@ -208,22 +209,10 @@ export default {
     },
 
     setContract() {
-      let tldAddresses = this.getTldAddresses;
-
-      if (!tldAddresses) {
-        const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
-
-        if (tldAddressesStorage) {
-          tldAddresses = JSON.parse(tldAddressesStorage);
-        }
-      }
-
-      if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
-        const tldAddr = tldAddresses["."+this.tld];
-
+      if (this.address) {
         // construct contract
         const intfc = new ethers.utils.Interface(this.getTldAbi);
-        this.tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
+        this.tldContract = new ethers.Contract(this.getKlimaTldAddress, intfc, this.signer);
       }
     }
   },

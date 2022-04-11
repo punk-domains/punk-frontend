@@ -43,7 +43,23 @@ export default {
           "https://matic-mumbai.chainstacklabs.com"
           //"https://polygon-mumbai.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_MUMBAI_KEY
         ]
-      }
+      } else if (networkId === 10) {
+        // Optimism
+        urls = [
+          "https://mainnet.optimism.io"
+        ]; 
+      } else if (networkId === 100) {
+        // Gnosis Chain
+        urls = [
+          "https://rpc.xdaichain.com",
+          "https://rpc.gnosischain.com"
+        ];
+      } else if (networkId === 42161) {
+        // Arbitrum
+        urls = [
+          "https://arb1.arbitrum.io/rpc"
+        ];
+      } 
 
       if (urls) {
         const providers = urls.map(url => new ethers.providers.JsonRpcProvider(url));

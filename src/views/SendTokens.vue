@@ -218,7 +218,6 @@ export default {
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getFallbackProvider", "getNetworkName", "getTokens"]),
     ...mapGetters("user", ["getUserBalance"]),
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
 
     domainLowerCase() {
       if (this.receiver) {
@@ -470,50 +469,6 @@ export default {
         this.validating = false;
         return;
       }
-
-      /*
-      try {
-        const domainName = this.domainLowerCase.split(".")[0]
-        const tld = this.domainLowerCase.split(".")[1]
-
-        let tldAddresses = this.getTldAddresses;
-
-        if (!tldAddresses) {
-          const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
-
-          if (tldAddressesStorage) {
-            tldAddresses = JSON.parse(tldAddressesStorage);
-          }
-        }
-
-        if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
-          const tldAddr = tldAddresses["."+tld];
-
-          if (!tldAddr) {
-            this.domainError = "This TLD does not exist.";
-            return;
-          }
-
-          // construct contract
-          const intfc = new ethers.utils.Interface(this.getTldAbi);
-          const tldContract = new ethers.Contract(tldAddr, intfc, this.signer);
-
-          const existingHolder = await tldContract.getDomainHolder(domainName);
-
-          if (existingHolder === ethers.constants.AddressZero) {
-            // if not exists (holder is 0x0), show an error
-            this.domainError = "This domain name has not been registered yet.";
-            return;
-          } else {
-            // if domain exists, set as receiver address
-            this.receiverAddress = existingHolder;
-            return;
-          }
-        }
-      } catch {
-        this.domainError = "You have entered an incorrect domain.";
-        return;
-      }*/
     }
   },
 

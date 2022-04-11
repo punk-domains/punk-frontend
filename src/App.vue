@@ -45,18 +45,14 @@ export default {
   },
 
   methods: {
-    ...mapActions("punk", ["fetchTlds"]),
     ...mapActions("user", ["fetchUserDomainNames"]),
 
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
-    ...mapMutations("punk", ["setFactoryContract"]),
 
     fetchAllData() {
       this.setUserData();
       this.setNetworkData();
-      this.setFactoryContract();
-      this.fetchTlds();
     },
 
     async fetchReferrer() {

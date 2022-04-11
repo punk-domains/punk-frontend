@@ -136,23 +136,21 @@ export default {
         commit('setDefaultName', udName);
       }
       
-      // fetch user's default names
-      for (let tldName of rootState.punk.tlds) {
-        const intfc = new ethers.utils.Interface(rootGetters["punk/getTldAbi"]);
-        const contract = new ethers.Contract(rootState.punk.tldAddresses[tldName], intfc, signer.value);
+      // fetch user's default name
+      const intfc = new ethers.utils.Interface(rootGetters["punk/getTldAbi"]);
+      const contract = new ethers.Contract(rootGetters["klima/getKlimaTldAddress"], intfc, signer.value);
 
-        const userDefaultName = await contract.defaultNames(address.value);
+      const userDefaultName = await contract.defaultNames(address.value);
 
-        if (userDefaultName) {
-          commit('setDefaultName', userDefaultName + tldName);
+      if (userDefaultName) {
+        commit('setDefaultName', userDefaultName + rootState.klima.klimaTldName);
 
-          if (!userDomainNames.includes(userDefaultName + tldName)) {
-            userDomainNames.push(userDefaultName + tldName);
-          }
+        if (!userDomainNames.includes(userDefaultName + rootState.klima.klimaTldName)) {
+          userDomainNames.push(userDefaultName + rootState.klima.klimaTldName);
+        }
 
-          if (!state.selectedName) {
-            commit('setSelectedName', userDefaultName + tldName);
-          }
+        if (!state.selectedName) {
+          commit('setSelectedName', userDefaultName + rootState.klima.klimaTldName);
         }
       }
 
@@ -168,16 +166,15 @@ export default {
     },
 
     // fetch selectedName data (image etc.)
-    async fetchSelectedNameData({commit, state, rootState, rootGetters}) {
+    async fetchSelectedNameData({commit, state, rootGetters}) {
 
       if (state.selectedName) {
         const nameArr = state.selectedName.split(".");
         const name = nameArr[0];
-        const domain = "." + nameArr[1];
         
-        if (name && rootState.punk.tldAddresses[domain]) {
+        if (name) {
           const intfc = new ethers.utils.Interface(rootGetters["punk/getTldAbi"]);
-          const contract = new ethers.Contract(rootState.punk.tldAddresses[domain], intfc, signer.value);
+          const contract = new ethers.Contract(rootGetters["klima/getKlimaTldAddress"], intfc, signer.value);
 
           const nameData = await contract.domains(name);
 

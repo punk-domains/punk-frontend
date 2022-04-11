@@ -8,8 +8,6 @@ import HowItWorks from './views/HowItWorks.vue'
 import Profile from './views/Profile.vue'
 import SearchDomains from './views/SearchDomains.vue'
 import SendTokens from './views/SendTokens.vue'
-import TldDetails from './views/TldDetails.vue'
-import Tlds from './views/Tlds.vue'
 import TransferDomain from './views/TransferDomain.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
@@ -61,17 +59,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'TransferDomain',
     component: TransferDomain,
     props: true
-  },
-  {
-    path: '/tld/:domainChain/:tld',
-    name: 'TldDetails',
-    component: TldDetails,
-    props: true
-  },
-  {
-    path: '/tlds/',
-    name: 'Tlds',
-    component: Tlds,
   },
   // Fallback route for handling 404s
   {
