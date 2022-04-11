@@ -25,15 +25,14 @@
       </small>
     </p>
 
-    <p class="mt-3" v-if="!paused">
+    <p class="mt-3">
       Domain price: {{domainPrice}} USDC
     </p>
 
-    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || !canBuy || paused">
+    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || paused || !hasUserEnoughUsdc">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-      <span v-if="canBuy && !paused">Buy domain</span>
-      <span v-if="paused">Buying disabled</span>
-      <span v-if="!canBuy && !paused">Not eligible</span>
+      <span v-if="paused">Buying paused</span>
+      <span v-if="!paused">Buy domain</span>
     </button>
 
     <div v-if="!isActivated" class="mt-4 buy-button">
@@ -44,6 +43,10 @@
       <button class="btn btn-primary btn-lg" @click="changeNetwork('Polygon')">Switch to Polygon</button>
     </div>
 
+    <p>
+      <small>{{usdcBalance}} USDC</small>
+    </p>
+    
   </div>
 
   <Referral v-if="isActivated" />
@@ -58,24 +61,28 @@ import WaitingToast from "../components/toasts/WaitingToast.vue";
 import Referral from '../components/Referral.vue';
 import useDomainHelpers from "../hooks/useDomainHelpers";
 import useChainHelpers from "../hooks/useChainHelpers";
-import L2DaoPunkDomainsAbi from "../abi/partners/l2dao/L2DaoPunkDomains.json";
+import KlimaPunkDomainsAbi from "../abi/KlimaPunkDomains.json";
 import tldAbi from '../abi/PunkTLD.json';
+import erc20Abi from '../abi/Erc20.json';
 
 export default {
   name: "Home",
 
   data() {
     return {
-      canBuy: false,
       chosenDomainName: null,
       domainPrice: null,
       loading: false, // loading data
-      wrapperAddr: null, // TODO: set the wrapper address
-      wrapperContract: null,
       paused: true,
       tldAddr: "0xe8b97542A433e7eCc7bB791872af04DF02A1a6E4",
       tldContract: null,
+      usdcAddr: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+      usdcContract: null,
+      usdcAllowance: 0, // user's USDC allowance for wrapper contract
+      usdcBalance: 0, // user's USDC balance
       waiting: false, // waiting for TX to complete
+      wrapperAddr: "0xf7E89ED8106cBa1335e04837E59a28ae1A3D580c",
+      wrapperContract: null,
     }
   },
 
@@ -92,6 +99,16 @@ export default {
 
     domainLowerCase() {
       return this.chosenDomainName.toLowerCase();
+    },
+
+    hasUserEnoughUsdc() {
+      if (this.address && this.price > 0 && this.usdcBalance > 0) {
+        if (this.usdcBalance >= this.price) {
+          return true;
+        }
+      }
+
+      return false;
     },
 
     isNetworkSupported() {
@@ -113,7 +130,7 @@ export default {
       const fullDomainName = this.domainLowerCase + ".klima";
 
       // mint contract
-      const wrapperIntfc = new ethers.utils.Interface(L2DaoPunkDomainsAbi);
+      const wrapperIntfc = new ethers.utils.Interface(KlimaPunkDomainsAbi);
       const wrapperContractSigner = new ethers.Contract(this.wrapperAddr, wrapperIntfc, this.signer);
 
       if (this.tldContract) {
@@ -194,33 +211,50 @@ export default {
     },
 
     async setContracts() {
-      if (this.address) {
-        this.loading = true;
-      }
+      this.loading = true;
 
       let fProvider = this.getFallbackProvider(137); // Polygon
 
       // TLD contract
-      if (this.tldAddr) {
+      if (!this.tldContract) {
         const tldIntfc = new ethers.utils.Interface(tldAbi);
         this.tldContract = new ethers.Contract(this.tldAddr, tldIntfc, fProvider);
       }
 
+      // USDC contract
+      if (!this.usdcContract) {
+        const usdcIntfc = new ethers.utils.Interface(erc20Abi);
+        this.usdcContract = new ethers.Contract(this.usdcAddr, usdcIntfc, fProvider);
+      }
+
+      if (this.usdcContract && this.address) {
+        // TODO: check allowance for the wrapper contract
+        const allowanceMwei = await this.usdcContract.allowance(this.address, this.wrapperAddr);
+        this.usdcAllowance = ethers.utils.formatUnits(allowanceMwei, "mwei"); // USDC has 6 decimals
+        console.log("Allowance: " + this.usdcAllowance + " USDC");
+
+        // check user's USDC balance
+        const balanceMwei = await this.usdcContract.balanceOf(this.address);
+        this.usdcBalance = ethers.utils.formatUnits(balanceMwei, "mwei"); // USDC has 6 decimals
+        console.log("User balance: " + this.usdcBalance + " USDC");
+      }
+
       // Mint contract
-      if (this.wrapperAddr) {
-        const wrapperIntfc = new ethers.utils.Interface(L2DaoPunkDomainsAbi);
+      if (!this.wrapperContract) {
+        const wrapperIntfc = new ethers.utils.Interface(KlimaPunkDomainsAbi);
         this.wrapperContract = new ethers.Contract(this.wrapperAddr, wrapperIntfc, fProvider);
 
         // check if wrapper contract is paused
         this.paused = await this.wrapperContract.paused();
+        console.log("Paused: " + this.paused);
 
         // get price
-        const priceWei = await this.wrapperContract.price();
-        this.domainPrice = ethers.utils.formatUnits(priceWei, "mwei"); // USDC has 6 decimals
-
-        this.loading = false;
+        const priceMwei = await this.wrapperContract.price();
+        this.domainPrice = ethers.utils.formatUnits(priceMwei, "mwei"); // USDC has 6 decimals
+        console.log("Domain price: " + this.domainPrice + " USDC");
       }
       
+      this.loading = false;
     },
   },
 
