@@ -1,4 +1,5 @@
 export default function useDomainHelpers() {
+  
   function buyNotValid(domainName: string) {
     if (domainName === "") {
       return {invalid: true, message: null};
