@@ -95,7 +95,7 @@ export default {
   computed: {
     ...mapGetters("punk", ["getTldAbi"]),
     ...mapGetters("klima", ["getKlimaTldAddress"]),
-    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getFallbackProvider", "getSupportedNetworks", "isNetworkSupported"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getSupportedNetworks", "isNetworkSupported"]),
 
     holderData() {
       if (this.domainData.holder !== ethers.constants.AddressZero) {
@@ -192,9 +192,9 @@ export default {
   setup() {
     const { isActivated, signer } = useEthers();
     const toast = useToast();
-    const { getChainName } = useChainHelpers();
+    const { getChainName, getFallbackProvider } = useChainHelpers();
 
-    return { getChainName, isActivated, signer, toast }
+    return { getChainName, getFallbackProvider, isActivated, signer, toast }
   },
 }
 </script>

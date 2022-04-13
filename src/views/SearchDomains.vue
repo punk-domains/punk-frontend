@@ -49,6 +49,7 @@ import tldsJson from '../abi/tlds.json';
 import tldAbi from '../abi/PunkTLD.json';
 import Sidebar from '../components/Sidebar.vue';
 import WaitingToast from "../components/toasts/WaitingToast.vue";
+import useChainHelpers from "../hooks/useChainHelpers";
 
 export default {
   name: "SearchDomains",
@@ -65,8 +66,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters("network", ["getFallbackProvider"]),
-
     domainLowerCase() {
       return this.query.toLowerCase();
     },
@@ -141,7 +140,9 @@ export default {
   setup() {
     const toast = useToast();
 
-    return { toast }
+    const { getFallbackProvider } = useChainHelpers();
+
+    return { getFallbackProvider, toast }
   },
 }
 </script>

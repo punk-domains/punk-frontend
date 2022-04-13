@@ -31,7 +31,9 @@
         <div class="col-md-6 mb-3">
           <div class="container text-center">
             <h3>Balance</h3>
-            <p class="text-break">{{ getUserBalance }} {{getNetworkCurrency}}</p>
+            <p class="text-break">
+              <span>{{ getUsdcBalance }} USDC</span>
+            </p>
           </div>
         </div>
       </div>
@@ -108,13 +110,16 @@ import Sidebar from '../components/Sidebar.vue';
 import Referral from '../components/Referral.vue';
 import tlds from '../abi/tlds.json';
 import tldAbi from '../abi/PunkTLD.json';
+import erc20Abi from '../abi/Erc20.json';
+import useChainHelpers from "../hooks/useChainHelpers";
 
 export default {
   name: "Profile",
 
   data() {
     return {
-      existingDomain: null
+      existingDomain: null,
+      loading: false
     }
   },
 
@@ -126,8 +131,8 @@ export default {
 
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedNameData"]),
-    ...mapGetters("network", ["getNetworkCurrency"]),
     ...mapGetters("klima", ["getKlimaTldAddress"]),
+    ...mapGetters("user", ["getUsdcAddress", "getUsdcAllowance", "getUsdcBalance", "getUsdcContract"]),
 
     customData() {
       if (this.getUserSelectedNameData) {
@@ -182,14 +187,16 @@ export default {
       } else {
         this.toast("This domain is not owned by your currently connected address.", {type: TYPE.ERROR});
       }
-    }
+    },
   },
 
   setup() {
     const { address, isActivated, signer } = useEthers();
     const toast = useToast();
 
-    return { address, isActivated, signer, toast }
+    const { getFallbackProvider } = useChainHelpers();
+
+    return { address, getFallbackProvider, isActivated, signer, toast }
   },
 
 }

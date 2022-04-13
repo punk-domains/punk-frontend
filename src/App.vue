@@ -19,6 +19,7 @@ import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 import tldsJson from './abi/tlds.json';
 import tldAbi from './abi/PunkTLD.json';
+import useChainHelpers from "./hooks/useChainHelpers";
 
 export default {
   components: {
@@ -28,6 +29,8 @@ export default {
 
   created() {
     this.fetchReferrer();
+    this.setTldContract();
+    this.fetchWrapperContractData();
 
     // reset localstorage
     const v2 = localStorage.getItem("klimav1");
@@ -41,17 +44,19 @@ export default {
 
   computed: {
     ...mapGetters("user", ["getUserSelectedName"]),
-    ...mapGetters("network", ["getFallbackProvider"]),
   },
 
   methods: {
-    ...mapActions("user", ["fetchUserDomainNames"]),
+    ...mapActions("user", ["fetchUserDomainNames", "fetchUserUsdcData"]),
+    ...mapActions("klima", ["fetchWrapperContractData"]),
 
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
+    ...mapMutations("klima", ["setTldContract"]),
 
     fetchAllData() {
       this.setUserData();
+      this.fetchUserUsdcData();
       this.setNetworkData();
     },
 
@@ -91,6 +96,7 @@ export default {
   setup() {
     const { address, chainId, isActivated } = useEthers();
     const { connect } = useWallet();
+    const { getFallbackProvider } = useChainHelpers();
 
     onMounted(() => {
       // if user already connected via MetaMask before, connect them automatically on the next visit
@@ -100,7 +106,7 @@ export default {
     })
 
     return {
-      address, chainId, connect, isActivated
+      address, chainId, connect, getFallbackProvider, isActivated
     }
   },
 
@@ -108,6 +114,7 @@ export default {
     address(newVal, oldVal) {
       if (newVal) {
         this.setUserData();
+        this.fetchUserUsdcData();
         this.fetchUserDomainNames(true);
       }
     },
