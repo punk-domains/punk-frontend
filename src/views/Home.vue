@@ -3,7 +3,7 @@
     <h1 class="mt-5">Mint Your .klima Domain!</h1>
 
     <div class="d-flex justify-content-center domain-input-container">
-      <div class="input-group mb-3 domain-input input-group-lg">
+      <div class="input-group domain-input input-group-lg">
         <input
           v-model="chosenDomainName" 
           placeholder="enter domain name"
@@ -19,13 +19,29 @@
       </div>
     </div>
 
+    <p>
+      <small @click="showRetMsg" class="ret-msg">Optional: Add short message for Klima Love Letters</small>
+    </p>
+    
+    <div v-if="showRetMsgInput" class="d-flex justify-content-center">
+      <div class="input-group mb-3 domain-input input-group-lg">
+        <input
+          v-model="retirementMessage"
+          maxlength="100" 
+          placeholder="This message will show up on the Klima Love Letters website"
+          type="text" 
+          class="form-control text-start"
+        >
+      </div>
+    </div>
+
     <p class="error">
       <small v-if="buyNotValid(chosenDomainName).invalid">
         <em>{{ buyNotValid(chosenDomainName).message }}</em>
       </small>
     </p>
 
-    <p class="mt-3">
+    <p class="mt-5">
       Domain price: {{getWrapperTldPrice}} USDC
     </p>
 
@@ -61,11 +77,6 @@
     <div v-if="isActivated && !isNetworkSupported" class="mt-4 buy-button">
       <button class="btn btn-primary btn-lg" @click="changeNetwork('Polygon')">Switch to Polygon</button>
     </div>
-
-    <p v-if="isActivated && isNetworkSupported" class="mt-5">
-      <small>Your USDC balance: {{getUsdcBalance}} USDC</small> <br />
-      <small>Your USDC allowance: {{getUsdcAllowance}} USDC</small>
-    </p>
     
   </div>
 
@@ -119,7 +130,6 @@ import Referral from '../components/Referral.vue';
 import useDomainHelpers from "../hooks/useDomainHelpers";
 import useChainHelpers from "../hooks/useChainHelpers";
 import KlimaPunkDomainsAbi from "../abi/KlimaPunkDomains.json";
-import tldAbi from '../abi/PunkTLD.json';
 import erc20Abi from '../abi/Erc20.json';
 
 export default {
@@ -130,6 +140,8 @@ export default {
       chosenDomainName: null,
       chosenAllowance: null,
       loading: false, // loading data
+      retirementMessage: null,
+      showRetMsgInput: false,
       waiting: false, // waiting for TX to complete
       wrapperContract: null
     }
@@ -255,10 +267,7 @@ export default {
       this.waiting = true;
       const fullDomainName = this.domainLowerCase + ".klima";
 
-      // mint contract
-      const wrapperIntfc = new ethers.utils.Interface(KlimaPunkDomainsAbi);
-      const wrapperContractSigner = new ethers.Contract(this.getKlimaWrapperAddress, wrapperIntfc, this.signer);
-
+      // check if domain already minted
       const existingHolder = await this.getKlimaTldContract.getDomainHolder(this.domainLowerCase);
 
       if (existingHolder !== ethers.constants.AddressZero) {
@@ -267,6 +276,10 @@ export default {
         return;
       }
 
+      // wrapper contract (with signer)
+      const wrapperIntfc = new ethers.utils.Interface(KlimaPunkDomainsAbi);
+      const wrapperContractSigner = new ethers.Contract(this.getKlimaWrapperAddress, wrapperIntfc, this.signer);
+
       try {
         let referral = localStorage.getItem("referral");
 
@@ -274,12 +287,19 @@ export default {
           referral = ethers.constants.AddressZero;
         }
 
+        let retMsg;
+
+        if (!this.retirementMessage) {
+          retMsg = "";
+        } else {
+          retMsg = this.retirementMessage + " - via www.kns.earth"
+        }
+
         const tx = await wrapperContractSigner.mint(
           this.domainLowerCase,
+          this.address,
           referral,
-          {
-            value: ethers.utils.parseEther(this.getWrapperTldPrice)
-          }
+          retMsg // retire message
         );
 
         const toastWait = this.toast(
@@ -332,6 +352,10 @@ export default {
         method: networkData.method, 
         params: networkData.params
       });
+    },
+
+    showRetMsg() {
+      this.showRetMsgInput = true;
     }
   },
 
@@ -348,6 +372,10 @@ export default {
 </script>
 
 <style scoped>
+.buy-button {
+  margin-bottom: 50px;
+}
+
 .domain-input {
   width: 50%;
 }
@@ -358,6 +386,15 @@ export default {
 
 .error {
   color: #DBDFEA;
+}
+
+.ret-msg {
+  text-decoration: underline;
+}
+
+.ret-msg:hover {
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .tld-addon {

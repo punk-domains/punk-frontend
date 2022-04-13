@@ -12,7 +12,7 @@ export default {
   state: () => ({ 
     klimaTldAddress: tlds["137"][".klima"],
     klimaTldName: ".klima",
-    tldAddr: "0xe8b97542A433e7eCc7bB791872af04DF02A1a6E4",
+    tldAddress: "0xe8b97542A433e7eCc7bB791872af04DF02A1a6E4",
     tldContract: null,
     wrapperAddress: "0xf7E89ED8106cBa1335e04837E59a28ae1A3D580c",
     wrapperContract: null,
@@ -25,7 +25,7 @@ export default {
       return state.klimaTldAddress;
     },
     getKlimaTldContract(state) {
-      return state.klimaTldContract;
+      return state.tldContract;
     },
     getKlimaTldName(state) {
       return state.klimaTldName;
@@ -49,7 +49,7 @@ export default {
       let fProvider = getFallbackProvider(137); // Polygon
 
       const tldIntfc = new ethers.utils.Interface(tldAbi);
-      state.tldContract = new ethers.Contract(state.tldAddr, tldIntfc, fProvider);
+      state.tldContract = new ethers.Contract(state.tldAddress, tldIntfc, fProvider);
     },
 
     setWrapperContract(state, contract) {
