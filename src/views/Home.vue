@@ -323,7 +323,6 @@ export default {
             type: TYPE.SUCCESS,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
-          this.setContracts();
           this.addDomainManually(fullDomainName);
           this.waiting = false;
         } else {
