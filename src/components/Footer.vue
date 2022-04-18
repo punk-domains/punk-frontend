@@ -22,9 +22,9 @@
 
     <a class="icons" target="_blank" href="https://github.com/GwamiLabs"><i class="bi bi-github"></i></a>
 
-    <a class="icons" target="_blank" href="https://discord.gg/"><i class="bi bi-discord"></i></a>
+    <a class="icons" target="_blank" href="https://discord.gg/gwamilabs"><i class="bi bi-discord"></i></a>
 
-    <a class="icons" target="_blank" href="https://twitter.com/"><i class="bi bi-twitter"></i></a>
+    <a class="icons" target="_blank" href="https://twitter.com/gwamilabs"><i class="bi bi-twitter"></i></a>
     
   </div>
 </template>
