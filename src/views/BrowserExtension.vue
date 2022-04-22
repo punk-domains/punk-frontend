@@ -26,13 +26,19 @@
 
         <div class="col-md-6 mb-3">
           <div class="container text-center">
-            <h3>Chrome/Brave</h3>
+            <h3>Chrome/Brave/Edge/Opera</h3>
 
             <p>
-              <small><em>Coming soon!</em></small>
+              <small><em>
+                <a target="_blank" href="https://chrome.google.com/webstore/detail/punk-domains/mdcmgmmealkedhjjpapbgoiabnkgieem">
+                  Download
+                </a>
+              </em></small>
             </p>
 
-            <img class="img-fluid browser-img mb-3" src="../assets/chrome-logo.png" />
+            <a target="_blank" href="https://chrome.google.com/webstore/detail/punk-domains/mdcmgmmealkedhjjpapbgoiabnkgieem">
+              <img class="img-fluid browser-img mb-3" src="../assets/chrome-logo.png" />
+            </a>
           </div>
         </div>
 
