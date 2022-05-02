@@ -132,7 +132,7 @@ export default {
       let tldAddr = "0x9A7657d1593032C75d70950707870c3cC7ca45DC"; // on Optimism Mainnet
 
       if (this.chainId === 69) {
-        tldAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9"; // on Optimism Testnet
+        tldAddr = "0xB5B8AF8199777d471c0320BC11022433df6D100e"; // on Optimism Testnet
       }
 
       const tldIntfc = new ethers.utils.Interface(tldAbi);
