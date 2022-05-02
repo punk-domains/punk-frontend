@@ -13,9 +13,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         
         <div class="d-flex ms-auto">
-          <div v-if="isActivated" class="">
+          <div v-if="isActivated" class="navbar-menu-buttons">
+
+            <!--
+            <div class="btn-group mx-2 navbar-menu-btn navbar-buy-tld">
+              <button class="btn btn-primary" type="button" id="buyTldButton">
+                Buy a TLD
+              </button>
+            </div>
+            -->
           
-            <div class="btn-group mx-2">
+            <div class="btn-group mx-2 navbar-menu-btn">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 {{getNetworkName}}
               </button>
@@ -39,8 +47,7 @@
                 <router-link tag="li" class="dropdown-item" to="/">Buy domain</router-link>
                 <router-link tag="li" class="dropdown-item" to="/search-domain">Search domain</router-link>
                 <router-link tag="li" class="dropdown-item" to="/send-tokens">Send tokens</router-link>
-                <router-link tag="li" class="dropdown-item" to="/about">About</router-link>
-                <router-link tag="li" class="dropdown-item" to="/how">How it works</router-link>
+                <li class="dropdown-item" @click="openUrl('http://blog.punk.domains')">Blog</li>
                 <router-link tag="li" class="dropdown-item" to="/browser">Browser extension</router-link>
                 <li class="dropdown-item" @click="openUrl('http://docs.punk.domains')">Docs</li>
                 <li class="dropdown-item" @click="logout">Disconnect</li>
@@ -136,5 +143,20 @@ export default {
 .navbar-img {
   margin-right: 5px;
   color: #DBDFEA;
+}
+
+@media only screen and (max-width: 767px) {
+  .navbar-menu-btn {
+    margin-bottom: 5px;
+  }
+
+  .navbar-buy-tld {
+    margin-top: 10px;
+  }
+
+  .navbar-menu-buttons {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

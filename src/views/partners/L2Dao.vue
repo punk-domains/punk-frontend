@@ -44,15 +44,14 @@
       </small>
     </p>
 
-    <p class="mt-4" v-if="!paused">
+    <p class="mt-4">
       Domain price: {{domainPrice}} ETH
     </p>
 
-    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || !canBuy || paused">
+    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValid(chosenDomainName).invalid || paused">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-      <span v-if="canBuy && !paused">Buy domain</span>
+      <span v-if="!paused">Buy domain</span>
       <span v-if="paused">Buying disabled</span>
-      <span v-if="!canBuy && !paused">Not eligible</span>
     </button>
 
     <div v-if="!isActivated" class="mt-4 buy-button">
@@ -85,7 +84,6 @@ export default {
 
   data() {
     return {
-      canBuy: false,
       chosenDomainName: null,
       domainPrice: null,
       loading: false, // loading data
@@ -131,23 +129,21 @@ export default {
       const fullDomainName = this.domainLowerCase + this.tld.toLowerCase();
 
       // mint contract
-      let mintAddr = "0x373bd1e154FDa2a43A8696B1434a793576460593"; // on Optimism Mainnet
+      let tldAddr = "0x9A7657d1593032C75d70950707870c3cC7ca45DC"; // on Optimism Mainnet
 
       if (this.chainId === 69) {
-        mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9"; // on Optimism Testnet
+        tldAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9"; // on Optimism Testnet
       }
 
-      const mintIntfc = new ethers.utils.Interface(L2DaoPunkDomainsAbi);
-      const mintContract2 = new ethers.Contract(mintAddr, mintIntfc, this.signer);
+      const tldIntfc = new ethers.utils.Interface(tldAbi);
+      const tldContract2 = new ethers.Contract(tldAddr, tldIntfc, this.signer);
 
-      if (this.tldContract) {
-        const existingHolder = await this.tldContract.getDomainHolder(this.domainLowerCase);
+      const existingHolder = await tldContract2.getDomainHolder(this.domainLowerCase);
 
-        if (existingHolder !== ethers.constants.AddressZero) {
-          this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
-          this.waiting = false;
-          return;
-        }
+      if (existingHolder !== ethers.constants.AddressZero) {
+        this.toast("Sorry, but this domain name is already taken...", {type: TYPE.ERROR});
+        this.waiting = false;
+        return;
       }
 
       try {
@@ -157,8 +153,9 @@ export default {
           referral = ethers.constants.AddressZero;
         }
 
-        const tx = await mintContract2.mint(
+        const tx = await tldContract2.mint(
           this.domainLowerCase,
+          this.address,
           referral,
           {
             value: ethers.utils.parseEther(this.domainPrice)
@@ -223,18 +220,15 @@ export default {
       }
 
       let tldAddr;
-      let mintAddr;
       let fProvider;
       
       if (this.chainId === 10) { // Optimism Mainnet
         fProvider = this.getFallbackProvider(10);
         tldAddr = "0x9A7657d1593032C75d70950707870c3cC7ca45DC"; // .L2
-        mintAddr = "0x373bd1e154FDa2a43A8696B1434a793576460593"; // wrapper contract
         this.tld = ".L2";
       } else if (this.chainId === 69) { // Optimism Testnet
         fProvider = this.getFallbackProvider(69);
         tldAddr = "0xB5B8AF8199777d471c0320BC11022433df6D100e"; // .L2TEST
-        mintAddr = "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9";
         this.tld = ".L2test";
       }
 
@@ -245,21 +239,11 @@ export default {
 
         const priceWei = await this.tldContract.price();
         this.domainPrice = ethers.utils.formatEther(priceWei);
-      }
 
-      // Mint contract
-      if (mintAddr) {
-        const mintIntfc = new ethers.utils.Interface(L2DaoPunkDomainsAbi);
-        this.mintContract = new ethers.Contract(mintAddr, mintIntfc, fProvider);
+        const buyingEnabled = await this.tldContract.buyingEnabled();
+        this.paused = !buyingEnabled;
 
-        this.paused = await this.mintContract.paused();
-
-        if (this.address) {
-          this.canBuy = await this.mintContract.canUserMint(this.address);
-          this.loading = false;
-        } else {
-          this.loading = false;
-        }
+        this.loading = false;
       }
       
     },
