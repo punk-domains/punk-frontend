@@ -11,12 +11,12 @@
         </p>
 
         <p>
-          To claim these benefits, send your .polygon domain(s) to the burn contract by using the form below. 
-          The contract will automatically send you back 14 MATIC for each burned domain.
+          Claim these benefits by sending your .polygon domain(s) to the burn contract using the form below. The 
+          refund of 14 MATIC will automatically be sent to you for each burned domain.
         </p>
 
         <p>
-          After you claim this refund, submit 
+          After claiming this refund, submit 
           <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdAR7BND4o7axj0PsFfDQyFyd2EItKKnjJek3kqCYnUe9naBA/viewform">the Google Form here</a> 
           to claim $2000 in UD credits.
         </p>
@@ -209,7 +209,7 @@ export default {
             type: TYPE.SUCCESS,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
-          
+
           for (let domainName of domainsList) {
             this.removeDomainFromUserDomains(domainName+this.tld);
           }
