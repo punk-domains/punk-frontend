@@ -17,9 +17,7 @@
 
             <!--
             <div class="btn-group mx-2 navbar-menu-btn navbar-buy-tld">
-              <button class="btn btn-primary" type="button" id="buyTldButton">
-                Buy a TLD
-              </button>
+              <router-link tag="button" class="btn btn-primary" to="/buy-tld">Buy a TLD</router-link>
             </div>
             -->
           

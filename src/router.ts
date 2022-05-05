@@ -5,13 +5,15 @@ import BrowserExtension from './views/BrowserExtension.vue'
 import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
 import HowItWorks from './views/HowItWorks.vue'
+import L2Dao from './views/partners/L2Dao.vue'
+import UnstoppablePolygonRefund from './views/partners/UnstoppablePolygonRefund.vue'
 import Profile from './views/Profile.vue'
 import SearchDomains from './views/SearchDomains.vue'
 import SendTokens from './views/SendTokens.vue'
+import TldBuy from './views/TldBuy.vue'
 import TldDetails from './views/TldDetails.vue'
 import Tlds from './views/Tlds.vue'
 import TransferDomain from './views/TransferDomain.vue'
-import L2Dao from './views/partners/L2Dao.vue'
 
 // For info on using Vue Router with the Composition API, see https://next.router.vuejs.org/guide/advanced/composition-api.html
 
@@ -48,6 +50,11 @@ const routes: Array<RouteRecordRaw> = [
     component: L2Dao,
   },
   {
+    path: '/partners/udpolygon',
+    name: 'UnstoppablePolygonRefund',
+    component: UnstoppablePolygonRefund,
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: Profile,
@@ -66,6 +73,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/transfer/:tld/:domainName',
     name: 'TransferDomain',
     component: TransferDomain,
+    props: true
+  },
+  {
+    path: '/buy-tld',
+    name: 'TldBuy',
+    component: TldBuy,
     props: true
   },
   {
