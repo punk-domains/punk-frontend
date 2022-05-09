@@ -47,10 +47,16 @@
             <h3>Firefox</h3>
 
             <p>
-              <small><em>Coming soon!</em></small>
+              <small><em>
+                <a target="_blank" href="https://addons.mozilla.org/en-GB/firefox/addon/punk-domains/">
+                  Download
+                </a>
+              </em></small>
             </p>
 
-            <img class="img-fluid browser-img mb-3" src="../assets/firefox-logo.png" />
+            <a target="_blank" href="https://addons.mozilla.org/en-GB/firefox/addon/punk-domains/">
+              <img class="img-fluid browser-img mb-3" src="../assets/firefox-logo.png" />
+            </a>
           </div>
         </div>
 
