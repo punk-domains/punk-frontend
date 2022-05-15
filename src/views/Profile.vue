@@ -125,7 +125,7 @@ export default {
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserBalance", "getUserAllDomainNames", "getUserSelectedNameData"]),
     ...mapGetters("network", ["getNetworkCurrency"]),
-    ...mapGetters("punk", ["getFactoryContract", "getTlds", "getTldAddresses", "getTldAbi"]),
+    ...mapGetters("punk", ["getTlds", "getTldAddresses", "getTldAbi"]),
 
     customData() {
       if (this.getUserSelectedNameData) {
@@ -168,7 +168,7 @@ export default {
       const existingDomainParts = existingDomainLower.split(".");
 
       // get TLD address and create contract
-      const tldAddress = await this.getFactoryContract.tldNamesAddresses("."+existingDomainParts[1]);
+      const tldAddress = await this.getTldAddresses["."+existingDomainParts[1]];
 
       if (tldAddress !== ethers.constants.AddressZero) {
         const intfc = new ethers.utils.Interface(this.getTldAbi);

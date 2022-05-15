@@ -80,7 +80,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters("punk", ["getTldAddressesKey", "getTldAddresses", "getTldAbi"]),
+    ...mapGetters("punk", ["getTldAddresses", "getTldAbi"]),
     ...mapGetters("network", ["getBlockExplorerBaseUrl"]),
 
     customPfp() {
@@ -195,14 +195,6 @@ export default {
 
     setContract() {
       let tldAddresses = this.getTldAddresses;
-
-      if (!tldAddresses) {
-        const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
-
-        if (tldAddressesStorage) {
-          tldAddresses = JSON.parse(tldAddressesStorage);
-        }
-      }
 
       if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
         const tldAddr = tldAddresses["."+this.tld];

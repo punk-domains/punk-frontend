@@ -1,9 +1,8 @@
 import { ethers } from 'ethers';
 import { useEthers } from 'vue-dapp';
 import addresses from "../../abi/addresses.json";
-import factoryAbiOld from "../../abi/PunkTLDFactoryOld.json";
+import tldsJson from "../../abi/tlds.json";
 import factoryAbi from "../../abi/PunkTLDFactory.json";
-import tldAbiOld from "../../abi/PunkTLDOld.json";
 import tldAbi from "../../abi/PunkTLD.json";
 
 const { chainId, signer } = useEthers();
@@ -64,59 +63,32 @@ export default {
     async fetchTlds({ dispatch, commit, state, getters }) {
       commit("setFactoryContract");
 
-      state.tlds = [];
-      
-      if (state.factoryContract) {
-        state.tlds = await state.factoryContract.getTldsArray();
+      let networkId = 137;
 
-        // fetch TLDs array from local storage
-        let lsTlds = [];
-  
-        if (state.tlds) {
-          lsTlds = JSON.parse(localStorage.getItem(state.tldsKey));
-  
-          if (lsTlds === null) {
-            lsTlds = [];
-          }
-        }
-  
-        // if length in local storage is less than what was just fetched from blockchain, do these:
-        if (lsTlds.length < state.tlds.length) {
-          localStorage.setItem(state.tldsKey, JSON.stringify(state.tlds));
-  
-          // fetch TLD addresses from blockchain and update local storage
-          for (let tldName of state.tlds) {
-            let tldAddress = await state.factoryContract.tldNamesAddresses(tldName);
-            state.tldAddresses[tldName] = tldAddress;
-          }
-  
-          localStorage.setItem(state.tldAddressesKey, JSON.stringify(state.tldAddresses));
-        } else {
-  
-          try {
-            state.tldAddresses = JSON.parse(localStorage.getItem(state.tldAddressesKey));
-          } catch {
-            console.log("Error getting tldAddresses from local storage.")
-          }
-        }
-
-        // fetch user's default names
-        dispatch('user/fetchUserDomainNames', null, { root: true });
-
-        // fetch domain prices
-        for (let tldName of state.tlds) {
-          const intfc = new ethers.utils.Interface(getters.getTldAbi);
-          const contract = new ethers.Contract(state.tldAddresses[tldName], intfc, signer.value);
-
-          const price = await contract.price();
-
-          if (!state.domainPrices) {
-            state.domainPrices = {}
-          }
-
-          state.domainPrices[tldName] = price;
-        }
+      if (chainId.value) {
+        networkId = chainId.value;
       }
+
+      state.tlds = [];
+
+      for (let tld of Object.keys(tldsJson[networkId])) {
+        state.tlds.push(tld);
+        state.tldAddresses[tld] = tldsJson[networkId][tld];
+
+        const intfc = new ethers.utils.Interface(getters.getTldAbi);
+        const contract = new ethers.Contract(tldsJson[networkId][tld], intfc, signer.value);
+
+        const price = await contract.price();
+
+        if (!state.domainPrices) {
+          state.domainPrices = {}
+        }
+
+        state.domainPrices[tld] = price;
+      }
+
+      // fetch user's default names
+      dispatch('user/fetchUserDomainNames', null, { root: true });
     }
   }
 };

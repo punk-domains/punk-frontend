@@ -136,7 +136,7 @@ export default {
 
   computed: {
     ...mapGetters("network", ["getBlockExplorerBaseUrl", "getNetworkCurrency"]),
-    ...mapGetters("punk", ["getTldAddresses", "getTldAddressesKey", "getDomainPrices", "getTldAbi"]),
+    ...mapGetters("punk", ["getTldAddresses", "getDomainPrices", "getTldAbi"]),
 
     domainLowerCase() {
       return this.chosenDomainName.toLowerCase();
@@ -332,14 +332,6 @@ export default {
 
     setContract() {
       let tldAddresses = this.getTldAddresses;
-
-      if (!tldAddresses) {
-        const tldAddressesStorage = localStorage.getItem(this.getTldAddressesKey);
-
-        if (tldAddressesStorage) {
-          tldAddresses = JSON.parse(tldAddressesStorage);
-        }
-      }
 
       if (tldAddresses && JSON.stringify(tldAddresses) != "{}") {
         const tldAddr = tldAddresses["."+this.tld];
