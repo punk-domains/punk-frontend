@@ -13,7 +13,6 @@ export default {
   state: () => ({ 
     domainPrices: null, // object of key/value pairs where key is TLD name and value is domain price
     factoryAddress: null,
-    factoryContract: null,
     tlds: [],
     tldsKey: null,
     tldAddresses: {}, // object of key/value pairs where key is TLD name and value is TLD address
@@ -23,9 +22,6 @@ export default {
   getters: { 
     getDomainPrices(state) {
       return state.domainPrices;
-    },
-    getFactoryContract(state) {
-      return state.factoryContract;
     },
     getTlds(state) {
       return state.tlds;
@@ -44,25 +40,8 @@ export default {
     }
   },
 
-  mutations: { 
-    setFactoryContract(state) {
-      state.factoryAddress = addresses["PunkTLDFactory"][String(chainId.value)];
-
-      if (state.factoryAddress) {
-        state.tldsKey = "tlds" + chainId.value;
-        state.tldAddressesKey = "tldAddresses" + chainId.value;
-
-        const intfc = new ethers.utils.Interface(factoryAbi);
-        state.factoryContract = new ethers.Contract(state.factoryAddress, intfc, signer.value);
-      }
-      
-    }
-  },
-
   actions: { 
     async fetchTlds({ dispatch, commit, state, getters }) {
-      commit("setFactoryContract");
-
       let networkId = 137;
 
       if (chainId.value) {

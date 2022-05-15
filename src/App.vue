@@ -50,12 +50,10 @@ export default {
 
     ...mapMutations("user", ["setUserData"]),
     ...mapMutations("network", ["setNetworkData"]),
-    ...mapMutations("punk", ["setFactoryContract"]),
 
     fetchAllData() {
       this.setUserData();
       this.setNetworkData();
-      this.setFactoryContract();
       this.fetchTlds();
     },
 
