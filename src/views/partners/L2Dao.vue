@@ -4,19 +4,12 @@
     <span class="and">&amp;</span>
     <img class="img-fluid l2dao" src="../../assets/logo.png" />
 
-    <h1 class="mt-5">Early Access to Mint Your .L2 Domain</h1>
+    <h1 class="mt-5">Get yourself a .L2 Domain!</h1>
 
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
-          Layer2DAO and Punk Domains have partnered up to offer 
-          <a href="https://www.layer2dao.org/#/nftdrop" target="_blank">L2 Early Adopter NFT holders</a> the exclusive 
-          chance to mint .L2 domains before anyone else.
-          <br />
-          <small><em>
-            Read all about the .L2 domain launch 
-            <a href="https://medium.com/@layer2dao/announcing-the-layer2dao-l2-domain-sale-with-punk-domains-on-optimism-edebf7bb5f18" target="_blank">on Medium</a>.
-          </em></small>
+          .L2 domain is the official domain of Layer2DAO and powered by the Punk Domains protocol.
         </p>
       </div>
     </div>
@@ -215,37 +208,29 @@ export default {
     },
 
     async setContracts() {
-      if (this.address) {
-        this.loading = true;
-      }
+      this.loading = true;
 
-      let tldAddr;
-      let fProvider;
+      let fProvider = this.getFallbackProvider(10);
+      let tldAddr = "0x9A7657d1593032C75d70950707870c3cC7ca45DC"; // .L2
+      this.tld = ".L2";
       
-      if (this.chainId === 10) { // Optimism Mainnet
-        fProvider = this.getFallbackProvider(10);
-        tldAddr = "0x9A7657d1593032C75d70950707870c3cC7ca45DC"; // .L2
-        this.tld = ".L2";
-      } else if (this.chainId === 69) { // Optimism Testnet
+      if (this.chainId === 69) { // Optimism Testnet
         fProvider = this.getFallbackProvider(69);
         tldAddr = "0xB5B8AF8199777d471c0320BC11022433df6D100e"; // .L2TEST
         this.tld = ".L2test";
       }
 
       // TLD contract
-      if (tldAddr) {
-        const tldIntfc = new ethers.utils.Interface(tldAbi);
-        this.tldContract = new ethers.Contract(tldAddr, tldIntfc, fProvider);
+      const tldIntfc = new ethers.utils.Interface(tldAbi);
+      this.tldContract = new ethers.Contract(tldAddr, tldIntfc, fProvider);
 
-        const priceWei = await this.tldContract.price();
-        this.domainPrice = ethers.utils.formatEther(priceWei);
+      const priceWei = await this.tldContract.price();
+      this.domainPrice = ethers.utils.formatEther(priceWei);
 
-        const buyingEnabled = await this.tldContract.buyingEnabled();
-        this.paused = !buyingEnabled;
+      const buyingEnabled = await this.tldContract.buyingEnabled();
+      this.paused = !buyingEnabled;
 
-        this.loading = false;
-      }
-      
+      this.loading = false;
     },
   },
 
