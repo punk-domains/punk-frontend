@@ -16,10 +16,14 @@
           <div v-if="isActivated" class="navbar-menu-buttons">
 
             <!--
-            <div class="btn-group mx-2 navbar-menu-btn navbar-buy-tld">
+            <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
               <router-link tag="button" class="btn btn-primary" to="/buy-tld">Buy a TLD</router-link>
             </div>
             -->
+            
+            <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
+              <router-link tag="button" class="btn btn-primary" to="/nft/angel">NFT Whitelist</router-link>
+            </div>
           
             <div class="btn-group mx-2 navbar-menu-btn">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -148,7 +152,7 @@ export default {
     margin-bottom: 5px;
   }
 
-  .navbar-buy-tld {
+  .navbar-other-item {
     margin-top: 10px;
   }
 
