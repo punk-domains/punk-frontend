@@ -63,7 +63,7 @@
 <script>
 import { ethers } from 'ethers';
 import { useBoard, useEthers } from 'vue-dapp';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../../components/toasts/WaitingToast.vue";
 import Referral from '../../components/Referral.vue';

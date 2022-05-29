@@ -8,6 +8,7 @@ import HowItWorks from './views/HowItWorks.vue'
 import L2Dao from './views/partners/L2Dao.vue'
 import UnstoppablePolygonRefund from './views/partners/UnstoppablePolygonRefund.vue'
 import Profile from './views/Profile.vue'
+import PunkAngelNft from './views/nft/PunkAngelNft.vue'
 import SearchDomains from './views/SearchDomains.vue'
 import SendTokens from './views/SendTokens.vue'
 import TldBuy from './views/TldBuy.vue'
@@ -43,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/how',
     name: 'HowItWorks',
     component: HowItWorks,
+  },
+  {
+    path: '/nft/angel',
+    name: 'PunkAngelNft',
+    component: PunkAngelNft,
   },
   {
     path: '/partners/l2dao',
