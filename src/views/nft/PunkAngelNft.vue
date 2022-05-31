@@ -45,7 +45,7 @@
 
         <a 
           target="_blank" 
-          href="https://449ly163251.typeform.com/to/onXpPaG2" 
+          href="https://forms.gle/RK1zww1Ae5MBLBwZA" 
           class="btn btn-primary btn-lg mt-4 mb-5">
           Join Waitlist
         </a>
