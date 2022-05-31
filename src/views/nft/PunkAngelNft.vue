@@ -9,7 +9,7 @@
         </p>
       </div>
     </div>
-    
+
     <div class="row mt-2">
       <div class="col-md-8 offset-md-2">
         <p>
@@ -42,9 +42,17 @@
           features which will make Punk Domains a major web3 domains protocol. 
           See <a target="_blank" href="https://docs.punk.domains/roadmap/">our roadmap here</a>!
         </p>
+
+        <a 
+          target="_blank" 
+          href="https://449ly163251.typeform.com/to/onXpPaG2" 
+          class="btn btn-primary btn-lg mt-4 mb-5">
+          Join Waitlist
+        </a>
       </div>
     </div>
 
+    <!--
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <h3>Sign up for the waitlist</h3>
@@ -85,8 +93,21 @@
 
         <button v-if="!isActivated" class="btn btn-primary btn-lg mt-2 mb-5" @click="open">Connect wallet</button>
       </div>
+      
     </div>
 
+    <div class="row mt-2">
+      <div class="col-md-8 offset-md-2">
+        <h3 class="mt-1">Get notified!</h3>
+
+        <p>
+          <a target="_blank" href="https://449ly163251.typeform.com/to/onXpPaG2">
+            Click here to get notified about the launch!
+          </a>
+        </p>
+      </div>
+    </div>
+    -->
   </div>
 
 </template>
