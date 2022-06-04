@@ -27,11 +27,6 @@
 
     <router-link to="/partners/udpolygon">UD .polygon refund</router-link>
     -->
-
-    <br />
-
-    <a target="_blank" href="https://icons8.com/icon/f34LtRddK1jj/man">Man</a> 
-    icon by <a target="_blank" href="https://icons8.com">Icons8</a>
   </div>
 
   <div class="container-fluid text-center">
