@@ -2,7 +2,7 @@
   <div class="container text-center">
     <img class="img-fluid l2dao" src="../../assets/partners/l2dao.png" />
     <span class="and">&amp;</span>
-    <img class="img-fluid l2dao" src="../../assets/logo.png" />
+    <img class="img-fluid l2dao" src="../../assets/logo-white-300.svg" />
 
     <h1 class="mt-5">Get yourself a .L2 Domain!</h1>
 
@@ -261,7 +261,7 @@ export default {
   font-size: 1.7em;
   vertical-align: bottom;
   padding-left: 0.2em;
-  padding-right: 0.1em;
+  padding-right: 0.2em;
 }
 
 .buy-button {
