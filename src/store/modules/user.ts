@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 import { useEthers, displayEther, shortenAddress } from 'vue-dapp';
+import useChainHelpers from "../../hooks/useChainHelpers";
 
+const { getFallbackProvider } = useChainHelpers();
 const { address, balance, chainId, signer } = useEthers();
 
 export default {
@@ -198,8 +200,19 @@ export default {
               const pfpInterface = new ethers.utils.Interface([
                 "function tokenURI(uint256 tokenId) public view returns (string memory)"
               ]);
-              const pfpContract = new ethers.Contract(customData.imgAddress, pfpInterface, signer.value);
-              metadata = await pfpContract.tokenURI(customData.imgTokenId);
+
+              let pfpChainId = chainId.value;
+
+              if (customData.imgChainId) {
+                pfpChainId = customData.imgChainId;
+              }
+
+              try {
+                const fProvider = getFallbackProvider(Number(pfpChainId));
+
+                const pfpContract = new ethers.Contract(customData.imgAddress, pfpInterface, fProvider);
+                metadata = await pfpContract.tokenURI(customData.imgTokenId);
+              } catch {}
             }
 
             if (metadata.includes("ipfs://")) {

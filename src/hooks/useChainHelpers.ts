@@ -1,3 +1,5 @@
+import { ethers } from 'ethers';
+
 export default function useChainHelpers() {
 
   function getChainName(chainId) {
@@ -26,6 +28,59 @@ export default function useChainHelpers() {
     } else {
       return "Unsupported Network";
     }
+  }
+
+  function getFallbackProvider(networkId) {
+    let urls;
+
+      if (networkId === 137) {
+        // Polygon PoS Chain
+        urls = [
+          "https://polygon-rpc.com/", 
+          "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
+        ];
+      } else if (networkId === 80001) {
+        // Mumbai testnet (Polygon testnet)
+        urls = [
+          "https://matic-mumbai.chainstacklabs.com",
+          "https://polygon-mumbai.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_MUMBAI_KEY
+        ]
+      } else if (networkId === 10) {
+        // Optimism
+        urls = [
+          "https://mainnet.optimism.io",
+          "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
+        ]; 
+      } else if (networkId === 77) {
+        // Gnosis Chain testnet (Sokol)
+        urls = [
+          "https://sokol.poa.network"
+        ];
+      } else if (networkId === 100) {
+        // Gnosis Chain
+        urls = [
+          "https://rpc.xdaichain.com",
+          "https://rpc.gnosischain.com"
+        ];
+      } else if (networkId === 42161) {
+        // Arbitrum
+        urls = [
+          "https://arb1.arbitrum.io/rpc",
+          "https://arb-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ARBITRUM_KEY
+        ];
+      } else if (networkId === 421611) {
+        // Arbitrum testnet
+        urls = [
+          "https://rinkeby.arbitrum.io/rpc"
+        ];
+      }
+
+      if (urls) {
+        const providers = urls.map(url => new ethers.providers.JsonRpcProvider(url));
+        return new ethers.providers.FallbackProvider(providers, 1); // return fallback provider
+      } else {
+        return null;
+      }
   }
 
   function switchNetwork(networkName) {
@@ -121,6 +176,7 @@ export default function useChainHelpers() {
   // RETURN
   return {
     getChainName,
+    getFallbackProvider,
     switchNetwork
   }
 }

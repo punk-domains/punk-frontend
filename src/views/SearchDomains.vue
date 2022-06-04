@@ -18,6 +18,7 @@
                   v-model="query"
                   class="form-control text-center"
                   placeholder="Enter a domain name"
+                  v-on:keyup.enter="findDomain"
                 >
               </div>
             </div>

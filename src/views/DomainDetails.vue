@@ -164,8 +164,19 @@ export default {
                 const pfpInterface = new ethers.utils.Interface([
                   "function tokenURI(uint256 tokenId) public view returns (string memory)"
                 ]);
-                const pfpContract = new ethers.Contract(customData.imgAddress, pfpInterface, fProvider);
-                metadata = await pfpContract.tokenURI(customData.imgTokenId);
+
+                let pfpChainId = this.domainChain;
+
+                if (customData.imgChainId) {
+                  pfpChainId = customData.imgChainId;
+                }
+
+                try {
+                  const pfpProvider = this.getFallbackProvider(Number(pfpChainId));
+
+                  const pfpContract = new ethers.Contract(customData.imgAddress, pfpInterface, pfpProvider);
+                  metadata = await pfpContract.tokenURI(customData.imgTokenId);
+                } catch {}
               } else {
                 // get contract image for that token ID
                 metadata = await tldContractRead.tokenURI(customData.imgTokenId);

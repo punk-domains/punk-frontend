@@ -247,6 +247,10 @@ export default {
         this.fields.push({dataKey: "imgTokenId", dataValue: "", valuePlaceholder: "Only needed if img is NFT"});
       }
 
+      if(this.fields.findIndex(x => x.dataKey == "imgChainId") === -1) {
+        this.fields.push({dataKey: "ImgChainId", dataValue: "", valuePlaceholder: "Only needed if NFT is on a different chain than domain"});
+      }
+
       if(this.fields.findIndex(x => x.dataKey == "url") === -1) {
         this.fields.push({dataKey: "url", dataValue: "", valuePlaceholder: "Add any URL to redirect domain to"});
       }
