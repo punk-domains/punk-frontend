@@ -12,12 +12,6 @@
 
     <div class="row mt-2">
       <div class="col-md-8 offset-md-2">
-        <p>
-          The (Cyber)Punk Angel NFT will give its holders the right to 
-          <strong style="text-decoration: underline;">mint governance tokens</strong> when Punk Domains becomes
-          a DAO. Each NFT will allow you to 
-          <span style="text-decoration: underline;">claim 1000 governance tokens</span> (total supply: 10M governance tokens).
-        </p>
 
         <h3 class="mt-5">Wen NFT mint?</h3>
 
@@ -25,15 +19,7 @@
 
         <h3 class="mt-5">NFT price?</h3>
 
-        <p>$500 per NFT (max supply: 2000 NFTs).</p>
-        
-        <h3 class="mt-5">I prefer a different kind of art...</h3>
-
-        <p>
-          The purpose of this NFT is not art, but to be able to claim governance tokens when they launch. There will 
-          be other Punk Domains NFTs that will focus on art, and as a Punk Angel NFT holder you'll be able to have a 
-          voice in that.
-        </p>
+        <p>$69 per NFT (max supply: 8888 NFTs).</p>
 
         <h3 class="mt-5">What will the funds be used for?</h3>
 
