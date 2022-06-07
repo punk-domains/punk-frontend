@@ -203,6 +203,8 @@ export default {
     },
 
     async checkEnabledBuying() {
+      const oldSelectedTld = this.selectedTld;
+
       this.enabledBuyingTlds = [];
 
       let counter = 0;
@@ -221,6 +223,8 @@ export default {
             if (counter === 0) {
               this.selectedTld = tld;
               counter++;
+            } else if (tld === oldSelectedTld) {
+              this.selectedTld = oldSelectedTld;
             }
           }
         }
