@@ -230,7 +230,7 @@ export default {
         }
       }
 
-      if (this.enabledBuyingTlds) {
+      if (this.enabledBuyingTlds && !this.selectedTld) {
         this.selectedTld = this.enabledBuyingTlds[0];
       }
 
