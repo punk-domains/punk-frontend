@@ -101,7 +101,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("punk", ["fetchTlds"]),
+    ...mapActions("user", ["fetchUserDomainNames"]),
     ...mapMutations("user", ["addDomainManually"]),
 
     async buyDomain() {
@@ -165,7 +165,7 @@ export default {
               type: TYPE.SUCCESS,
               onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
             });
-            this.fetchTlds();
+            this.fetchUserDomainNames();
             this.addDomainManually(fullDomainName);
             this.waiting = false;
           } else {
