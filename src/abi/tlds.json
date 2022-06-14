@@ -27,8 +27,8 @@
     ".polygon": "0xa450bc33d0940d25fB0961c592fb440Fa63ABE03"
   },
   "80001": {
-    ".polytest": "0xebED27271230E8ED18fD3Ef96F0221D9DBC93750",
-    ".flexi": "0xA33593c8bd2aC03C41f5b3109484caaA1793737b"
+    ".freytest": "0x71C60ebce37cd6ee27807D5285b1acf9752e17Ee",
+    ".testpoly": "0x4fd04c33E692B967F663B75A1976a1671E93B4dd"
   },
   "42161": {
     ".arbi": "0xe97456E0fB121F65422F43ccbd4A07a0e269B534",
