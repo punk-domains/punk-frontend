@@ -127,8 +127,13 @@ export default {
               this.$router.push({name: 'DomainDetails', params: {domainChain: netId, tld: domArr[1], domainName: domArr[0]}});
               return;
             } else {
-              // if not exists (holder is 0x0), show a toast
-              this.toast("This domain name has not been registered yet.", {type: TYPE.INFO});
+              // if not exists (holder is 0x0) or TLD deprecated, show a toast
+              let notExist = "This domain name has not been registered yet.";
+              if (domArr[1].toLowerCase() === "web3" || domArr[1].toLowerCase() === "polygon") {
+                notExist = "TLD ." + domArr[1].toLowerCase() + " has been deprecated.";
+              }
+              
+              this.toast(notExist, {type: TYPE.INFO});
               this.waiting = false;
               return;
             }
