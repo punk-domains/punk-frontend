@@ -41,15 +41,14 @@
 
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { ethers } from 'ethers';
 import { mapGetters } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 
+import resolverJson from '../abi/resolver.json';
 import tldsJson from '../abi/tlds.json';
-import tldAbi from '../abi/PunkTLD.json';
 import Sidebar from '../components/Sidebar.vue';
-import WaitingToast from "../components/toasts/WaitingToast.vue";
 
 export default {
   name: "SearchDomains",
@@ -98,7 +97,6 @@ export default {
   methods: {
     async findDomain() {
       this.waiting = true;
-      const intfc = new ethers.utils.Interface(tldAbi);
 
       // check if domain name/address is valid
       if (this.domainLowerCase && this.domainLowerCase.split(".").length === 2) { // likely a domain name
@@ -109,10 +107,20 @@ export default {
           if (tldsJson[netId]["."+domArr[1]]) { // find the correct TLD
             // get fallback provider based on network ID
             const fProvider = this.getFallbackProvider(Number(netId));
-            // create TLD contract
-            const tldContractRead = new ethers.Contract(tldsJson[netId]["."+domArr[1]], intfc, fProvider);
+            
+            // resolver contract
+            const resolverInterface = new ethers.utils.Interface([
+              "function getDomainHolder(string calldata _domainName, string calldata _tld) public view returns(address)"
+            ]);
+
+            const resolverRead = new ethers.Contract(
+              resolverJson[netId], 
+              resolverInterface, 
+              fProvider
+            );
+
             // fetch domain holder
-            const domainHolder = await tldContractRead.getDomainHolder(domArr[0]);
+            const domainHolder = await resolverRead.getDomainHolder(domArr[0], "."+domArr[1]);
 
             if (domainHolder !== ethers.constants.AddressZero) {
               // if domain exists, redirect to the Domain Details page
