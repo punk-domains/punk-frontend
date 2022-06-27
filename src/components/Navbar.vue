@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <router-link to="/" class="navbar-brand">
         <img src="../assets/logo-white-300.svg" alt="" width="30" class="d-inline-block navbar-img">
-        Punk Domains
+        PUNK DOMAINS
       </router-link>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,7 @@
                 <li>
                   <span 
                     class="dropdown-item" 
+                    :key="network" 
                     v-for="network in getSupportedNetworkNames"
                     @click="changeNetwork(network)"
                   >{{network}}</span>
@@ -65,7 +66,7 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { mapGetters } from 'vuex';
 import { useBoard, useEthers, useWallet } from 'vue-dapp';
 import useChainHelpers from "../hooks/useChainHelpers";
@@ -127,7 +128,7 @@ export default {
 }
 
 .navbar-brand {
-  font-family: 'Cyber', cursive;
+  font-family: 'Impact', cursive;
 }
 
 .navbar-dark .navbar-brand {
@@ -135,8 +136,9 @@ export default {
 }
 
 .navbar-dark {
-  /*background-color: #24263A;*/
-  background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);
+  /*background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);*/
+  background: linear-gradient(90deg, hsla(250, 74%, 45%, 1) 0%, hsla(267, 56%, 50%, 1) 100%);
+  /*background: linear-gradient(90deg, #3b1eca 0%, #793ac7 100%);*/
   border-radius: 0px 0px 10px 10px;
   padding: 20px;
   
@@ -144,7 +146,6 @@ export default {
 
 .navbar-img {
   margin-right: 5px;
-  color: #DBDFEA;
 }
 
 @media only screen and (max-width: 767px) {
