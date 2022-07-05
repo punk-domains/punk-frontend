@@ -26,6 +26,32 @@ export default function useDomainHelpers() {
 
     return false;
   }
+  
+  function buyNotValidFlexi(domainName: string) {
+    if (domainName === "") {
+      return {invalid: true, message: null};
+    } else if (domainName === null) {
+      return {invalid: true, message: null};
+    } else if (domainName.includes(".")) {
+      return {invalid: true, message: "Dots not allowed"};
+    } else if (domainName.includes(" ")) {
+      return {invalid: true, message: "Spaces not allowed"};
+    } else if (domainName.includes("%")) {
+      return {invalid: true, message: "% not allowed"};
+    } else if (domainName.includes("&")) {
+      return {invalid: true, message: "& not allowed"};
+    } else if (domainName.includes("?")) {
+      return {invalid: true, message: "? not allowed"};
+    } else if (domainName.includes("#")) {
+      return {invalid: true, message: "# not allowed"};
+    } else if (domainName.includes("/")) {
+      return {invalid: true, message: "/ not allowed"};
+    } else if (domainName.includes(",")) {
+      return {invalid: true, message: "Comma not allowed"};
+    }
+
+    return false;
+  }
 
   function tldBuyNotValid(domainName: string) {
     if (domainName === "") {
@@ -58,6 +84,7 @@ export default function useDomainHelpers() {
   // RETURN
   return {
     buyNotValid,
+    buyNotValidFlexi,
     tldBuyNotValid
   }
 }

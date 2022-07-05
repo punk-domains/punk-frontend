@@ -16,6 +16,10 @@
     
     <span> | </span>
 
+    <router-link to="/partners/wildbunch">Wild Bunch</router-link>
+    
+    <span> | </span>
+
     <router-link to="/browser">Browser extension</router-link>
     
     <span> | </span>

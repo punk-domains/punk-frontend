@@ -28,6 +28,8 @@
     ".polygon": "0xa450bc33d0940d25fB0961c592fb440Fa63ABE03"
   },
   "80001": {
+    ".testsafu": "0x755F461d6a5854203b9B30C76f680356cC67556D",
+    ".newflexi": "0xd3CEdCfAa00de70DB408528351665c55E1fFA603",
     ".freytest": "0x71C60ebce37cd6ee27807D5285b1acf9752e17Ee",
     ".testpoly": "0x4fd04c33E692B967F663B75A1976a1671E93B4dd"
   },
@@ -36,6 +38,8 @@
     ".arbitrum": "0x337EB5061943ECd247649d58D35Dbab0b40D67E0"
   },
   "421611": {
+    ".fltestarbi": "0x396E60B4c971b053A2959296646B2eA5DD1f2160",
+    ".twbtest": "0xEEAEED736cc6A6e68CC2F62be19Cf7E06ad9E94A",
     ".arbitest": "0xC6a628b1FF1aD4e304bEeACAff915559786deA2e"
   }
 }

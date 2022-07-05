@@ -5,8 +5,11 @@ import BrowserExtension from './views/BrowserExtension.vue'
 import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
 import HowItWorks from './views/HowItWorks.vue'
+
 import L2Dao from './views/partners/L2Dao.vue'
 import UnstoppablePolygonRefund from './views/partners/UnstoppablePolygonRefund.vue'
+import WildBunch from './views/partners/WildBunch.vue'
+
 import Profile from './views/Profile.vue'
 import PunkAngelNft from './views/nft/PunkAngelNft.vue'
 import SearchDomains from './views/SearchDomains.vue'
@@ -59,6 +62,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/partners/udpolygon',
     name: 'UnstoppablePolygonRefund',
     component: UnstoppablePolygonRefund,
+  },
+  {
+    path: '/partners/wildbunch',
+    name: 'WildBunch',
+    component: WildBunch,
   },
   {
     path: '/profile',
