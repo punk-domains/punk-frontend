@@ -14,9 +14,7 @@
 
     <router-link to="/partners/l2dao">L2DAO</router-link>
     
-    <span> | </span>
-
-    <router-link to="/partners/wildbunch">Wild Bunch</router-link>
+    <!--<span> | </span><router-link to="/partners/wildbunch">Wild Bunch</router-link>-->
     
     <span> | </span>
 

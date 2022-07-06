@@ -18,7 +18,7 @@
       <p>
         If you want someone to send you tokens, sure you could send them your address and they could copy-paste it 
         into their wallet. But wouldn't it be great if they could just enter a domain name, like 
-        <code>techie.web3</code>, instead of the whole address?
+        <code>techie.wagmi</code>, instead of the whole address?
       </p>
         
       <p>
@@ -28,7 +28,7 @@
       <p>
         Another usecase is to have a domain name as your <strong>username</strong> in various web3 dApps, games and 
         upcoming social networks. Instead of your username being <code>0xb29…45D</code>, it could be 
-        <code>techie.web3</code>.
+        <code>techie.wagmi</code>.
       </p>
 
       <p>
@@ -40,7 +40,7 @@
 
       <p>
         Yes, but they only do it on Ethereum L1 and (for now) only with <code>.eth</code>. Punk Domains allows 
-        many different top-level domains (TLDs), such as <code>.web3</code>, <code>.ape</code>, 
+        many different top-level domains (TLDs), such as <code>.wagmi</code>, <code>.ape</code>, 
         <code>.opti</code> etc. And it runs on L2 chains.
       </p>
 

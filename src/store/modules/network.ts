@@ -14,7 +14,8 @@ export default {
       10: "Optimism",
       100: "Gnosis Chain",
       137: "Polygon",
-      42161: "Arbitrum"
+      42161: "Arbitrum",
+      56: "BNB Smart Chain"
     }
   }),
 
@@ -26,6 +27,8 @@ export default {
         return "https://rinkeby.etherscan.io";
       } else if (chainId.value === 10) {
         return "https://optimistic.etherscan.io";
+      } else if (chainId.value === 56) {
+        return "https://bscscan.com";
       } else if (chainId.value === 69) {
         return "https://kovan-optimistic.etherscan.io";
       } else if (chainId.value === 77) {
@@ -60,6 +63,11 @@ export default {
           "https://mainnet.optimism.io", 
           "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
         ]; 
+      } else if (networkId === 56) {
+        // BSC mainnet
+        urls = [
+          "https://bscrpc.com"
+        ];
       } else if (networkId === 69) {
         // Optimism testnet
         urls = [
@@ -158,6 +166,9 @@ export default {
       } else if (chainId.value === 10) {
         state.networkName = "Optimism";
         state.networkCurrency = "ETH";
+      } else if (chainId.value === 56) {
+        state.networkName = "BNB Smart Chain";
+        state.networkCurrency = "BNB";
       } else if (chainId.value === 69) {
         state.networkName = "Optimism Testnet";
         state.networkCurrency = "ETH";

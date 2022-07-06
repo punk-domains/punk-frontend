@@ -54,8 +54,8 @@
 
       <p>
         <ul>
-          <li>Example of a TLD: <code>.web3</code></li>
-          <li>Example of a domain: <code>techie.web3</code></li>
+          <li>Example of a TLD: <code>.wagmi</code></li>
+          <li>Example of a domain: <code>techie.wagmi</code></li>
         </ul>
       </p>
 

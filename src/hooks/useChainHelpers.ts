@@ -7,6 +7,8 @@ export default function useChainHelpers() {
       return "Polygon";
     } else if (chainId === 10) {
       return "Optimism";
+    } else if (chainId === 56) {
+      return "BNB Smart Chain";
     } else if (chainId === 69) {
       return "Optimism Testnet";
     } else if (chainId === 77) {
@@ -51,6 +53,11 @@ export default function useChainHelpers() {
           "https://mainnet.optimism.io",
           "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
         ]; 
+      } else if (networkId === 56) {
+        // BSC mainnet
+        urls = [
+          "https://bscrpc.com"
+        ];
       } else if (networkId === 77) {
         // Gnosis Chain testnet (Sokol)
         urls = [
@@ -164,6 +171,15 @@ export default function useChainHelpers() {
         chainName: "Gnosis Chain",
         nativeCurrency: { decimals: 18, name: "XDAI", symbol: "XDAI" }, 
         rpcUrls: ["https://rpc.gnosischain.com"]
+      }] 
+    } else if (networkName == "BNB Smart Chain") {
+      method = "wallet_addEthereumChain"
+      params = [{ 
+        blockExplorerUrls: [ "https://bscscan.com/" ],
+        chainId: "0x38",
+        chainName: "BNB Smart Chain",
+        nativeCurrency: { decimals: 18, name: "BNB", symbol: "BNB" }, 
+        rpcUrls: ["https://bscrpc.com"]
       }] 
     }
 
