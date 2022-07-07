@@ -49,10 +49,19 @@
       <span>Buying disabled</span>
     </button>
 
+    <!-- Balance too low -->
+    <button 
+      v-if="isActivated && isNetworkSupported && !paused && !hasUserEnoughTokens" 
+      class="btn btn-primary btn-lg mt-3 buy-button" 
+      disabled="true"
+    >
+      <span>Your {{payTokenName}} balance is too low</span>
+    </button>
+
     <!-- Approve payment token -->
     <button 
       data-bs-toggle="modal" data-bs-target="#approveTokenModal"
-      v-if="isActivated && isNetworkSupported && !paused && !hasEnoughAllowance" 
+      v-if="isActivated && isNetworkSupported && !paused && !hasEnoughAllowance && hasUserEnoughTokens" 
       class="btn btn-primary btn-lg mt-3 buy-button" 
       :disabled="waiting || buyNotValidFlexi(chosenDomainName).invalid"
     >
