@@ -7,7 +7,7 @@
       <div class="col-md-8 offset-md-2">
         <p>
           {{tld}} domain is the official domain of 
-          <a href="https://thewildbunch.io/" target="_blank">The Wild Bunch NFT community</a>, 
+          <a href="https://discord.gg/W7MsheNg6r" target="_blank">the Huwa DAO community</a>, 
           and is powered by the Punk Domains protocol.
         </p>
       </div>
@@ -37,14 +37,42 @@
     </p>
 
     <p class="mt-4">
-      Domain price: {{domainPrice}} ETH
+      Domain price: {{domainPrice}} {{payTokenName}}
     </p>
 
-    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValidFlexi(chosenDomainName).invalid || paused || !canMint">
+    <!-- Paused -->
+    <button 
+      v-if="isActivated && isNetworkSupported && paused" 
+      class="btn btn-primary btn-lg mt-3 buy-button" 
+      disabled="true"
+    >
+      <span>Buying disabled</span>
+    </button>
+
+    <!-- Approve payment token -->
+    <button 
+      data-bs-toggle="modal" data-bs-target="#approveTokenModal"
+      v-if="isActivated && isNetworkSupported && !paused && !hasEnoughAllowance" 
+      class="btn btn-primary btn-lg mt-3 buy-button" 
+      :disabled="waiting || buyNotValidFlexi(chosenDomainName).invalid"
+    >
+      <span>Approve {{payTokenName}}</span>
+    </button>
+
+    <p v-if="isActivated && isNetworkSupported && !paused && !hasEnoughAllowance" class="mt-1">
+      <small><strong>Important:</strong> You will need to complete 2 transactions: Approve {{payTokenName}} + Buy Domain.</small>
+    </p>
+
+    <!-- Buy domain -->
+    <button 
+      v-if="isActivated && !paused && isNetworkSupported && hasUserEnoughTokens && hasEnoughAllowance" 
+      class="btn btn-primary btn-lg mt-3 buy-button" 
+      @click="buyDomain" 
+      :disabled="waiting || buyNotValidFlexi(chosenDomainName).invalid || paused || !canMint"
+    >
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
       <span v-if="!paused && canMint">Buy domain</span>
       <span v-if="!paused && !canMint">Not eligible</span>
-      <span v-if="paused">Buying disabled</span>
     </button>
 
     <div v-if="!isActivated" class="mt-4 buy-button">
@@ -58,6 +86,43 @@
   </div>
 
   <Referral v-if="isActivated" />
+
+  <!-- Approve payment token modal -->
+  <div class="modal fade" id="approveTokenModal" tabindex="-1" aria-labelledby="approveTokenModalLabel" aria-hidden="true" modal-dialog-centered>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="approveTokenModalLabel">Approve {{payTokenName}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <p>
+              If you plan to mint multiple domains, consider giving the minting contract a higher {{payTokenName}} approval.
+            </p>
+            <p>
+              With each domain buy, the total approval amount is reduced by {{domainPrice}} {{payTokenName}}.
+            </p>
+
+            Approval for <input type="text" id="recipient-name" v-model="chosenAllowance"> {{payTokenName}}.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button 
+            type="button" 
+            @click="approveTokens" 
+            class="btn btn-secondary"
+            :disabled="selectedAllowanceTooLow" 
+            >
+              <span v-if="!selectedAllowanceTooLow">Approve {{payTokenName}}</span>
+              <span v-if="selectedAllowanceTooLow">Approval lower than domain price</span>
+            </button>
+
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -69,33 +134,40 @@ import WaitingToast from "../../components/toasts/WaitingToast.vue";
 import Referral from '../../components/Referral.vue';
 import useDomainHelpers from "../../hooks/useDomainHelpers";
 import useChainHelpers from "../../hooks/useChainHelpers";
-import MinterAbi from "../../abi/partners/wildbunch/WildBunchMinter.json";
+import MinterAbi from "../../abi/partners/huwa/HuwaMinter.json";
 import tldAbi from '../../abi/FlexiPunkTLD.json';
+import Erc20Abi from '../../abi/Erc20.json';
 
 export default {
-  name: "WildBunch",
+  name: "Huwa",
 
   data() {
     return {
-      canMint: false,
+      canMint: true,
+      chosenAllowance: 20,
       chosenDomainName: null,
       domainPrice: null,
       idMainnet: 56,
       idTestnet: 421611,
       loading: false, // loading data
-      mintAddressTestnet: "0x3047F44d0A8383EDd59A583092d7E6DB7ade85e0",
+      mintAddressTestnet: "0xe3116Fe0b4526290c4231A59D2094605E581d8B6",
       mintAddressMainnet: "",
       mintContract: null,
-      networkName: "Arbitrum Testnet",
+      networkName: "Arbitrum Testnet", 
       paused: true,
-      payTokenName: "HUWA",
-      payTokenAddressTestnet: "0x50261060c69eB9a493D291f14e1A7A62862EC03F",
+      payTokenAddressTestnet: "0xD1d656845AD2a15934C314e46977554FFe85383E",
       payTokenAddressMainnet: "0x03a2A7E95eCe3112b8d33F9bCC21F0c9BA843e35",
+      payTokenAllowance: 0,
+      payTokenBalance: 0,
       payTokenContract: null,
+      payTokenDecimals: 4,
+      payTokenName: "HUWA",
       tld: ".huwa",
       tldAddressTestnet: "0x49651e70df13b8fd5684B0b82b1b3D7Cdc8cF80f",
       tldAddressMainnet: "",
       tldContract: null,
+      tldMainnet: ".huwa",
+      tldTestnet: ".testhuwa",
       waiting: false, // waiting for TX to complete
     }
   },
@@ -115,22 +187,101 @@ export default {
       return this.chosenDomainName.toLowerCase();
     },
 
+    hasEnoughAllowance() {
+      if (this.address && Number(this.payTokenBalance) > 0) {
+        if (Number(this.payTokenAllowance) >= Number(this.domainPrice)) {
+          return true;
+        }
+      }
+      return false;
+    },
+    hasUserEnoughTokens() {
+      if (this.address && Number(this.payTokenBalance) > 0) {
+        if (Number(this.payTokenBalance) >= Number(this.domainPrice)) {
+          return true;
+        }
+      }
+      return false;
+    },
+
     isNetworkSupported() {
       if (this.isActivated) {
-        if (
-          //this.chainId === 1 || // TODO: uncomment!!!
-          this.chainId === 421611
-        ) {
+        if (this.networkName.includes("Testnet") && this.chainId === this.idTestnet) {
+          return true;
+        } else if (!this.networkName.includes("Testnet") && this.chainId === this.idMainnet) {
           return true;
         }
       }
 
       return false;
-    }
+    },
+
+    selectedAllowanceTooLow() {
+      if (Number(this.chosenAllowance) >= Number(this.domainPrice)) {
+        return false;
+      }
+      return true;
+    },
   },
 
   methods: {
     ...mapMutations("user", ["addDomainManually"]),
+
+    async approveTokens() {
+      this.waiting = true;
+
+      let mintAddr;
+      
+      // match data to the chain ID
+      if (this.chainId === this.idMainnet) {
+        mintAddr = this.mintAddressMainnet;
+      } else if (this.chainId === this.idTestnet) {
+        mintAddr = this.mintAddressTestnet;
+      }
+      
+      try {
+        const tx = await this.payTokenContract.approve(
+          mintAddr, // spender (minting contract)
+          ethers.utils.parseUnits(String(this.chosenAllowance), this.payTokenDecimals) // amount
+        );
+        const toastWait = this.toast(
+          {
+            component: WaitingToast,
+            props: {
+              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+            }
+          },
+          {
+            type: TYPE.INFO,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          }
+        );
+        document.getElementById('approveTokenModal').click(); // close the modal
+        const receipt = await tx.wait();
+        if (receipt.status === 1) {
+          this.toast.dismiss(toastWait);
+          this.toast("You have successfully set the allowance! Now proceed with buying the domain.", {
+            type: TYPE.SUCCESS,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          this.payTokenAllowance = Number(this.chosenAllowance);
+          this.waiting = false;
+        } else {
+          this.toast.dismiss(toastWait);
+          this.toast("Transaction has failed.", {
+            type: TYPE.ERROR,
+            onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
+          });
+          console.log(receipt);
+          this.waiting = false;
+        }
+      } catch (e) {
+        console.log(e)
+        this.waiting = false;
+        this.toast(e.message, {type: TYPE.ERROR});
+      }
+      this.waiting = false;
+    },
 
     async buyDomain() {
       this.waiting = true;
@@ -164,10 +315,7 @@ export default {
         const tx = await this.mintContract.mint(
           this.domainLowerCase,
           this.address,
-          referral,
-          {
-            value: ethers.utils.parseEther(this.domainPrice)
-          }
+          referral
         );
 
         const toastWait = this.toast(
@@ -222,54 +370,102 @@ export default {
       });
     },
 
+    async fetchPaymentTokenData() {
+      this.loading = true;
+
+      if (this.address) {
+        let payTokenAddr;
+        let mintAddr;
+      
+        // match data to the chain ID
+        if (this.chainId === this.idMainnet) {
+          payTokenAddr = this.payTokenAddressMainnet;
+          mintAddr = this.mintAddressMainnet;
+        } else if (this.chainId === this.idTestnet) {
+          payTokenAddr = this.payTokenAddressTestnet;
+          mintAddr = this.mintAddressTestnet;
+        }
+
+        if (payTokenAddr) {
+          // pay token contract
+          const tokenIntfc = new ethers.utils.Interface(Erc20Abi);
+          this.payTokenContract = new ethers.Contract(payTokenAddr, tokenIntfc, this.signer);
+
+          const allowanceWei = await this.payTokenContract.allowance(this.address, mintAddr);
+          this.payTokenAllowance = ethers.utils.formatUnits(allowanceWei, this.payTokenDecimals);
+          console.log("payTokenAllowance: " + this.payTokenAllowance);
+
+          const balanceWei = await this.payTokenContract.balanceOf(this.address);
+          this.payTokenBalance = ethers.utils.formatUnits(balanceWei, this.payTokenDecimals);
+          console.log("payTokenBalance: " + this.payTokenBalance);
+        }
+        
+      }
+
+      this.loading = false;
+    },
+
     async setContracts() {
-      if (this.isNetworkSupported) {
         this.loading = true;
 
+        let fProvider;
+        let tldAddr;
+        let mintAddr;
+        let nftAddr;
+        let payTokenAddr;
+
         // testnet data
-        let fProvider = this.getFallbackProvider(this.idTestnet);
-        let tldAddr = this.tldAddressTestnet;
-        let mintAddr = this.mintAddressTestnet;
-        let nftAddr = this.nftAddressTestnet;
-        this.tld = ".twbtest";
+        if (this.networkName.includes("Testnet")) {
+          fProvider = this.getFallbackProvider(this.idTestnet);
+          tldAddr = this.tldAddressTestnet;
+          mintAddr = this.mintAddressTestnet;
+          nftAddr = this.nftAddressTestnet;
+          payTokenAddr = this.payTokenAddressTestnet;
+          this.tld = this.tldTestnet;
+        } else {
+          fProvider = this.getFallbackProvider(this.idMainnet);
+          tldAddr = this.tldAddressMainnet;
+          mintAddr = this.mintAddressMainnet;
+          nftAddr = this.nftAddressMainnet;
+          payTokenAddr = this.payTokenAddressMainnet;
+          this.tld = this.tldMainnet;
+        }
         
-        // mainnet data
+        // match data to the chain ID
         if (this.chainId === this.idMainnet) {
           fProvider = this.getFallbackProvider(this.idMainnet);
           tldAddr = this.tldAddressMainnet;
           mintAddr = this.mintAddressMainnet;
           nftAddr = this.nftAddressMainnet;
-          this.tld = ".wildbunch";
+          payTokenAddr = this.payTokenAddressMainnet;
+          this.tld = this.tldMainnet;
+        } else if (this.chainId === this.idTestnet) {
+          fProvider = this.getFallbackProvider(this.idTestnet);
+          tldAddr = this.tldAddressTestnet;
+          mintAddr = this.mintAddressTestnet;
+          nftAddr = this.nftAddressTestnet;
+          payTokenAddr = this.payTokenAddressTestnet;
+          this.tld = this.tldTestnet;
         }
 
-        // TLD contract
-        const tldIntfc = new ethers.utils.Interface(tldAbi); // note: interface must be defined as const, not as component data var!
+        // tld contract
+        const tldIntfc = new ethers.utils.Interface(tldAbi);
         this.tldContract = new ethers.Contract(tldAddr, tldIntfc, fProvider);
-
-        const priceWei = await this.tldContract.price();
-        this.domainPrice = ethers.utils.formatEther(priceWei);
-
-        if (this.address) {
-          // NFT contract
-          const nftIntfc = new ethers.utils.Interface([
-            "function balanceOf(address) external view returns (uint256)"
-          ]);
-          this.nftContract = new ethers.Contract(nftAddr, nftIntfc, fProvider);
-
-          const balance = await this.nftContract.balanceOf(this.address);
-          if (balance > 0) {
-            this.canMint = true;
-          }
-        }
 
         // minting contract
         const mintIntfc = new ethers.utils.Interface(MinterAbi);
         this.mintContract = new ethers.Contract(mintAddr, mintIntfc, fProvider);
 
+        const priceWei = await this.mintContract.price();
+        this.domainPrice = ethers.utils.formatUnits(priceWei, this.payTokenDecimals);
+
         this.paused = await this.mintContract.paused();
 
         this.loading = false;
-      }
+
+        if (this.address) {
+          this.fetchPaymentTokenData();
+        }
     },
   },
 
@@ -285,7 +481,7 @@ export default {
 
   watch: {
     address() {
-      this.setContracts();
+      this.fetchPaymentTokenData();
     },
 
     chainId() {

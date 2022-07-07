@@ -7,6 +7,7 @@ import Home from './views/Home.vue'
 import HowItWorks from './views/HowItWorks.vue'
 
 import L2Dao from './views/partners/L2Dao.vue'
+import Huwa from './views/partners/Huwa.vue'
 import UnstoppablePolygonRefund from './views/partners/UnstoppablePolygonRefund.vue'
 import WildBunch from './views/partners/WildBunch.vue'
 
@@ -57,6 +58,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/partners/l2dao',
     name: 'L2Dao',
     component: L2Dao,
+  },
+  {
+    path: '/partners/huwa',
+    name: 'Huwa',
+    component: Huwa,
   },
   {
     path: '/partners/udpolygon',
