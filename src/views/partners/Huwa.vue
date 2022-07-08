@@ -94,7 +94,7 @@
 
   </div>
 
-  <Referral v-if="isActivated" />
+  <Referral v-if="isActivated" :urlpath="'partners/huwa'" />
 
   <!-- Approve payment token modal -->
   <div class="modal fade" id="approveTokenModal" tabindex="-1" aria-labelledby="approveTokenModalLabel" aria-hidden="true" modal-dialog-centered>

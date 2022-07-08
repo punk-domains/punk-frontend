@@ -12,8 +12,8 @@
           <div class="col-md-6 offset-md-3">
             <input 
               class="form-control text-center clipboard"
-              :value="'https://punk.domains/?ref=' + this.getNameOrAddress"
-              @click="copyToClipboard('https://punk.domains/?ref=' + this.getNameOrAddress)"
+              :value="'https://punk.domains/#/'+getUrlPath+'?ref=' + this.getNameOrAddress"
+              @click="copyToClipboard('https://punk.domains/#/'+getUrlPath+'?ref=' + this.getNameOrAddress)"
               readonly
             >
           </div>
@@ -29,6 +29,7 @@ import { useToast, TYPE } from "vue-toastification";
 
 export default {
   name: "Referral",
+  props: ["urlpath"],
 
   computed: {
     ...mapGetters("user", ["getUserAddress", "getUserSelectedName"]),
@@ -38,6 +39,14 @@ export default {
         return this.getUserSelectedName;
       } else {
         return this.getUserAddress;
+      }
+    },
+
+    getUrlPath() {
+      if (this.urlpath) {
+        return this.urlpath;
+      } else {
+        return "";
       }
     }
   },

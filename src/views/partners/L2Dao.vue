@@ -57,7 +57,7 @@
 
   </div>
 
-  <Referral v-if="isActivated" />
+  <Referral v-if="isActivated" :urlpath="'partners/l2dao'" />
 </template>
 
 <script>

@@ -58,11 +58,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/partners/l2dao',
     name: 'L2Dao',
     component: L2Dao,
+    props: true
   },
   {
     path: '/partners/huwa',
     name: 'Huwa',
     component: Huwa,
+    props: true
   },
   {
     path: '/partners/udpolygon',
@@ -73,6 +75,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/partners/wildbunch',
     name: 'WildBunch',
     component: WildBunch,
+    props: true
   },
   {
     path: '/profile',
