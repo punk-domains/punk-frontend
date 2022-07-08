@@ -7,7 +7,7 @@
       <div class="col-md-8 offset-md-2">
         <p>
           {{tld}} domain is the official domain of 
-          <a href="https://discord.gg/W7MsheNg6r" target="_blank">the Huwa DAO community</a>, 
+          <a href="https://discord.com/invite/jTHR6vAsSu" target="_blank">the Huwa DAO community</a>, 
           and is powered by the Punk Domains protocol.
         </p>
       </div>
