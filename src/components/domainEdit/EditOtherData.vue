@@ -4,7 +4,7 @@
       {{dataKey.charAt(0).toUpperCase() + dataKey.slice(1)}}
     </div>
 
-    <div class="col-sm-9 punk-text">
+    <div class="col-sm-9 punk-text text-break">
       <span v-if="dataKey=='url'"><a target="_blank" :href="dataValue">{{dataValue}}</a></span>
       <span v-else-if="dataKey=='twitter'"><a target="_blank" :href="getTwitterUrl(dataValue)">{{dataValue}}</a></span>
       <span v-else>{{dataValue}}</span>
