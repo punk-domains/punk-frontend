@@ -13,6 +13,7 @@ import WildBunch from './views/partners/WildBunch.vue'
 
 import Profile from './views/Profile.vue'
 import PunkAngelNft from './views/nft/PunkAngelNft.vue'
+import PunkAngelMint from './views/nft/PunkAngelMint.vue'
 import SearchDomains from './views/SearchDomains.vue'
 import SendTokens from './views/SendTokens.vue'
 import TldBuy from './views/TldBuy.vue'
@@ -51,8 +52,8 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/nft/angel',
-    name: 'PunkAngelNft',
-    component: PunkAngelNft,
+    name: 'PunkAngelMint',
+    component: PunkAngelMint,
   },
   {
     path: '/partners/l2dao',
