@@ -22,7 +22,7 @@
             -->
             
             <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
-              <router-link tag="button" class="btn btn-primary" to="/nft/angel">NFT Whitelist</router-link>
+              <router-link tag="button" class="btn btn-primary" to="/nft/angel">Mint a Punk Angel!</router-link>
             </div>
           
             <div class="btn-group mx-2 navbar-menu-btn">

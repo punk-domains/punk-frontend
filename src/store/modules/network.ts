@@ -15,7 +15,8 @@ export default {
       100: "Gnosis Chain",
       137: "Polygon",
       42161: "Arbitrum",
-      56: "BNB Smart Chain"
+      56: "BNB Smart Chain",
+      80001: "Polygon Testnet"
     }
   }),
 
