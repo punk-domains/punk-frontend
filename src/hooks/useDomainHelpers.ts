@@ -22,6 +22,71 @@ export default function useDomainHelpers() {
       return {invalid: true, message: "Comma not allowed"};
     } else if (domainName.length < 2) {
       return {invalid: true, message: "Domain name must be longer than 1 character"};
+    } else if (
+      domainName.includes("\\") || 
+      domainName.includes("­") || 
+      domainName.includes("	") || 
+      domainName.includes("͏") || 
+      domainName.includes("؜") || 
+      domainName.includes("܏") || 
+      domainName.includes("ᅟ") || 
+      domainName.includes("ᅠ") || 
+      domainName.includes(" ") || 
+      domainName.includes("឴") || 
+      domainName.includes("឵") || 
+      domainName.includes("᠎") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes("​") || 
+      domainName.includes("‌") || 
+      domainName.includes("‍") || 
+      domainName.includes("‎") || 
+      domainName.includes("‏") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes("⁠") || 
+      domainName.includes("⁡") || 
+      domainName.includes("⁢") || 
+      domainName.includes("⁣") || 
+      domainName.includes("⁤") || 
+      domainName.includes("⁪") || 
+      domainName.includes("⁫") || 
+      domainName.includes("⁬") || 
+      domainName.includes("⁭") || 
+      domainName.includes("⁮") || 
+      domainName.includes("⁯") || 
+      domainName.includes("　") || 
+      domainName.includes("⠀") || 
+      domainName.includes("ㅤ") || 
+      domainName.includes("ﾠ") || 
+      domainName.includes("𑂱") || 
+      domainName.includes("𛲠") || 
+      domainName.includes("𛲡") || 
+      domainName.includes("𛲢") || 
+      domainName.includes("𛲣") || 
+      domainName.includes("𝅙") || 
+      domainName.includes("𝅳") || 
+      domainName.includes("𝅴") || 
+      domainName.includes("𝅵") || 
+      domainName.includes("𝅶") || 
+      domainName.includes("𝅷") || 
+      domainName.includes("𝅸") || 
+      domainName.includes("𝅹") || 
+      domainName.includes("𝅺") || 
+      domainName.includes("") || 
+      domainName.includes("") || 
+      domainName.includes("")
+    ) {
+      return {invalid: true, message: "This character is not allowed"};
     }
 
     return false;
@@ -48,6 +113,71 @@ export default function useDomainHelpers() {
       return {invalid: true, message: "/ not allowed"};
     } else if (domainName.includes(",")) {
       return {invalid: true, message: "Comma not allowed"};
+    } else if (
+      domainName.includes("\\") || 
+      domainName.includes("­") || 
+      domainName.includes("	") || 
+      domainName.includes("͏") || 
+      domainName.includes("؜") || 
+      domainName.includes("܏") || 
+      domainName.includes("ᅟ") || 
+      domainName.includes("ᅠ") || 
+      domainName.includes(" ") || 
+      domainName.includes("឴") || 
+      domainName.includes("឵") || 
+      domainName.includes("᠎") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes("​") || 
+      domainName.includes("‌") || 
+      domainName.includes("‍") || 
+      domainName.includes("‎") || 
+      domainName.includes("‏") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes("⁠") || 
+      domainName.includes("⁡") || 
+      domainName.includes("⁢") || 
+      domainName.includes("⁣") || 
+      domainName.includes("⁤") || 
+      domainName.includes("⁪") || 
+      domainName.includes("⁫") || 
+      domainName.includes("⁬") || 
+      domainName.includes("⁭") || 
+      domainName.includes("⁮") || 
+      domainName.includes("⁯") || 
+      domainName.includes("　") || 
+      domainName.includes("⠀") || 
+      domainName.includes("ㅤ") || 
+      domainName.includes("ﾠ") || 
+      domainName.includes("𑂱") || 
+      domainName.includes("𛲠") || 
+      domainName.includes("𛲡") || 
+      domainName.includes("𛲢") || 
+      domainName.includes("𛲣") || 
+      domainName.includes("𝅙") || 
+      domainName.includes("𝅳") || 
+      domainName.includes("𝅴") || 
+      domainName.includes("𝅵") || 
+      domainName.includes("𝅶") || 
+      domainName.includes("𝅷") || 
+      domainName.includes("𝅸") || 
+      domainName.includes("𝅹") || 
+      domainName.includes("𝅺") || 
+      domainName.includes("") || 
+      domainName.includes("") || 
+      domainName.includes("")
+    ) {
+      return {invalid: true, message: "This character is not allowed"};
     }
 
     return false;
@@ -76,6 +206,71 @@ export default function useDomainHelpers() {
       return {invalid: true, message: "Comma not allowed"};
     } else if (domainName.length < 2) {
       return {invalid: true, message: "Domain name must be longer than 1 character"};
+    } else if (
+      domainName.includes("\\") || 
+      domainName.includes("­") || 
+      domainName.includes("	") || 
+      domainName.includes("͏") || 
+      domainName.includes("؜") || 
+      domainName.includes("܏") || 
+      domainName.includes("ᅟ") || 
+      domainName.includes("ᅠ") || 
+      domainName.includes(" ") || 
+      domainName.includes("឴") || 
+      domainName.includes("឵") || 
+      domainName.includes("᠎") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes("​") || 
+      domainName.includes("‌") || 
+      domainName.includes("‍") || 
+      domainName.includes("‎") || 
+      domainName.includes("‏") || 
+      domainName.includes(" ") || 
+      domainName.includes(" ") || 
+      domainName.includes("⁠") || 
+      domainName.includes("⁡") || 
+      domainName.includes("⁢") || 
+      domainName.includes("⁣") || 
+      domainName.includes("⁤") || 
+      domainName.includes("⁪") || 
+      domainName.includes("⁫") || 
+      domainName.includes("⁬") || 
+      domainName.includes("⁭") || 
+      domainName.includes("⁮") || 
+      domainName.includes("⁯") || 
+      domainName.includes("　") || 
+      domainName.includes("⠀") || 
+      domainName.includes("ㅤ") || 
+      domainName.includes("ﾠ") || 
+      domainName.includes("𑂱") || 
+      domainName.includes("𛲠") || 
+      domainName.includes("𛲡") || 
+      domainName.includes("𛲢") || 
+      domainName.includes("𛲣") || 
+      domainName.includes("𝅙") || 
+      domainName.includes("𝅳") || 
+      domainName.includes("𝅴") || 
+      domainName.includes("𝅵") || 
+      domainName.includes("𝅶") || 
+      domainName.includes("𝅷") || 
+      domainName.includes("𝅸") || 
+      domainName.includes("𝅹") || 
+      domainName.includes("𝅺") || 
+      domainName.includes("") || 
+      domainName.includes("") || 
+      domainName.includes("")
+    ) {
+      return {invalid: true, message: "This character is not allowed"};
     }
 
     return false;

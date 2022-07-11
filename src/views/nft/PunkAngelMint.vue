@@ -3,10 +3,12 @@
 
     <h1 class="mt-5">Mint a Punk Angel domain!</h1>
 
+    <h4 class="mt-3">(domain + unique PFP)</h4>
+
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
-          <img class="img-fluid angel-img" src="../../assets/angels/angels.gif" />
+          <img class="img-fluid angel-img rounded-3" src="../../assets/angels/angels.gif" />
         </p>
       </div>
     </div>
@@ -132,6 +134,37 @@
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-md-8 offset-md-2">
+        <h2>FAQ</h2>
+
+        <h4 class="mt-4">What is the max/total supply?</h4>
+
+        <p class="mt-3">
+          Max/total supply is between 44 and 6377 domains. It depends on the prices that domains are bought at. 
+          If all domains are bought at $69, the max supply is 6377 domains. If some domains are bought at a 
+          higher price, the total supply will be lower. If all domains are bought at $10k, the total supply 
+          is capped at 44 domains.
+        </p>
+
+        <h4 class="mt-5">Can I buy/sell these PFP domains on NFT marketplaces?</h4>
+
+        <p class="mt-3">
+          Yes, Punk Angel is available on NFT marketplaces. You can also filter domains by attributes such as 
+          domain length, colors in the domain image, expressions (serious, smiling, surprised) and 
+          accessories (VR glasses, gas mask).
+        </p>
+
+        <h4 class="mt-5">Where are the images stored?</h4>
+
+        <p class="mt-3">
+          Punk Angel images are stored completely on-chain in a form of SVG code. We don't rely on any centralized servers 
+          or third-party storage solutions such as IPFS. All data is stored within Punk Angel smart contracts on the 
+          blockchain. This means that the images will exist forever (or at least as long as Ethereum exists).
+        </p>
       </div>
     </div>
 
