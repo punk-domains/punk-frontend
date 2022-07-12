@@ -1,10 +1,4 @@
 <template>
-<Head>
-    <title>About Punk Domains</title>
-
-    <meta name="description" content="Permission-less Web3 Domains. Multichain on Ethereum, Polygon, Arbitrum, Optimism, BSC, and Gnosis Chain. Domains for DAOs.">
-</Head>
-
 <div class="container">
   <h1 class="text-center">About Punk Domains</h1>
   
@@ -101,14 +95,9 @@
 </template>
 
 <script lang="ts">
-import { Head } from '@vueuse/head'
-
-export default {
-  name: "About",
-  components: {
-    Head
+  export default {
+    name: "About"
   }
-}
 </script>
 
 <style scoped>

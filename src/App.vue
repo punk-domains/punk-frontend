@@ -1,22 +1,4 @@
 <template>
-  <Head>
-    <title>Punk Domains - Permissionless Web3 Domains</title>
-
-    <meta name="description" content="Decentralized domain name service with plenty of top-level domains (.wagmi, .ape, .safu etc.) and running on multiple blockchains.">
-    <meta name="keywords" content="web3, domains, domain, DNS, TLD, blockchain, crypto, ethereum, polygon, optimism, arbitrum, gnosis, chain">
-
-    <meta property="og:title" content="Punk Domains - Permissionless Web3 Domains" />
-    <meta property="og:description" content="Decentralized domain name service with plenty of top-level domains (.wagmi, .ape, .safu etc.) and running on multiple blockchains." />
-    <meta property="og:image" content="https://punk.domains/assets/cover.png" />
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@PunkDomains">
-    <meta name="twitter:creator" content="@PunkDomains">
-    <meta name="twitter:title" content="Punk Domains - Permissionless Web3 Domains">
-    <meta name="twitter:description" content="Decentralized domain name service with plenty of top-level domains (.wagmi, .ape, .safu etc.) and running on multiple blockchains.">
-    <meta name="twitter:image" content="https://punk.domains/assets/cover.png">
-  </Head>
-
   <Navbar />
 
   <div class="main-container">
@@ -37,11 +19,9 @@ import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 import tldsJson from './abi/tlds.json';
 import tldAbi from './abi/PunkTLD.json';
-import { Head } from '@vueuse/head';
 
 export default {
   components: {
-    Head,
     Navbar,
     Footer
   },
