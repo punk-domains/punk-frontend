@@ -1,4 +1,22 @@
 <template>
+  <Head>
+    <title>Mint your very own .wildbunch domain!</title>
+
+    <meta name="description" content="The Wild Bunch and Punk Domains present a .wildbunch domain service. Every TWB NFT holder can mint a .wildbunch domain. Hurry up and get your favourite domain name now!">
+    <meta name="keywords" content="wild bunch, nft, ethereum, punk, domains, domain, web3, crypto">
+
+    <meta property="og:title" content="Mint your very own .wildbunch domain!" />
+    <meta property="og:description" content="The Wild Bunch and Punk Domains present a .wildbunch domain service. Every TWB NFT holder can mint a .wildbunch domain. Hurry up and get your favourite domain name now!" />
+    <meta property="og:image" content="https://punk.domains/assets/partners/wild-bunch-preview.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@PunkDomains">
+    <meta name="twitter:creator" content="@PunkDomains">
+    <meta name="twitter:title" content="Mint your very own .wildbunch domain!">
+    <meta name="twitter:description" content="The Wild Bunch and Punk Domains present a .wildbunch domain service. Every TWB NFT holder can mint a .wildbunch domain. Hurry up and get your favourite domain name now!">
+    <meta name="twitter:image" content="https://punk.domains/assets/partners/wild-bunch-preview.jpg">
+  </Head>
+
   <div class="container text-center">
 
     <h1 class="mt-5">Get yourself a {{tld}} domain!</h1>
@@ -71,9 +89,15 @@ import useDomainHelpers from "../../hooks/useDomainHelpers";
 import useChainHelpers from "../../hooks/useChainHelpers";
 import MinterAbi from "../../abi/partners/wildbunch/WildBunchMinter.json";
 import tldAbi from '../../abi/FlexiPunkTLD.json';
+import { Head } from '@vueuse/head';
 
 export default {
   name: "WildBunch",
+
+  components: {
+    Head,
+    Referral
+  },
 
   data() {
     return {
@@ -97,10 +121,6 @@ export default {
       tldContract: null,
       waiting: false, // waiting for TX to complete
     }
-  },
-
-  components: {
-    Referral
   },
 
   created() {

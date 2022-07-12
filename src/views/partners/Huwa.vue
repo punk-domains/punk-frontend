@@ -1,4 +1,22 @@
 <template>
+  <Head>
+    <title>Mint your very own .huwa domain!</title>
+
+    <meta name="description" content="HUWA DAO and Punk Domains present a .huwa domain service. Every HUWA token holder can mint a .huwa domain. Hurry up and get your favourite domain name now!">
+    <meta name="keywords" content="huwa, DAO, bsc, bnb, smart, chain, punk, domains, domain, web3, crypto">
+
+    <meta property="og:title" content="Mint your very own .huwa domain!" />
+    <meta property="og:description" content="HUWA DAO and Punk Domains present a .huwa domain service. Every HUWA token holder can mint a .huwa domain. Hurry up and get your favourite domain name now!" />
+    <meta property="og:image" content="https://punk.domains/assets/partners/huwa-preview.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@PunkDomains">
+    <meta name="twitter:creator" content="@PunkDomains">
+    <meta name="twitter:title" content="Mint your very own .huwa domain!">
+    <meta name="twitter:description" content="HUWA DAO and Punk Domains present a .huwa domain service. Every HUWA token holder can mint a .huwa domain. Hurry up and get your favourite domain name now!">
+    <meta name="twitter:image" content="https://punk.domains/assets/partners/huwa-preview.jpg">
+  </Head>
+
   <div class="container text-center">
 
     <h1 class="mt-5">Get yourself a {{tld}} domain!</h1>
@@ -146,9 +164,15 @@ import useChainHelpers from "../../hooks/useChainHelpers";
 import MinterAbi from "../../abi/partners/huwa/HuwaMinter.json";
 import tldAbi from '../../abi/FlexiPunkTLD.json';
 import Erc20Abi from '../../abi/Erc20.json';
+import { Head } from '@vueuse/head';
 
 export default {
   name: "Huwa",
+
+  components: {
+    Head,
+    Referral
+  },
 
   data() {
     return {
@@ -179,10 +203,6 @@ export default {
       tldTestnet: ".testhuwa",
       waiting: false, // waiting for TX to complete
     }
-  },
-
-  components: {
-    Referral
   },
 
   created() {
