@@ -17,7 +17,7 @@
       <div class="col-md-8 offset-md-2">
         <p>
           Punk Angel is our first domain which gives you both a unique domain name, and also a generative art 
-          profile picture.
+          profile picture (all in one NFT).
         </p>
       </div>
     </div>
@@ -237,12 +237,12 @@ export default {
       idTestnet: 80001,
       loading: false, // loading data
       mintAddressTestnet: "0xf5e50e9e5A20104A927a9D7c49bD6008DB7CA01C",
-      mintAddressMainnet: "",
+      mintAddressMainnet: "0xe0fBa63B2C3CCF48C2A14d0D3a29a15e4c17A1fF",
       mintContract: null,
-      networkName: "Polygon Testnet", 
+      networkName: "Arbitrum", 
       paused: true,
       payTokenAddressTestnet: "0x8B7387a92c5F645c51Aa8975E76a9c2bfDdBc0F1",
-      payTokenAddressMainnet: "",
+      payTokenAddressMainnet: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
       payTokenAllowance: 0,
       payTokenBalance: 0,
       payTokenContract: null,
@@ -252,7 +252,7 @@ export default {
       randomFeaturesAmount: 3,
       tld: ".punkangel",
       tldAddressTestnet: "0xBF113092d7ceabB5b891C4B232C910CDF2153AC5",
-      tldAddressMainnet: "",
+      tldAddressMainnet: "0xcC66213645474a7B61BAf95330D01e50789eaF4b",
       tldContract: null,
       tldMainnet: ".punkangel",
       tldTestnet: ".testangel",
