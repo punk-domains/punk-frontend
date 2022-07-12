@@ -353,7 +353,7 @@ export default {
           {
             component: WaitingToast,
             props: {
-              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              text: "STEP 1) Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
             }
           },
           {
@@ -365,8 +365,8 @@ export default {
         const receipt = await tx.wait();
         if (receipt.status === 1) {
           this.toast.dismiss(toastWait);
-          this.toast("You have successfully set the allowance! Now proceed with buying the domain.", {
-            type: TYPE.SUCCESS,
+          this.toast("STEP 1) You have successfully set the allowance! Now PROCEED with STEP 2: buying the domain.", {
+            type: TYPE.INFO,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
           this.payTokenAllowance = Number(this.chosenAllowance);
@@ -428,7 +428,7 @@ export default {
           {
             component: WaitingToast,
             props: {
-              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
+              text: "STEP 2) Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
             }
           },
           {
@@ -441,7 +441,7 @@ export default {
 
         if (receipt.status === 1) {
           this.toast.dismiss(toastWait);
-          this.toast("You have successfully bought a " + this.tld + " domain!", {
+          this.toast("STEP 2) You have successfully bought a " + this.tld + " domain!", {
             type: TYPE.SUCCESS,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
