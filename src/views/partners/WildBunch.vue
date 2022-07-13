@@ -222,54 +222,52 @@ export default {
     },
 
     async setContracts() {
-      if (this.isNetworkSupported) {
-        this.loading = true;
+      this.loading = true;
 
-        // testnet data
-        let fProvider = this.getFallbackProvider(this.idTestnet);
-        let tldAddr = this.tldAddressTestnet;
-        let mintAddr = this.mintAddressTestnet;
-        let nftAddr = this.nftAddressTestnet;
-        this.tld = ".twbtest";
-        
-        // mainnet data
-        if (this.chainId === this.idMainnet) {
-          fProvider = this.getFallbackProvider(this.idMainnet);
-          tldAddr = this.tldAddressMainnet;
-          mintAddr = this.mintAddressMainnet;
-          nftAddr = this.nftAddressMainnet;
-          this.tld = ".wildbunch";
-        }
-
-        // TLD contract
-        const tldIntfc = new ethers.utils.Interface(tldAbi); // note: interface must be defined as const, not as component data var!
-        this.tldContract = new ethers.Contract(tldAddr, tldIntfc, fProvider);
-
-        const priceWei = await this.tldContract.price();
-        this.domainPrice = ethers.utils.formatEther(priceWei);
-
-        if (this.address) {
-          // NFT contract
-          const nftIntfc = new ethers.utils.Interface([
-            "function balanceOf(address) external view returns (uint256)"
-          ]);
-          this.nftContract = new ethers.Contract(nftAddr, nftIntfc, fProvider);
-
-          const balance = await this.nftContract.balanceOf(this.address);
-          if (balance > 0) {
-            this.canMint = true;
-          }
-        }
-
-        // minting contract
-        const mintIntfc = new ethers.utils.Interface(MinterAbi);
-        this.mintContract = new ethers.Contract(mintAddr, mintIntfc, fProvider);
-
-        this.paused = await this.mintContract.paused();
-
-        this.loading = false;
+      // testnet data
+      let fProvider = this.getFallbackProvider(this.idTestnet);
+      let tldAddr = this.tldAddressTestnet;
+      let mintAddr = this.mintAddressTestnet;
+      let nftAddr = this.nftAddressTestnet;
+      this.tld = ".twbtest";
+      
+      // mainnet data
+      if (this.chainId === this.idMainnet) {
+        fProvider = this.getFallbackProvider(this.idMainnet);
+        tldAddr = this.tldAddressMainnet;
+        mintAddr = this.mintAddressMainnet;
+        nftAddr = this.nftAddressMainnet;
+        this.tld = ".wildbunch";
       }
-    },
+
+      // TLD contract
+      const tldIntfc = new ethers.utils.Interface(tldAbi); // note: interface must be defined as const, not as component data var!
+      this.tldContract = new ethers.Contract(tldAddr, tldIntfc, fProvider);
+
+      const priceWei = await this.tldContract.price();
+      this.domainPrice = ethers.utils.formatEther(priceWei);
+
+      if (this.address) {
+        // NFT contract
+        const nftIntfc = new ethers.utils.Interface([
+          "function balanceOf(address) external view returns (uint256)"
+        ]);
+        this.nftContract = new ethers.Contract(nftAddr, nftIntfc, fProvider);
+
+        const balance = await this.nftContract.balanceOf(this.address);
+        if (balance > 0) {
+          this.canMint = true;
+        }
+      }
+
+      // minting contract
+      const mintIntfc = new ethers.utils.Interface(MinterAbi);
+      this.mintContract = new ethers.Contract(mintAddr, mintIntfc, fProvider);
+
+      this.paused = await this.mintContract.paused();
+
+      this.loading = false;
+    }
   },
 
   setup() {

@@ -15,13 +15,26 @@
         <div class="d-flex ms-auto">
           <div v-if="isActivated" class="navbar-menu-buttons">
 
+            <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                Partners
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                <router-link tag="li" class="dropdown-item" to="/partners/l2dao">Layer2DAO (.L2 domain)</router-link>
+                <router-link tag="li" class="dropdown-item" to="/partners/huwa">HUWA (.huwa domain)</router-link>
+                <!--<router-link tag="li" class="dropdown-item" to="/partners/wildbunch">The Wild Bunch (.wildbunch domain)</router-link>-->
+                <li class="dropdown-item" @click="openUrl('http://smol.domains')">Smolverse (.smol domain) <i class="bi bi-box-arrow-up-right"></i></li>
+                <li class="dropdown-item" @click="openUrl('http://www.kns.earth')">KlimaDAO (.klima domain) <i class="bi bi-box-arrow-up-right"></i></li>
+              </ul>
+            </div>
+
             <!--
             <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
               <router-link tag="button" class="btn btn-primary" to="/buy-tld">Buy a TLD</router-link>
             </div>
             -->
             
-            <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
+            <div class="btn-group mx-2 navbar-menu-btn">
               <router-link tag="button" class="btn btn-primary" to="/nft/angel">Mint a Punk Angel!</router-link>
             </div>
           
