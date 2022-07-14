@@ -15,13 +15,16 @@ export default {
       100: "Gnosis Chain",
       137: "Polygon",
       42161: "Arbitrum",
-      56: "BNB Smart Chain"
+      56: "BNB Smart Chain",
+      1: "Ethereum"
     }
   }),
 
   getters: { 
     getBlockExplorerBaseUrl() {
-      if (chainId.value === 3) {
+      if (chainId.value === 1) {
+        return "https://etherscan.io";
+      } else if (chainId.value === 3) {
         return "https://ropsten.etherscan.io";
       } else if (chainId.value === 4) {
         return "https://rinkeby.etherscan.io";
@@ -53,7 +56,12 @@ export default {
     getFallbackProvider: (state) => (networkId) => {
       let urls;
 
-      if (networkId === 3) {
+      if (networkId === 1) {
+        // Ethereum
+        urls = [
+          "https://eth-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ETHEREUM_KEY
+        ];
+      } else if (networkId === 3) {
         // Ropsten testnet
       } else if (networkId === 4) {
         // Rinkeby testnet
@@ -163,6 +171,9 @@ export default {
       if (chainId.value === 137) {
         state.networkName = "Polygon";
         state.networkCurrency = "MATIC";
+      } else if (chainId.value === 1) {
+        state.networkName = "Ethereum";
+        state.networkCurrency = "ETH";
       } else if (chainId.value === 10) {
         state.networkName = "Optimism";
         state.networkCurrency = "ETH";

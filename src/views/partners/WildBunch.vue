@@ -43,7 +43,7 @@
     <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="buyDomain" :disabled="waiting || buyNotValidFlexi(chosenDomainName).invalid || paused || !canMint">
       <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
       <span v-if="!paused && canMint">Buy domain</span>
-      <span v-if="!paused && !canMint">Not eligible</span>
+      <span v-if="!paused && !canMint">No TWB NFT</span>
       <span v-if="paused">Buying disabled</span>
     </button>
 
@@ -84,16 +84,16 @@ export default {
       idTestnet: 421611,
       loading: false, // loading data
       mintAddressTestnet: "0x6b5E4D2Bc94F356B3557AaEc35422d21FdcA66c9",
-      mintAddressMainnet: "",
+      mintAddressMainnet: "0xA8221890768603210c1a32d88374111084E46E6d",
       mintContract: null,
       nftAddressTestnet: "0x247934a3Cd3293AB0B334F0c5571B6fF05d1Dc11",
       nftAddressMainnet: "0xe9A1a323b4c8FD5Ce6842edaa0cd8af943cBdf22",
       nftContract: null,
-      networkName: "Arbitrum Testnet",
+      networkName: "Ethereum",
       paused: true,
       tld: ".wildbunch",
       tldAddressTestnet: "0xEEAEED736cc6A6e68CC2F62be19Cf7E06ad9E94A",
-      tldAddressMainnet: "",
+      tldAddressMainnet: "0xaa9E5Ade68C9C3Ea967Dc5dde731fd1f797152Cb",
       tldContract: null,
       waiting: false, // waiting for TX to complete
     }
@@ -116,16 +116,15 @@ export default {
 
     isNetworkSupported() {
       if (this.isActivated) {
-        if (
-          //this.chainId === 1 || // TODO: uncomment!!!
-          this.chainId === 421611
-        ) {
+        if (this.networkName.includes("Testnet") && this.chainId === this.idTestnet) {
+          return true;
+        } else if (!this.networkName.includes("Testnet") && this.chainId === this.idMainnet) {
           return true;
         }
       }
 
       return false;
-    }
+    },
   },
 
   methods: {
@@ -225,19 +224,19 @@ export default {
       this.loading = true;
 
       // testnet data
-      let fProvider = this.getFallbackProvider(this.idTestnet);
-      let tldAddr = this.tldAddressTestnet;
-      let mintAddr = this.mintAddressTestnet;
-      let nftAddr = this.nftAddressTestnet;
-      this.tld = ".twbtest";
-      
-      // mainnet data
-      if (this.chainId === this.idMainnet) {
-        fProvider = this.getFallbackProvider(this.idMainnet);
-        tldAddr = this.tldAddressMainnet;
-        mintAddr = this.mintAddressMainnet;
-        nftAddr = this.nftAddressMainnet;
-        this.tld = ".wildbunch";
+      let fProvider = this.getFallbackProvider(this.idMainnet);
+      let tldAddr = this.tldAddressMainnet;
+      let mintAddr = this.mintAddressMainnet;
+      let nftAddr = this.nftAddressMainnet;
+      this.tld = ".wildbunch";
+
+      // testnet data
+      if (this.chainId === this.idTestnet) {
+        fProvider = this.getFallbackProvider(this.idTestnet);
+        tldAddr = this.tldAddressTestnet;
+        mintAddr = this.mintAddressTestnet;
+        nftAddr = this.nftAddressTestnet;
+        this.tld = ".twbtest";
       }
 
       // TLD contract
