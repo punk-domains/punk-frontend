@@ -41,6 +41,7 @@
           <div class="container">
             <h3>Domains</h3>
 
+            <div class="table-responsive">
             <table class="table table-hover mt-4 mb-4">
               <tbody>
                 <tr v-for="domainName in getUserAllDomainNames">
@@ -48,6 +49,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
 
             <p v-if="getUserSelectedNameData">
               <small><em>
