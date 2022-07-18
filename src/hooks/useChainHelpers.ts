@@ -141,7 +141,7 @@ export default function useChainHelpers() {
       method = "wallet_addEthereumChain"
       params = [{ 
         blockExplorerUrls: [ "https://optimistic.etherscan.io/" ],
-        chainId: "0xA",
+        chainId: "0xa",
         chainName: "Optimism",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
         rpcUrls: ["https://mainnet.optimism.io"]
@@ -168,7 +168,7 @@ export default function useChainHelpers() {
       method = "wallet_addEthereumChain"
       params = [{ 
         blockExplorerUrls: [ "https://blockscout.com/poa/sokol" ],
-        chainId: "0x4D",
+        chainId: "0x4d",
         chainName: "Gnosis Testnet",
         nativeCurrency: { decimals: 18, name: "SPOA", symbol: "SPOA" }, 
         rpcUrls: ["https://sokol.poa.network"]
