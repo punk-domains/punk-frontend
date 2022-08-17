@@ -35,7 +35,7 @@
             -->
             
             <div class="btn-group mx-2 navbar-menu-btn">
-              <router-link tag="button" class="btn btn-primary" to="/nft/angel">Mint a Punk Angel!</router-link>
+              <router-link tag="button" class="btn btn-primary" to="/nft/angel">Punk Angel domains</router-link>
             </div>
           
             <div class="btn-group mx-2 navbar-menu-btn">

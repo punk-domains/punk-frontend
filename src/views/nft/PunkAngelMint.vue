@@ -1,9 +1,9 @@
 <template>
   <div class="container text-center">
 
-    <h1 class="mt-5">Mint a Punk Angel domain!</h1>
+    <h1 class="mt-5">Get yourself a Punk Angel domain!</h1>
 
-    <h4 class="mt-3">(domain + unique PFP)</h4>
+    <h4 class="mt-3">(Web3 domain + unique PFP)</h4>
 
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
@@ -16,8 +16,8 @@
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
-          Punk Angel is our first domain which gives you both a unique domain name, and also a generative art 
-          profile picture (all in one NFT).
+          Punk Angel is a new kind of web3 domains, which gives you both a unique domain name and also a generative art 
+          profile picture (all-in-one).
         </p>
       </div>
     </div>
@@ -150,10 +150,10 @@
           is capped at 44 domains.
         </p>
 
-        <h4 class="mt-5">Can I buy/sell these PFP domains on NFT marketplaces?</h4>
+        <h4 class="mt-5">Can I buy/sell these PFP domains on marketplaces?</h4>
 
         <p class="mt-3">
-          Yes, Punk Angel is available on NFT marketplaces. You can also filter domains by attributes such as 
+          Yes, Punk Angel is available on marketplaces. You can also filter domains by attributes such as 
           domain length, colors in the domain image, expressions (serious, smiling, surprised) and 
           accessories (VR glasses, gas mask).
         </p>
