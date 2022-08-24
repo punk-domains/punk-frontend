@@ -21,11 +21,11 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                 <router-link tag="li" class="dropdown-item" to="/partners/l2dao">Layer2DAO (.L2 domain)</router-link>
-                <router-link tag="li" class="dropdown-item" to="/partners/huwa">HUWA (.huwa domain)</router-link>
+                <li class="dropdown-item" @click="openUrl('http://ppl.domains')">People Domains (.ppl) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://smol.domains')">Smolverse (.smol domain) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://www.kns.earth')">KlimaDAO (.klima domain) <i class="bi bi-box-arrow-up-right"></i></li>
-                <li class="dropdown-item" @click="openUrl('http://ppl.domains')">People Domains (.ppl) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://twb.punk.domains')">The Wild Bunch (.wildbunch) <i class="bi bi-box-arrow-up-right"></i></li>
+                <router-link tag="li" class="dropdown-item" to="/partners/huwa">HUWA (.huwa domain)</router-link>
               </ul>
             </div>
 
@@ -33,11 +33,11 @@
             <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
               <router-link tag="button" class="btn btn-primary" to="/buy-tld">Buy a TLD</router-link>
             </div>
-            -->
             
             <div class="btn-group mx-2 navbar-menu-btn">
               <router-link tag="button" class="btn btn-primary" to="/nft/angel">Punk Angel domains</router-link>
             </div>
+            -->
           
             <div class="btn-group mx-2 navbar-menu-btn">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
