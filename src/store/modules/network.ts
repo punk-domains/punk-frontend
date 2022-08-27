@@ -15,7 +15,8 @@ export default {
       100: "Gnosis Chain",
       137: "Polygon",
       42161: "Arbitrum",
-      56: "BNB Smart Chain"
+      56: "BNB Smart Chain",
+      1313161555: "Aurora Testnet"
     }
   }),
 
@@ -45,6 +46,8 @@ export default {
         return "https://mumbai.polygonscan.com";
       } else if (chainId.value === 421611) {
         return "https://testnet.arbiscan.io";
+      } else if (chainId.value === 1313161555) {
+        return "https://testnet.aurorascan.dev";
       }
     },
     
@@ -113,6 +116,11 @@ export default {
         // Arbitrum testnet
         urls = [
           "https://rinkeby.arbitrum.io/rpc"
+        ];
+      } else if (networkId === 1313161555) {
+        // Aurora testnet
+        urls = [
+          "https://testnet.aurora.dev"
         ];
       }
 
@@ -205,6 +213,9 @@ export default {
         state.networkCurrency = "ETH";
       } else if (chainId.value === 4) {
         state.networkName = "Rinkeby";
+        state.networkCurrency = "ETH";
+      } else if (chainId.value === 1313161555) {
+        state.networkName = "Aurora Testnet";
         state.networkCurrency = "ETH";
       } else {
         state.networkName = "Unsupported Network";

@@ -29,6 +29,8 @@ export default function useChainHelpers() {
       return "Ropsten";
     } else if (chainId === 4) {
       return "Rinkeby";
+    } else if (chainId === 1313161555) {
+      return "Aurora Testnet";
     } else {
       return "Unsupported Network";
     }
@@ -86,6 +88,11 @@ export default function useChainHelpers() {
         // Arbitrum testnet
         urls = [
           "https://rinkeby.arbitrum.io/rpc"
+        ];
+      } else if (networkId === 1313161555) {
+        // Aurora testnet
+        urls = [
+          "https://testnet.aurora.dev"
         ];
       }
 
@@ -190,6 +197,15 @@ export default function useChainHelpers() {
         chainName: "BNB Smart Chain",
         nativeCurrency: { decimals: 18, name: "BNB", symbol: "BNB" }, 
         rpcUrls: ["https://bscrpc.com"]
+      }] 
+    } else if (networkName == "Aurora Testnet") {
+      method = "wallet_addEthereumChain"
+      params = [{ 
+        blockExplorerUrls: [ "https://testnet.aurorascan.dev/" ],
+        chainId: "0x4E454153",
+        chainName: "Aurora Testnet",
+        nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+        rpcUrls: ["https://testnet.aurora.dev"]
       }] 
     }
 
