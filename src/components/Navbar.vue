@@ -13,7 +13,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         
         <div class="d-flex ms-auto">
-          <div v-if="isActivated" class="navbar-menu-buttons">
+          <div class="navbar-menu-buttons">
 
             <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -39,7 +39,7 @@
             </div>
             -->
           
-            <div class="btn-group mx-2 navbar-menu-btn">
+            <div v-if="isActivated" class="btn-group mx-2 navbar-menu-btn">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 {{getNetworkName}}
               </button>
@@ -55,7 +55,7 @@
               </ul>
             </div>
 
-            <div class="btn-group mx-2">
+            <div v-if="isActivated" class="btn-group mx-2">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ getNameOrAddress }}
               </button>
@@ -72,7 +72,7 @@
             </div>
           </div>
 
-          <button v-else class="btn btn-primary" @click="open">Connect wallet</button>
+          <button v-if="!isActivated" class="btn btn-primary" @click="open">Connect wallet</button>
         </div>
 
       </div>
