@@ -59,6 +59,16 @@
       Buy domain
     </button>
 
+    <div class="row">
+      <div class="col-md-6 offset-md-3 container text-center gitcoin">
+        <h3 class="mt-2">Support us on Gitcoin Grants!</h3>
+        <p>
+          Every $1 donation is matched with additional funds from Gitcoin, so your donation has a big impact. 
+          <a target="_blank" href="https://gitcoin.co/grants/4830/punk-domains">Donate to Punk Domains here!</a> 
+        </p>
+      </div>
+    </div>
+
   </div>
   
 </template>
