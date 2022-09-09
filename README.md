@@ -31,3 +31,57 @@ When you want to push your changes to production, merge `develop` branch into th
 
 - Development server: https://punk-domains-develop.netlify.app/ 
 - Production server: https://punk.domains/
+
+### Orbis
+
+```bash
+npm install @orbisclub/orbis-sdk events
+```
+
+es2020 target build & empty global in vite.config.ts:
+
+```js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [vue()],
+  build: {
+    target: ["es2020"]
+  },
+  define: {
+    "global": {},
+  },
+})
+```
+
+Usage in component:
+
+```html
+<script lang="ts">
+  import { Orbis } from "@orbisclub/orbis-sdk";
+
+  export default {
+    name: "About",
+
+    created() {
+      this.connectOrbis();
+    },
+
+    methods: {
+      async connectOrbis() {
+        let orbis = new Orbis();
+        let res = await orbis.connect();
+
+        /** Check if connection is successful or not */
+        if(res.status == 200) {
+          console.log("DID LOL: " + res.did);
+        } else {
+          console.log("Error connecting to Ceramic: ", res);
+        }
+      }
+    }
+  }
+</script>
+```
