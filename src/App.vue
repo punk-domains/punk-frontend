@@ -4,6 +4,7 @@
   <div class="main-container">
     <router-view></router-view>
 
+    <chat-box context="kjzl6cwe1jw14bmb4kgw6gbu6umo8jz9vxjsunueihadbpr9977tj93s2diycb1" title="Punk Domains chat" :theme="{replyText: {color: '#3f444d'}, messageReceived: {color: 'black'}, header: {color: 'black'}}" />
     <Footer />
   </div>
   
@@ -19,9 +20,13 @@ import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 import tldsJson from './abi/tlds.json';
 import tldAbi from './abi/PunkTLD.json';
+import { applyPureReactInVue } from 'veaury'
+import { ChatBox } from '@orbisclub/modules'
+import "@orbisclub/modules/dist/index.modern.css";
 
 export default {
   components: {
+    "chat-box": applyPureReactInVue(ChatBox),
     Navbar,
     Footer
   },
