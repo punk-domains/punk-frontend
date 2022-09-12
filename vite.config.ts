@@ -13,7 +13,7 @@ export default defineConfig({
   build: { 
     target: "es2020",
     rollupOptions: {
-      external: ["react", "react-dom", "@orbisclub/orbis-sdk"]
+      external: ["react", "react-dom", "@orbisclub/orbis-sdk", "@orbisclub/orbis-sdk/utils/index.js"]
     }
    },
   optimizeDeps: {
