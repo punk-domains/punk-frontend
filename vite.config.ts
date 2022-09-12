@@ -11,7 +11,7 @@ export default defineConfig({
     })
   ],
   build: { 
-    target: "esnext",
+    target: "es2020",
     rollupOptions: {
       external: [
         /*
@@ -26,7 +26,7 @@ export default defineConfig({
    },
   optimizeDeps: {
     esbuildOptions: { 
-      target: "esnext", 
+      target: "es2020", 
       supported: { 
         bigint: true 
       },
