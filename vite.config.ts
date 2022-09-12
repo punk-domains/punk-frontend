@@ -14,11 +14,13 @@ export default defineConfig({
     target: "es2020",
     rollupOptions: {
       external: [
+        /*
         "react", 
         "react-dom", 
         "@orbisclub/orbis-sdk", 
         "@orbisclub/orbis-sdk/utils/index.js", 
         "ethereum-blockies-base64"
+        */
       ]
     }
    },
