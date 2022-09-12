@@ -7,7 +7,7 @@ https://punk.domains
 ## Quickstart
 
 ```bash
-npm install
+npm install --force
 npm run dev
 ```
 
