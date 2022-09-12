@@ -13,7 +13,7 @@ export default defineConfig({
   build: { 
     target: "es2020",
     rollupOptions: {
-      external: ["react"]
+      external: ["react", "react-dom"]
     }
    },
   optimizeDeps: {
