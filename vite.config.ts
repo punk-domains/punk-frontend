@@ -10,7 +10,12 @@ export default defineConfig({
       type: 'vue'
     })
   ],
-  build: { target: "es2020" },
+  build: { 
+    target: "es2020",
+    rollupOptions: {
+      external: ["react"]
+    }
+   },
   optimizeDeps: {
     esbuildOptions: { target: "es2020", supported: { bigint: true } },
   },
