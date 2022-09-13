@@ -27,6 +27,10 @@
     <span> | </span>
 
     <a target="_blank" href="https://github.com/punk-domains/brand-identity">Brand identity</a> 
+
+    <span> | </span>
+
+    <a target="_blank" href="https://punk-domains.4everland.app">Mirror site on 4everland and IPFS</a> 
     
     <!--
     <span> | </span>
