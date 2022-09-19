@@ -14,7 +14,6 @@ export default {
       10: "Optimism",
       100: "Gnosis Chain",
       137: "Polygon",
-      77: "Gnosis Testnet",
       42161: "Arbitrum",
       56: "BNB Smart Chain",
       1313161555: "Aurora Testnet"

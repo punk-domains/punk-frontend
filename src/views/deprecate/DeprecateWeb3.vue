@@ -109,7 +109,7 @@ export default {
       newTldAddress: null,
       paused: true,
       refundAddress: null,
-      tld: ".gnosis",
+      tld: ".web3",
       refundContract: null,
       tldAddress: null,
       waiting: false, // waiting for TX to complete
@@ -324,8 +324,8 @@ export default {
         this.fProvider = this.getFallbackProvider(137);
         this.tld = ".web3";
         this.tldAddress = "0xb6Cf2874588d0fdFAf9d1b5E254ee6C49110C68B"; // .web3
-        this.newTldAddress = ""; // .poly
-        this.refundAddress = "";
+        this.newTldAddress = "0x70Ac07C50131b7bb2c8Bd9466D8d2add30B7759f"; // .poly
+        this.refundAddress = "0x6724c95Af33e396d85D2Fc93609C60D23490878B";
       } else if (this.chainId === 77) { // Gnosis Chain Testnet (Sokol)
         this.fProvider = this.getFallbackProvider(77);
         this.tld = ".gnosis";
