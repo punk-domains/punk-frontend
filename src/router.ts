@@ -2,6 +2,9 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 import About from './views/About.vue'
 import BrowserExtension from './views/BrowserExtension.vue'
+
+import DeprecateWeb3 from './views/deprecate/DeprecateWeb3.vue'
+
 import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
 import HowItWorks from './views/HowItWorks.vue'
@@ -38,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/browser',
     name: 'BrowserExtension',
     component: BrowserExtension,
+  },
+  {
+    path: '/deprecate/web3',
+    name: 'DeprecateWeb3',
+    component: DeprecateWeb3,
   },
   {
     path: '/domain/:domainChain/:tld/:domainName',
