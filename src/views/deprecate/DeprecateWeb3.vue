@@ -22,7 +22,7 @@
     <div class="d-flex justify-content-center domain-input-container">
       <div class="input-group mb-3 domain-input input-group-lg">
         <input
-          v-model="domains" 
+          v-model="domain" 
           placeholder="Enter the .web3 domain to burn"
           type="text" 
           class="form-control text-center" 
@@ -56,16 +56,20 @@
       </div>
     </div>
 
-    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="approveOrBurnDomains" :disabled="waiting || paused || !canClaim">
+    <div class="d-flex justify-content-center alert alert-danger" v-if="contractBalance && contractBalance < 60">
+      The refund contract balance is {{contractBalance}} MATIC. Please notify Punk Domains on Discord to refill the contract balance.
+    </div>
+
+    <button v-if="isActivated && isNetworkSupported" class="btn btn-primary btn-lg mt-3 buy-button" @click="approveOrBurnDomain" :disabled="waiting || paused || !canClaim">
       <span v-if="waiting || loading" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-      <span v-if="!paused && !loading && canClaim && approved">Burn and claim refund</span>
-      <span v-if="!paused && !loading && canClaim && !approved">Approve domains</span>
+      <span v-if="!paused && !loading && canClaim && approved">Claim refund</span>
+      <span v-if="!paused && !loading && canClaim && !approved">Approve domain</span>
       <span v-if="paused">Paused</span>
       <span v-if="!paused && !canClaim">Not eligible</span>
     </button>
 
     <div v-if="!paused && !loading && canClaim && !approved" class="mb-2">
-      You will need to do two transactions: Approve + Claim
+      You will need to do two transactions: Approve + Claim refund
     </div>
 
     <div v-if="!isActivated" class="mt-4 buy-button">
@@ -82,7 +86,7 @@
 <script>
 import { ethers } from 'ethers';
 import { useBoard, useEthers } from 'vue-dapp';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../../components/toasts/WaitingToast.vue";
 import useChainHelpers from "../../hooks/useChainHelpers";
@@ -96,7 +100,8 @@ export default {
     return {
       approved: false,
       canClaim: false,
-      domains: null,
+      contractBalance: null,
+      domain: null,
       domainPrice: null,
       loading: false, // loading data
       newDomainOne: null,
@@ -135,16 +140,17 @@ export default {
 
   methods: {
     ...mapActions("user", ["removeDomainFromUserDomains"]),
+    ...mapMutations("user", ["addDomainManually"]),
 
-    approveOrBurnDomains() {
+    approveOrBurnDomain() {
       if (!this.approved) {
-        this.approveDomains();
+        this.approveDomain();
       } else {
-        this.burnDomains();
+        this.burnDomain();
       }
     },
 
-    async approveDomains() {
+    async approveDomain() {
       this.waiting = true;
 
       const intfc = new ethers.utils.Interface(tldAbi);
@@ -170,7 +176,7 @@ export default {
 
         if (receipt.status === 1) {
           this.toast.dismiss(toastWait);
-          this.toast("You have successfully approved domains! Now proceed with the Burn & Claim step.", {
+          this.toast("You have successfully approved the domain for processing! Now proceed with the Burn & Claim step.", {
             type: TYPE.SUCCESS,
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
@@ -194,24 +200,44 @@ export default {
       this.waiting = false;
     },
 
-    async burnDomains() {
+    async burnDomain() {
       this.waiting = true;
 
       // remove all whitespace
-      const domainsNoSpaces = this.domains.replace(/ /g,'');
+      const domainNoSpaces = this.domain.replace(/ /g,'');
 
-      // make string lowercase & replace all .polygon extensions (only domain names need to be sent)
-      const domainsNoExtension = domainsNoSpaces.toLowerCase().replaceAll(this.tld, "");
+      // make string lowercase & replace the .web3 extension (only domain name need to be sent)
+      const domainNoExtension = domainNoSpaces.toLowerCase().replace(this.tld, "");
 
-      // split by comma
-      const domainsList = domainsNoExtension.split(",");
-      console.log(domainsList);
-
-      const intfc = new ethers.utils.Interface(UDPolygonRefund);
+      const intfc = new ethers.utils.Interface(DeprecateTld);
       const refundContractSigner = new ethers.Contract(this.refundAddress, intfc, this.signer);
 
+      // get new domain names and extensions
+      const newDomainOneNoSpaces = this.newDomainOne.replace(/ /g,'').toLowerCase();
+      const domArrOne = newDomainOneNoSpaces.split(".");
+      const newDomainTwoNoSpaces = this.newDomainTwo.replace(/ /g,'').toLowerCase();
+      const domArrTwo = newDomainTwoNoSpaces.split(".");
+
+      const tldIntfc = new ethers.utils.Interface(tldAbi);
+      const contract = new ethers.Contract(this.tldAddress, tldIntfc, this.fProvider);
+
+      // check if user owns that .web3 domain
+      const deprecatedDomainHolder = await contract.getDomainHolder(String(domainNoExtension).toLowerCase());
+
+      if (deprecatedDomainHolder !== this.address) {
+        this.toast("Your currently connected address does not own " + domainNoSpaces, {type: TYPE.ERROR});
+        this.waiting = false;
+        return;
+      }
+
       try {
-        const tx = await refundContractSigner.claimRefundBulk(domainsList);
+        const tx = await refundContractSigner.refund(
+          domainNoExtension, // old domain name
+          domArrOne[0], // new domain 1 name
+          "."+domArrOne[1], // new domain 1 TLD
+          domArrTwo[0], // new domain 2 name
+          "."+domArrTwo[1] // new domain 2 TLD
+        );
 
         const toastWait = this.toast(
           {
@@ -235,11 +261,11 @@ export default {
             onClick: () => window.open(this.getBlockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
           });
 
-          for (let domainName of domainsList) {
-            this.removeDomainFromUserDomains(domainName+this.tld);
-          }
-          
+          this.removeDomainFromUserDomains(domainNoSpaces.toLowerCase());
+          this.addDomainManually(newDomainOneNoSpaces);
+          this.addDomainManually(newDomainTwoNoSpaces);
           this.waiting = false;
+          this.setContracts();
         } else {
           this.toast.dismiss(toastWait);
           this.toast("Transaction has failed.", {
@@ -314,6 +340,9 @@ export default {
 
         const isPaused = await this.refundContract.paused();
         this.paused = isPaused;
+
+        const balanceContract = await this.fProvider.getBalance(this.refundAddress);
+        this.contractBalance = ethers.utils.formatEther(balanceContract);
       }
 
       if (this.address) {
