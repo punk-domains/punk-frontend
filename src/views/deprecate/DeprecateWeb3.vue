@@ -12,7 +12,7 @@
 
         <p>
           Claim the refund by sending your .web3 domain to the burn contract using the form below. Also choose the new 
-          domains that you'd like to have minted. If you've paid for your .web3 domain, you'll also receive a MATIC refund.
+          .poly domains that you'd like to have minted. If you've paid for your .web3 domain, you'll also receive a MATIC refund.
         </p>
       </div>
     </div>
