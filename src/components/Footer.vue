@@ -14,11 +14,11 @@
 
     <router-link to="/partners/l2dao">L2DAO</router-link>
 
-    <!--<span> | </span><router-link to="/partners/wildbunch">Wild Bunch</router-link>-->
+    <!--<span> | </span><router-link to="/partners/wildbunch">Wild Bunch</router-link>
     
     <span> | </span>
 
-    <router-link to="/browser">Browser extension</router-link>
+    <router-link to="/browser">Browser extension</router-link>-->
     
     <span> | </span>
 
@@ -30,7 +30,7 @@
 
     <span> | </span>
 
-    <a target="_blank" href="https://punk-domains.4everland.app">Mirror site on 4everland and IPFS</a> 
+    <a target="_blank" href="https://punk-domains.4everland.app">Mirror site</a> 
     
     <!--
     <span> | </span>

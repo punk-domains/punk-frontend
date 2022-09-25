@@ -59,6 +59,7 @@
       Buy domain
     </button>
 
+    <!--
     <div class="row">
       <div class="col-md-6 offset-md-3 container text-center gitcoin">
         <h3 class="mt-2">Support us on Gitcoin Grants!</h3>
@@ -68,6 +69,7 @@
         </p>
       </div>
     </div>
+    -->
 
   </div>
   
