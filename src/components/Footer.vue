@@ -101,7 +101,7 @@ a:hover {
 }
 
 .polygon svg circle {
-  fill: #DBDFEA;
+  fill: #fff;
 }
 
 .polygon:hover svg circle {

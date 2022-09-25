@@ -104,7 +104,7 @@
 
     <div class="row mt-5">
       <div class="col-md-6 offset-md-3">
-        <table class="table table-bordered" style="color:#DBDFEA;border-style:none;">
+        <table class="table table-bordered" style="color:#fff;border-style:none;">
           <thead>
             <tr>
               <th scope="col">Domain length</th>
@@ -644,7 +644,7 @@ export default {
 }
 
 .error {
-  color: #DBDFEA;
+  color: #fff;
 }
 
 .l2dao {

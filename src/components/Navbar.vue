@@ -146,12 +146,12 @@ export default {
 }
 
 .navbar-dark .navbar-brand {
-  color: #DBDFEA;
+  color: #fff;
 }
 
 .navbar-dark {
   /*background: linear-gradient(90deg, hsla(265, 75%, 26%, 1) 0%, hsla(365, 75%, 26%, 1) 100%);*/
-  background: linear-gradient(90deg, hsla(250, 74%, 45%, 1) 0%, hsla(267, 56%, 50%, 1) 100%);
+  background: linear-gradient(90deg, #4443f1 0%, #9055f7 100%);
   /*background: linear-gradient(90deg, #3b1eca 0%, #793ac7 100%);*/
   border-radius: 0px 0px 10px 10px;
   padding: 20px;

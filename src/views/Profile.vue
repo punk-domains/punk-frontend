@@ -207,7 +207,7 @@ export default {
 
 .table {
   --bs-table-bg: transparent;
-  color: #DBDFEA;
+  color: #fff;
 }
 
 .table:hover {

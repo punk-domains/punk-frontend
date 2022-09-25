@@ -262,7 +262,7 @@ export default {
 }
 
 .error {
-  color: #DBDFEA;
+  color: #fff;
 }
 
 @media only screen and (max-width: 767px) {

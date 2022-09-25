@@ -79,14 +79,14 @@ export default {
 .btn-sidebar, .btn-sidebar:focus {
   padding: 10px;
   width: 100%;
-  color: #DBDFEA;
+  color: #fff;
   text-decoration: none;
   box-shadow: none;
 }
 
 .btn-sidebar:hover {
-  color: #DBDFEA;
-  border-color: #DBDFEA;
+  color: #fff;
+  border-color: #fff;
   border-radius: 10px;
 }
 

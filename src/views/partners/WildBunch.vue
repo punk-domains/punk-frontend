@@ -312,7 +312,7 @@ export default {
 }
 
 .error {
-  color: #DBDFEA;
+  color: #fff;
 }
 
 .l2dao {

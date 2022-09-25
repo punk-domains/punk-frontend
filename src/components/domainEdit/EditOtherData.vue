@@ -269,7 +269,7 @@ export default {
 
 <style scoped>
 .form-control-plaintext {
-  color: #DBDFEA;
+  color: #fff;
 }
 
 .punk-text {
