@@ -64,6 +64,11 @@ const routes: Array<RouteRecordRaw> = [
     component: PunkAngelMint,
   },
   {
+    path: '/punkangel',
+    name: 'PunkAngelMint',
+    component: PunkAngelMint,
+  },
+  {
     path: '/partners/l2dao',
     name: 'L2Dao',
     component: L2Dao,
