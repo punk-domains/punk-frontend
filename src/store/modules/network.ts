@@ -30,6 +30,8 @@ export default {
         return "https://rinkeby.etherscan.io";
       } else if (chainId.value === 10) {
         return "https://optimistic.etherscan.io";
+      } else if (chainId.value === 19) {
+        return "https://songbird-explorer.flare.network/";
       } else if (chainId.value === 56) {
         return "https://bscscan.com";
       } else if (chainId.value === 69) {
@@ -72,6 +74,11 @@ export default {
         urls = [
           "https://mainnet.optimism.io", 
           "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
+        ]; 
+      } else if (networkId === 19) {
+        // Songbird
+        urls = [
+          "https://songbird-api.flare.network/ext/C/rpc"
         ]; 
       } else if (networkId === 56) {
         // BSC mainnet
@@ -184,6 +191,9 @@ export default {
       } else if (chainId.value === 10) {
         state.networkName = "Optimism";
         state.networkCurrency = "ETH";
+      } else if (chainId.value === 19) {
+        state.networkName = "Songbird";
+        state.networkCurrency = "SGB";
       } else if (chainId.value === 56) {
         state.networkName = "BNB Smart Chain";
         state.networkCurrency = "BNB";

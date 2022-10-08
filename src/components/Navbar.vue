@@ -22,6 +22,7 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                 <router-link tag="li" class="dropdown-item" to="/partners/l2dao">Layer2DAO (.L2 domain)</router-link>
                 <router-link tag="li" class="dropdown-item" to="/punkangel">Punk Angel (.punkangel domain)</router-link>
+                <li class="dropdown-item" @click="openUrl('http://songbird.domains')">Songbird Domains (.sgb) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://ppl.domains')">People Domains (.ppl) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://smol.domains')">Smolverse (.smol domain) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://www.kns.earth')">KlimaDAO (.klima domain) <i class="bi bi-box-arrow-up-right"></i></li>

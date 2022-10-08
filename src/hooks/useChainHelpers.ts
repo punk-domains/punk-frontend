@@ -9,6 +9,8 @@ export default function useChainHelpers() {
       return "Ethereum";
     } else if (chainId === 10) {
       return "Optimism";
+    } else if (chainId === 19) {
+      return "Songbird";
     } else if (chainId === 56) {
       return "BNB Smart Chain";
     } else if (chainId === 69) {
@@ -61,6 +63,11 @@ export default function useChainHelpers() {
         urls = [
           "https://mainnet.optimism.io",
           "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
+        ]; 
+      } else if (networkId === 19) {
+        // Songbird
+        urls = [
+          "https://songbird-api.flare.network/ext/C/rpc"
         ]; 
       } else if (networkId === 56) {
         // BSC mainnet
@@ -206,6 +213,15 @@ export default function useChainHelpers() {
         chainName: "Aurora Testnet",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
         rpcUrls: ["https://testnet.aurora.dev"]
+      }] 
+    } else if (networkName == "Songbird") {
+      method = "wallet_addEthereumChain"
+      params = [{ 
+        blockExplorerUrls: [ "https://songbird-explorer.flare.network/" ],
+        chainId: "0x13",
+        chainName: "Songbird",
+        nativeCurrency: { decimals: 18, name: "SGB", symbol: "SGB" }, 
+        rpcUrls: ["https://songbird-api.flare.network/ext/C/rpc"]
       }] 
     }
 
