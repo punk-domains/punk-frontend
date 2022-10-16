@@ -158,7 +158,7 @@ export default function useChainHelpers() {
         chainId: "0xA",
         chainName: "Optimism",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-        rpcUrls: ["https://mainnet.optimism.io"]
+        rpcUrls: ["https://1rpc.io/op"]
       }] 
     } else if (networkName == "Optimism Testnet") {
       method = "wallet_addEthereumChain"
