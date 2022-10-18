@@ -189,7 +189,7 @@ export default function useChainHelpers() {
     } else if (networkName == "Gnosis Chain") {
       method = "wallet_addEthereumChain"
       params = [{ 
-        blockExplorerUrls: [ "https://blockscout.com/xdai/mainnet" ],
+        blockExplorerUrls: [ "https://gnosisscan.io/" ],
         chainId: "0x64",
         chainName: "Gnosis Chain",
         nativeCurrency: { decimals: 18, name: "XDAI", symbol: "XDAI" }, 

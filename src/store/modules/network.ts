@@ -30,7 +30,7 @@ export default {
       } else if (chainId.value === 10) {
         return "https://optimistic.etherscan.io";
       } else if (chainId.value === 19) {
-        return "https://songbird-explorer.flare.network/";
+        return "https://songbird-explorer.flare.network";
       } else if (chainId.value === 56) {
         return "https://bscscan.com";
       } else if (chainId.value === 69) {
@@ -38,7 +38,7 @@ export default {
       } else if (chainId.value === 77) {
         return "https://blockscout.com/poa/sokol";
       } else if (chainId.value === 100) {
-        return "https://blockscout.com/xdai/mainnet";
+        return "https://gnosisscan.io";
       } else if (chainId.value === 137) {
         return "https://polygonscan.com";
       } else if (chainId.value === 42161) {
