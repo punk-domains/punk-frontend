@@ -51,6 +51,38 @@ export default {
         return "https://testnet.aurorascan.dev";
       }
     },
+
+    getBlockExplorerBaseUrlFromId: () => (netId: Number) =>  {
+      if (netId === 1) {
+        return "https://etherscan.io";
+      } else if (netId === 3) {
+        return "https://ropsten.etherscan.io";
+      } else if (netId === 4) {
+        return "https://rinkeby.etherscan.io";
+      } else if (netId === 10) {
+        return "https://optimistic.etherscan.io";
+      } else if (netId === 19) {
+        return "https://songbird-explorer.flare.network";
+      } else if (netId === 56) {
+        return "https://bscscan.com";
+      } else if (netId === 69) {
+        return "https://kovan-optimistic.etherscan.io";
+      } else if (netId === 77) {
+        return "https://blockscout.com/poa/sokol";
+      } else if (netId === 100) {
+        return "https://gnosisscan.io";
+      } else if (netId === 137) {
+        return "https://polygonscan.com";
+      } else if (netId === 42161) {
+        return "https://arbiscan.io";
+      } else if (netId === 80001) {
+        return "https://mumbai.polygonscan.com";
+      } else if (netId === 421611) {
+        return "https://testnet.arbiscan.io";
+      } else if (netId === 1313161555) {
+        return "https://testnet.aurorascan.dev";
+      }
+    },
     
     getChainId() {
       return chainId.value;

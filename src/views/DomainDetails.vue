@@ -22,8 +22,8 @@
               </div>
 
               <div class="col-sm-9 punk-text text-break">
-                {{holderData}} 
-                <a :href="getBlockExplorerBaseUrl+'/address/'+holderData" target="_blank">
+                {{holderData}}
+                <a :href="getBlockExplorerBaseUrlFromId(Number(this.domainChain))+'/address/'+holderData" target="_blank">
                   <i class="bi bi-box-arrow-up-right"></i>
                 </a>
               </div>
@@ -117,7 +117,7 @@ export default {
 
   computed: {
     ...mapGetters("punk", ["getTldAddresses", "getTldAbi"]),
-    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getChainId", "getFallbackProvider", "getSupportedNetworks", "isNetworkSupported"]),
+    ...mapGetters("network", ["getBlockExplorerBaseUrl", "getBlockExplorerBaseUrlFromId", "getChainId", "getFallbackProvider", "getSupportedNetworks", "isNetworkSupported"]),
 
     holderData() {
       if (this.domainData.holder !== ethers.constants.AddressZero) {
