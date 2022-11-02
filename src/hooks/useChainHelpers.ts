@@ -25,6 +25,8 @@ export default function useChainHelpers() {
       return "Arbitrum";
     } else if (chainId === 421611) {
       return "Arbitrum Testnet";
+    } else if (chainId === 421613) {
+      return "Arbitrum Goerli Testnet";
     } else if (chainId === 80001) {
       return "Polygon Testnet";
     } else if (chainId === 3) {
@@ -91,9 +93,14 @@ export default function useChainHelpers() {
           "https://arb-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ARBITRUM_KEY
         ];
       } else if (networkId === 421611) {
-        // Arbitrum testnet
+        // Arbitrum Rinkeby testnet
         urls = [
           "https://rinkeby.arbitrum.io/rpc"
+        ];
+      } else if (networkId === 421613) {
+        // Arbitrum Goerli testnet
+        urls = [
+          "https://goerli-rollup.arbitrum.io/rpc"
         ];
       } else if (networkId === 1313161555) {
         // Aurora testnet
@@ -140,6 +147,15 @@ export default function useChainHelpers() {
         chainName: "Arbitrum Testnet",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
         rpcUrls: ["https://rinkeby.arbitrum.io/rpc"]
+      }] 
+    } else if (networkName == "Arbitrum Goerli Testnet") {
+      method = "wallet_addEthereumChain"
+      params = [{ 
+        blockExplorerUrls: [ "https://goerli.arbiscan.io" ],
+        chainId: "0x66EED",
+        chainName: "Arbitrum Goerli Testnet",
+        nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
+        rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"]
       }] 
     } else if (networkName == "Arbitrum") {
       method = "wallet_addEthereumChain"

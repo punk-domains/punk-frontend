@@ -58,6 +58,9 @@
     ".arbitest": "0xC6a628b1FF1aD4e304bEeACAff915559786deA2e",
     ".angeltest": "0x61c567b26eB1B1965A1bD49febE1C1997237C519"
   },
+  "421613": {
+    ".testoasis": "0xBDACF94dDCAB51c39c2dD50BffEe60Bb8021949a"
+  },
   "1313161555": {
     ".testrora": "0x4087fb91a1fbdef05761c02714335d232a2bf3a1"
   }

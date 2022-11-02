@@ -15,6 +15,7 @@ export default {
       100: "Gnosis Chain",
       137: "Polygon",
       42161: "Arbitrum",
+      421613: "Arbitrum Goerli Testnet",
       56: "BNB Smart Chain"
     }
   }),
@@ -150,9 +151,14 @@ export default {
           "https://polygon-mumbai.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_MUMBAI_KEY
         ]
       } else if (networkId === 421611) {
-        // Arbitrum testnet
+        // Arbitrum Rinkeby testnet
         urls = [
           "https://rinkeby.arbitrum.io/rpc"
+        ];
+      } else if (networkId === 421613) {
+        // Arbitrum Goerli testnet
+        urls = [
+          "https://goerli-rollup.arbitrum.io/rpc"
         ];
       } else if (networkId === 1313161555) {
         // Aurora testnet
@@ -244,6 +250,9 @@ export default {
         state.networkCurrency = "ETH";
       } else if (chainId.value === 421611) {
         state.networkName = "Arbitrum Testnet";
+        state.networkCurrency = "ETH";
+      } else if (chainId.value === 421613) {
+        state.networkName = "Arbitrum Goerli Testnet";
         state.networkCurrency = "ETH";
       } else if (chainId.value === 80001) {
         state.networkName = "Polygon Testnet";
