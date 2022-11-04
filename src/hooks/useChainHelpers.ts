@@ -63,12 +63,14 @@ export default function useChainHelpers() {
       } else if (networkId === 10) {
         // Optimism
         urls = [
+          "https://1rpc.io/op",
           "https://mainnet.optimism.io",
           "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
         ]; 
       } else if (networkId === 19) {
         // Songbird
         urls = [
+          "https://songbird.towolabs.com/rpc",
           "https://songbird-api.flare.network/ext/C/rpc"
         ]; 
       } else if (networkId === 56) {
