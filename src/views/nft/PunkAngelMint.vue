@@ -103,9 +103,9 @@
     </div>
 
     <div class="row mt-5">
-      <div class="col-md-6 offset-md-3">
-        <table class="table table-bordered" style="color:#fff;border-style:none;">
-          <thead>
+      <div class="col-md-6 offset-md-3 table-container">
+        <table class="table table-borderless table-domain">
+          <thead class="table-light">
             <tr>
               <th scope="col">Domain length</th>
               <th scope="col">Price</th>
@@ -114,23 +114,23 @@
           <tbody>
             <tr>
               <td>1 character</td>
-              <td>$10 000</td>
+              <td>$9999</td>
             </tr>
             <tr>
               <td>2 characters</td>
-              <td>$3 000</td>
+              <td>$4999</td>
             </tr>
             <tr>
               <td>3 characters</td>
-              <td>$999</td>
+              <td>$2999</td>
             </tr>
             <tr>
               <td>4 characters</td>
-              <td>$199</td>
+              <td>$1999</td>
             </tr>
             <tr>
               <td>5+ characters</td>
-              <td>$69</td>
+              <td>$999</td>
             </tr>
           </tbody>
         </table>
@@ -144,9 +144,9 @@
         <h4 class="mt-4">What is the max/total supply?</h4>
 
         <p class="mt-3">
-          Max/total supply is between 44 and 6377 domains. It depends on the prices that domains are bought at. 
-          If all domains are bought at $69, the max supply is 6377 domains. If some domains are bought at a 
-          higher price, the total supply will be lower. If all domains are bought at $10k, the total supply 
+          Max/total supply is between 44 and 425 domains. It depends on the prices that domains are bought at. 
+          If all domains are bought at $999, the max supply is 425 domains. If some domains are bought at a 
+          higher price, the total supply will be lower. If all domains are bought at $9999, the total supply 
           is capped at 44 domains.
         </p>
 
@@ -230,7 +230,7 @@ export default {
   data() {
     return {
       canMint: true,
-      chosenAllowance: 69,
+      chosenAllowance: 999,
       chosenDomainName: null,
       domainPrice: null,
       idMainnet: 42161,
@@ -275,17 +275,17 @@ export default {
     getDomainPrice() {
       if (this.chosenDomainName) {
         if (this.chosenDomainName.length === 1) {
-          return 10000;
+          return 9999;
         } else if (this.chosenDomainName.length === 2) {
-          return 3000;
+          return 4999;
         } else if (this.chosenDomainName.length === 3) {
-          return 999;
+          return 2999;
         } else if (this.chosenDomainName.length === 4) {
-          return 199;
+          return 1999;
         }
       }
 
-      return 69;
+      return 999;
     },
 
     domainLowerCase() {
@@ -602,26 +602,7 @@ export default {
 
     chainId() {
       this.setContracts();
-    },
-
-    /*
-    chosenDomainName() {
-      if (this.chosenDomainName) {
-        if (this.chosenDomainName.length === 1) {
-          this.domainPrice = 10000;
-        } else if (this.chosenDomainName.length === 2) {
-          this.domainPrice = 3000;
-        } else if (this.chosenDomainName.length === 3) {
-          this.domainPrice = 999;
-        } else if (this.chosenDomainName.length === 4) {
-          this.domainPrice = 199;
-        } else {
-          this.domainPrice = 69;
-        }
-      } else {
-        this.domainPrice = 69;
-      }
-    }*/
+    }
   }
 }
 </script>
@@ -651,8 +632,33 @@ export default {
   width: 50px;
 }
 
+.table-light {
+  color: #4443f1;
+}
+
+.table-domain {
+  border: 2px solid white;
+  border-radius: 10px !important;
+  border-collapse: separate;
+  color: white;
+}
+
 .tld-addon {
   background-color: white;
+}
+
+th:first-of-type {
+  border-top-left-radius: 10px;
+  border-collapse: separate;
+}
+th:last-of-type {
+  border-top-right-radius: 10px;
+}
+tr:last-of-type td:first-of-type {
+  border-bottom-left-radius: 10px;
+}
+tr:last-of-type td:last-of-type {
+  border-bottom-right-radius: 10px;
 }
 
 @media only screen and (max-width: 767px) {
