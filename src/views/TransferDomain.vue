@@ -27,7 +27,7 @@
                 <input 
                   v-model="recipient"
                   class="form-control text-center"
-                  placeholder="Enter recipient address"
+                  placeholder="Enter recipient address or domain"
                 >
               </div>
             </div>
