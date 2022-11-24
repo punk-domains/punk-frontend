@@ -21,6 +21,10 @@ export default function useChainHelpers() {
       return "Gnosis Chain";
     } else if (chainId === 137) {
       return "Polygon";
+    } else if (chainId === 250) {
+      return "Fantom";
+    } else if (chainId === 4002) {
+      return "Fantom Testnet";
     } else if (chainId === 42161) {
       return "Arbitrum";
     } else if (chainId === 421611) {
@@ -53,6 +57,19 @@ export default function useChainHelpers() {
         urls = [
           "https://polygon-rpc.com/", 
           "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
+        ];
+      } else if (networkId === 250) {
+        // Fantom Mainnet
+        urls = [
+          "https://rpcapi.fantom.network",
+          "https://rpc.ftm.tools"
+        ];
+      } else if (networkId === 4002) {
+        // Fantom Testnet
+        urls = [
+          "https://rpc.ankr.com/fantom_testnet",
+          //"https://rpc.testnet.fantom.network",
+          "https://fantom-testnet.public.blastapi.io"
         ];
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)
@@ -239,6 +256,24 @@ export default function useChainHelpers() {
         chainName: "Songbird",
         nativeCurrency: { decimals: 18, name: "SGB", symbol: "SGB" }, 
         rpcUrls: ["https://songbird-api.flare.network/ext/C/rpc"]
+      }] 
+    } else if (networkName == "Fantom") {
+      method = "wallet_addEthereumChain"
+      params = [{ 
+        blockExplorerUrls: [ "https://ftmscan.com" ],
+        chainId: "0xFA",
+        chainName: "Fantom",
+        nativeCurrency: { decimals: 18, name: "FTM", symbol: "FTM" }, 
+        rpcUrls: ["https://rpc.ftm.tools"]
+      }] 
+    } else if (networkName == "Fantom Testnet") {
+      method = "wallet_addEthereumChain"
+      params = [{ 
+        blockExplorerUrls: [ "https://testnet.ftmscan.com" ],
+        chainId: "0xFA2",
+        chainName: "Fantom Testnet",
+        nativeCurrency: { decimals: 18, name: "FTM", symbol: "FTM" }, 
+        rpcUrls: ["https://rpc.ankr.com/fantom_testnet"]
       }] 
     }
 

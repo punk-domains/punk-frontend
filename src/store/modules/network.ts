@@ -15,7 +15,7 @@ export default {
       100: "Gnosis Chain",
       137: "Polygon",
       42161: "Arbitrum",
-      421613: "Arbitrum Goerli Testnet",
+      4002: "Fantom Testnet",
       56: "BNB Smart Chain"
     }
   }),
@@ -42,6 +42,10 @@ export default {
         return "https://gnosisscan.io";
       } else if (chainId.value === 137) {
         return "https://polygonscan.com";
+      } else if (chainId.value === 250) {
+        return "https://ftmscan.com";
+      } else if (chainId.value === 4002) {
+        return "https://testnet.ftmscan.com";
       } else if (chainId.value === 42161) {
         return "https://arbiscan.io";
       } else if (chainId.value === 80001) {
@@ -74,6 +78,10 @@ export default {
         return "https://gnosisscan.io";
       } else if (netId === 137) {
         return "https://polygonscan.com";
+      } else if (netId === 250) {
+        return "https://ftmscan.com";
+      } else if (netId === 4002) {
+        return "https://testnet.ftmscan.com";
       } else if (netId === 42161) {
         return "https://arbiscan.io";
       } else if (netId === 80001) {
@@ -139,6 +147,19 @@ export default {
         urls = [
           "https://polygon-rpc.com/", 
           "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
+        ];
+      } else if (networkId === 250) {
+        // Fantom Mainnet
+        urls = [
+          "https://rpcapi.fantom.network",
+          "https://rpc.ftm.tools"
+        ];
+      } else if (networkId === 4002) {
+        // Fantom Testnet
+        urls = [
+          "https://rpc.ankr.com/fantom_testnet",
+          //"https://rpc.testnet.fantom.network",
+          "https://fantom-testnet.public.blastapi.io"
         ];
       } else if (networkId === 42161) {
         // Arbitrum
@@ -247,6 +268,12 @@ export default {
       } else if (chainId.value === 137) {
         state.networkName = "Polygon";
         state.networkCurrency = "MATIC";
+      } else if (chainId.value === 250) {
+        state.networkName = "Fantom";
+        state.networkCurrency = "FTM";
+      } else if (chainId.value === 4002) {
+        state.networkName = "Fantom Testnet";
+        state.networkCurrency = "FTM";
       } else if (chainId.value === 42161) {
         state.networkName = "Arbitrum";
         state.networkCurrency = "ETH";

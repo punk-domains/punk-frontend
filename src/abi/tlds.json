@@ -38,6 +38,12 @@
     ".basin": "0x4bF5A99eA2F8De061f7D77BA9edd749503D945Da",
     ".polygon": "0xa450bc33d0940d25fB0961c592fb440Fa63ABE03"
   },
+  "250": {
+    ".fantom": "0xbdacf94ddcab51c39c2dd50bffee60bb8021949a"
+  },
+  "4002": {
+    ".testfantom": "0xbdacf94ddcab51c39c2dd50bffee60bb8021949a"
+  },
   "80001": {
     ".testsafu": "0x755F461d6a5854203b9B30C76f680356cC67556D",
     ".newflexi": "0xd3CEdCfAa00de70DB408528351665c55E1fFA603",
