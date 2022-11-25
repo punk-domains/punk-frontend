@@ -125,6 +125,7 @@ export default {
       } else if (networkId === 56) {
         // BSC mainnet
         urls = [
+          "https://1rpc.io/bnb",
           "https://bscrpc.com"
         ];
       } else if (networkId === 69) {
@@ -145,12 +146,14 @@ export default {
       } else if (networkId === 137) {
         // Polygon PoS Chain
         urls = [
+          "https://1rpc.io/matic",
           "https://polygon-rpc.com/", 
           "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
         ];
       } else if (networkId === 250) {
         // Fantom Mainnet
         urls = [
+          "https://1rpc.io/ftm",
           "https://rpcapi.fantom.network",
           "https://rpc.ftm.tools"
         ];
@@ -164,6 +167,7 @@ export default {
       } else if (networkId === 42161) {
         // Arbitrum
         urls = [
+          "https://1rpc.io/arb",
           "https://arb1.arbitrum.io/rpc",
           "https://arb-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ARBITRUM_KEY
         ];

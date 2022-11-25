@@ -183,7 +183,7 @@ export default function useChainHelpers() {
         chainId: "0xA4B1",
         chainName: "Arbitrum One",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-        rpcUrls: ["https://arb1.arbitrum.io/rpc"]
+        rpcUrls: ["https://1rpc.io/arb"]
       }] 
     } else if (networkName == "Optimism") {
       method = "wallet_addEthereumChain"
@@ -210,7 +210,7 @@ export default function useChainHelpers() {
         chainId: "0x89",
         chainName: "Polygon PoS Chain",
         nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
-        rpcUrls: ["https://polygon-rpc.com/"]
+        rpcUrls: ["https://1rpc.io/matic"]
       }] 
     } else if (networkName == "Gnosis Testnet") {
       method = "wallet_addEthereumChain"
@@ -237,7 +237,7 @@ export default function useChainHelpers() {
         chainId: "0x38",
         chainName: "BNB Smart Chain",
         nativeCurrency: { decimals: 18, name: "BNB", symbol: "BNB" }, 
-        rpcUrls: ["https://bscrpc.com"]
+        rpcUrls: ["https://1rpc.io/bnb"]
       }] 
     } else if (networkName == "Aurora Testnet") {
       method = "wallet_addEthereumChain"
@@ -264,7 +264,7 @@ export default function useChainHelpers() {
         chainId: "0xFA",
         chainName: "Fantom",
         nativeCurrency: { decimals: 18, name: "FTM", symbol: "FTM" }, 
-        rpcUrls: ["https://rpc.ftm.tools"]
+        rpcUrls: ["https://1rpc.io/ftm"]
       }] 
     } else if (networkName == "Fantom Testnet") {
       method = "wallet_addEthereumChain"
