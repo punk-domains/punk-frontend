@@ -1,4 +1,8 @@
 <template>
+  <metainfo>
+    <template v-slot:title="{ content }">{{ content ? `${content} | Punk Domains` : `Punk Domains` }}</template>
+  </metainfo>
+
   <Navbar />
 
   <div class="main-container">
@@ -19,6 +23,7 @@ import Navbar from './components/Navbar.vue';
 import Footer from './components/Footer.vue';
 import tldsJson from './abi/tlds.json';
 import tldAbi from './abi/PunkTLD.json';
+import { useMeta } from 'vue-meta';
 
 export default {
   components: {
@@ -93,6 +98,22 @@ export default {
   setup() {
     const { address, chainId, isActivated } = useEthers();
     const { connect } = useWallet();
+
+    useMeta({
+      title: 'Permissionless Web3 Domains',
+      description: "Punk Domains is a web3 name protocol that supports multiple domain extensions such as .wagmi, .op, .klima, .smol, .L2, .sgb, .fantom, and many others.",
+      twitter: {
+        title: "Punk Domains - Permissionless Web3 Domains",
+        description: "Punk Domains is a web3 name protocol that supports multiple domain extensions such as .op, .wagmi, .klima, .smol, .L2, .sgb, .fantom, and many others.",
+        image: "https://punk.domains/assets/cover.png"
+      },
+      og: {
+        title : 'Punk Domains, Permissionless Web3 Domains',
+        description : 'Punk Domains is a web3 name protocol that supports multiple domain extensions such as .L2, .op, .klima, .smol, .wagmi, .sgb, .fantom, and many others.',
+        image : 'https://punk.domains/assets/cover.png'
+      },
+      htmlAttrs: { lang: 'en' }
+    })
 
     onMounted(() => {
       // if user already connected via MetaMask before, connect them automatically on the next visit
