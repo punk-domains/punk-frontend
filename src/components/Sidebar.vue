@@ -21,7 +21,7 @@
       <i class="bi bi-search"></i> Search domain
     </router-link>
 
-    <router-link class="btn btn-sidebar text-start" to="/send-tokens">
+    <router-link class="btn btn-sidebar text-start" to="/profile/send-tokens">
       <i class="bi bi-send"></i> Send tokens
     </router-link>
 

@@ -16,6 +16,7 @@ import UnstoppablePolygonRefund from './views/partners/UnstoppablePolygonRefund.
 import WildBunch from './views/partners/WildBunch.vue'
 
 import Profile from './views/Profile.vue'
+import ProfileSendTokens from './views/ProfileSendTokens.vue'
 import PunkAngelNft from './views/nft/PunkAngelNft.vue'
 import PunkAngelMint from './views/nft/PunkAngelMint.vue'
 import SearchDomains from './views/SearchDomains.vue'
@@ -102,6 +103,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/profile',
     name: 'Profile',
     component: Profile,
+  },
+  {
+    path: '/profile/send-tokens',
+    name: 'ProfileSendTokens',
+    component: ProfileSendTokens,
   },
   {
     path: '/search-domain',

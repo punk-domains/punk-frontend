@@ -40,11 +40,11 @@
             <div class="btn-group mx-2 navbar-menu-btn navbar-other-item">
               <router-link tag="button" class="btn btn-primary" to="/buy-tld">Buy a TLD</router-link>
             </div>
-            
-            <div class="btn-group mx-2 navbar-menu-btn">
-              <router-link tag="button" class="btn btn-primary" to="/nft/angel">Punk Angel domains</router-link>
-            </div>
             -->
+            
+            <div v-if="isActivated" class="btn-group mx-2 navbar-menu-btn">
+              <router-link tag="button" class="btn btn-primary" to="/send-tokens">Send Tokens</router-link>
+            </div>
           
             <div v-if="isActivated" class="btn-group mx-2 navbar-menu-btn">
               <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
