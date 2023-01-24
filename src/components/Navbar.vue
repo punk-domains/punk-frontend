@@ -22,6 +22,7 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                 
                 <li class="dropdown-item" @click="openUrl('http://optimistic.domains')">Optimistic Domains (.op) <i class="bi bi-box-arrow-up-right"></i></li>
+                <li class="dropdown-item" @click="openUrl('http://flr.domains')">Flare Domains (.flr) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://songbird.domains')">Songbird Domains (.sgb) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://fantomnames.org')">Fantom Names (.fantom) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://names.pooly.me')">PoolTogether Names (.pool) <i class="bi bi-box-arrow-up-right"></i></li>

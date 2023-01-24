@@ -39,7 +39,15 @@
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><span class="dropdown-item" v-for="tld in enabledBuyingTlds" @click="changeTld(tld)">{{tld}}</span></li>
+          <li><span class="dropdown-item" :key="tld" v-for="tld in enabledBuyingTlds" @click="changeTld(tld)">{{tld}}</span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://optimistic.domains')">.op <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://fantomnames.org')">.fantom <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://names.pooly.me')">.pool <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://smol.domains')">.smol <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://ppl.domains')">.ppl <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://www.kns.earth')">.klima <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://flr.domains')">.flr <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://songbird.domains')">.sgb <i class="bi bi-box-arrow-up-right" /></span></li>
         </ul>
       </div>
     </div>
@@ -247,6 +255,10 @@ export default {
       }
 
       this.selectedPrice = this.getDomainPrices[this.selectedTld];
+    },
+
+    openUrl(url) {
+      window.open(url, '_blank').focus();
     },
 
     parseValue(someVal) {

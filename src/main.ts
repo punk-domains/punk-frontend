@@ -9,7 +9,6 @@ import Toast, { POSITION, TYPE } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import './index.css'
 import { VueDapp } from 'vue-dapp'
-import { createMetaManager } from 'vue-meta'
 
 const app = createApp(App)
 
@@ -36,8 +35,6 @@ app.use(store)
 app.use(VueDapp, {
   //infuraId: '',
 })
-
-app.use(createMetaManager());
 
 app.use(Toast, options);
 

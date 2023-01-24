@@ -95,28 +95,8 @@
 </template>
 
 <script lang="ts">
-import { useMeta } from 'vue-meta';
-
 export default {
-  name: "About",
-
-  setup() {
-    useMeta({
-      title: 'About Punk Domains',
-      description: "Punk Domains allows you to register a domain name attached to your account address. Why would anyone need that? Check the answer here...",
-      twitter: {
-        title: "About Punk Domains",
-        description: "Punk Domains allows you to register a domain name attached to your account address. Why would anyone need that? Check the answer here...",
-        image: "https://punk.domains/assets/about.jpg"
-      },
-      og: {
-        title : 'About Punk Domains',
-        description : 'Punk Domains allows you to register a domain name attached to your account address. Why would anyone need that? Check the answer here...',
-        image : 'https://punk.domains/assets/about.jpg'
-      },
-      htmlAttrs: { lang: 'en' }
-    })
-  }
+  name: "About"
 }
 </script>
 
