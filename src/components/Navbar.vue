@@ -30,7 +30,7 @@
                 <router-link tag="li" class="dropdown-item" to="/punkangel">Punk Angel (.punkangel domain)</router-link>
                 <li class="dropdown-item" @click="openUrl('http://ppl.domains')">People Domains (.ppl) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://smol.domains')">Smolverse (.smol domain) <i class="bi bi-box-arrow-up-right"></i></li>
-                <li class="dropdown-item" @click="openUrl('http://www.kns.earth')">KlimaDAO (.klima domain) <i class="bi bi-box-arrow-up-right"></i></li>
+                <li class="dropdown-item" @click="openUrl('http://klima.punk.domains')">KlimaDAO (.klima domain) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('http://twb.punk.domains')">The Wild Bunch (.wildbunch) <i class="bi bi-box-arrow-up-right"></i></li>
                 <router-link tag="li" class="dropdown-item" to="/partners/huwa">HUWA (.huwa domain)</router-link>
                 <li class="dropdown-item" @click="openUrl('http://app.basin.global')">Basin Domains (.basin) <i class="bi bi-box-arrow-up-right"></i></li>
