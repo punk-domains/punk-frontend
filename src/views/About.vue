@@ -82,7 +82,7 @@
         Punk Domains protocol is proudly serving the following DAOs and communities:
         <ul>
           <li>Layer2DAO: .L2 domain</li>
-          <li>KlimaDAO: <a href="http://klima.punk.domains" target="_blank">.klima domain</a></li>
+          <li>KlimaDAO: <a href="http://www.kns.earth" target="_blank">.klima domain</a></li>
           <li>Smol Brains NFT community: <a href="https://smol.domains" target="_blank">.smol domain</a></li>
         </ul>
       </p>
