@@ -248,7 +248,7 @@ export default {
       }
 
       if(this.fields.findIndex(x => x.dataKey == "imgChainId") === -1) {
-        this.fields.push({dataKey: "ImgChainId", dataValue: "", valuePlaceholder: "Only needed if NFT is on a different chain than domain"});
+        this.fields.push({dataKey: "imgChainId", dataValue: "", valuePlaceholder: "Only needed if NFT is on a different chain than domain"});
       }
 
       if(this.fields.findIndex(x => x.dataKey == "url") === -1) {
