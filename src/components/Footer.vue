@@ -56,6 +56,12 @@
     <a class="icons" href="http://blog.punk.domains" target="_blank"><i class="bi bi-pencil-square"></i></a>
     
   </div>
+
+  <div class="container-fluid text-center">
+    <a href="https://alchemy.com/?r=DA1NzIxNDk3NDA4N" target="_blank">
+      <img id="badge-button" @click="alchemyClick" style="height:43px" src="https://static.alchemyapi.io/images/marketing/badge.png" alt="Alchemy Supercharged" />
+    </a>
+  </div>
 </template>
 
 <script>
@@ -68,6 +74,12 @@ export default {
   computed: {
     ...mapGetters("network", ["isNetworkSupported"]),
     
+  },
+
+  methods: {
+    alchemyClick() {
+      window.logBadgeClick();
+    }
   },
 
   setup() {
