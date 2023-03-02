@@ -80,6 +80,8 @@
     -->
 
   </div>
+
+  <FeaturedDomains class="mt-3" />
   
 </template>
 
@@ -91,9 +93,14 @@ import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../components/toasts/WaitingToast.vue";
 import useDomainHelpers from "../hooks/useDomainHelpers";
 import useChainHelpers from "../hooks/useChainHelpers";
+import FeaturedDomains from '../components/FeaturedDomains.vue';
 
 export default {
   name: "Home",
+
+  components: {
+    FeaturedDomains,
+  },
 
   data() {
     return {
