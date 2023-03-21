@@ -44,12 +44,11 @@ export default function useChainHelpers() {
       if (networkId === 1) {
         // Ethereum
         urls = [
-          "https://1rpc.io/eth"
+          "https://rpc.ankr.com/eth"
         ];
       } else if (networkId === 10) {
         // Optimism
         urls = [
-          "https://1rpc.io/op",
           "https://rpc.ankr.com/optimism"
         ]; 
       } else if (networkId === 14) {
@@ -65,14 +64,12 @@ export default function useChainHelpers() {
       } else if (networkId === 19) {
         // Songbird
         urls = [
-          "https://songbird.towolabs.com/rpc",
-          "https://songbird-api.flare.network/ext/C/rpc"
+          "https://sgb.ftso.com.au/ext/bc/C/rpc"
         ]; 
       } else if (networkId === 56) {
         // BSC mainnet
         urls = [
-          "https://1rpc.io/bnb",
-          "https://bscrpc.com"
+          "https://rpc.ankr.com/bsc"
         ];
       } else if (networkId === 77) {
         // Gnosis Chain testnet (Sokol)
@@ -82,20 +79,17 @@ export default function useChainHelpers() {
       } else if (networkId === 100) {
         // Gnosis Chain
         urls = [
-          "https://rpc.gnosis.gateway.fm"
+          "https://rpc.ankr.com/gnosis"
         ];
       } else if (networkId === 137) {
         // Polygon PoS Chain
         urls = [
-          "https://1rpc.io/matic",
-          "https://polygon-rpc.com/"
+          "https://rpc.ankr.com/polygon"
         ];
       } else if (networkId === 250) {
         // Fantom Mainnet
         urls = [
-          "https://1rpc.io/ftm",
-          "https://rpcapi.fantom.network",
-          "https://rpc.ftm.tools"
+          "https://rpc.ankr.com/fantom",
         ];
       } else if (networkId === 4002) {
         // Fantom Testnet
@@ -107,8 +101,7 @@ export default function useChainHelpers() {
       } else if (networkId === 42161) {
         // Arbitrum
         urls = [
-          "https://1rpc.io/arb",
-          "https://arb1.arbitrum.io/rpc"
+          "https://rpc.ankr.com/arbitrum"
         ];
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)
@@ -167,7 +160,7 @@ export default function useChainHelpers() {
         chainId: "0xA4B1",
         chainName: "Arbitrum One",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-        rpcUrls: ["https://1rpc.io/arb"]
+        rpcUrls: ["https://rpc.ankr.com/arbitrum"]
       }] 
     } else if (networkName == "Optimism") {
       method = "wallet_addEthereumChain"
@@ -176,7 +169,7 @@ export default function useChainHelpers() {
         chainId: "0xA",
         chainName: "Optimism",
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-        rpcUrls: ["https://1rpc.io/op", "https://rpc.ankr.com/optimism"]
+        rpcUrls: ["https://rpc.ankr.com/optimism"]
       }] 
     } else if (networkName == "Optimism Testnet") {
       method = "wallet_addEthereumChain"
@@ -194,7 +187,7 @@ export default function useChainHelpers() {
         chainId: "0x89",
         chainName: "Polygon PoS Chain",
         nativeCurrency: { decimals: 18, name: "MATIC", symbol: "MATIC" }, 
-        rpcUrls: ["https://1rpc.io/matic"]
+        rpcUrls: ["https://rpc.ankr.com/polygon"]
       }] 
     } else if (networkName == "Gnosis Testnet") {
       method = "wallet_addEthereumChain"
@@ -221,7 +214,7 @@ export default function useChainHelpers() {
         chainId: "0x38",
         chainName: "BNB Smart Chain",
         nativeCurrency: { decimals: 18, name: "BNB", symbol: "BNB" }, 
-        rpcUrls: ["https://1rpc.io/bnb"]
+        rpcUrls: ["https://rpc.ankr.com/bsc"]
       }] 
     } else if (networkName == "Aurora Testnet") {
       method = "wallet_addEthereumChain"
@@ -239,7 +232,7 @@ export default function useChainHelpers() {
         chainId: "0x13",
         chainName: "Songbird",
         nativeCurrency: { decimals: 18, name: "SGB", symbol: "SGB" }, 
-        rpcUrls: ["https://songbird.towolabs.com/rpc", "https://songbird-api.flare.network/ext/C/rpc"]
+        rpcUrls: ["https://sgb.ftso.com.au/ext/bc/C/rpc"]
       }] 
     } else if (networkName == "Coston Testnet") {
       method = "wallet_addEthereumChain"
@@ -266,7 +259,7 @@ export default function useChainHelpers() {
         chainId: "0xFA",
         chainName: "Fantom",
         nativeCurrency: { decimals: 18, name: "FTM", symbol: "FTM" }, 
-        rpcUrls: ["https://1rpc.io/ftm"]
+        rpcUrls: ["https://rpc.ankr.com/fantom"]
       }] 
     } else if (networkName == "Fantom Testnet") {
       method = "wallet_addEthereumChain"

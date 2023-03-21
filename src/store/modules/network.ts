@@ -102,7 +102,7 @@ export default {
       if (networkId === 1) {
         // Ethereum
         urls = [
-          "https://eth-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ETHEREUM_KEY
+          "https://rpc.ankr.com/eth"
         ];
       } else if (networkId === 3) {
         // Ropsten testnet
@@ -111,21 +111,17 @@ export default {
       } else if (networkId === 10) {
         // Optimism
         urls = [
-          "https://1rpc.io/op",
-          "https://mainnet.optimism.io", 
-          "https://opt-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_OPTIMISM_KEY
+          "https://rpc.ankr.com/optimism",
         ]; 
       } else if (networkId === 19) {
         // Songbird
         urls = [
-          "https://songbird.towolabs.com/rpc",
-          "https://songbird-api.flare.network/ext/C/rpc"
+          "https://sgb.ftso.com.au/ext/bc/C/rpc"
         ]; 
       } else if (networkId === 56) {
         // BSC mainnet
         urls = [
-          "https://1rpc.io/bnb",
-          "https://bscrpc.com"
+          "https://rpc.ankr.com/bsc"
         ];
       } else if (networkId === 69) {
         // Optimism testnet
@@ -140,21 +136,17 @@ export default {
       } else if (networkId === 100) {
         // Gnosis Chain
         urls = [
-          "https://rpc.gnosischain.com"
+          "https://rpc.ankr.com/gnosis"
         ];
       } else if (networkId === 137) {
         // Polygon PoS Chain
         urls = [
-          "https://1rpc.io/matic",
-          "https://polygon-rpc.com/", 
-          "https://polygon-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_POLYGON_KEY
+          "https://rpc.ankr.com/polygon", 
         ];
       } else if (networkId === 250) {
         // Fantom Mainnet
         urls = [
-          "https://1rpc.io/ftm",
-          "https://rpcapi.fantom.network",
-          "https://rpc.ftm.tools"
+          "https://rpc.ankr.com/fantom"
         ];
       } else if (networkId === 4002) {
         // Fantom Testnet
@@ -166,9 +158,7 @@ export default {
       } else if (networkId === 42161) {
         // Arbitrum
         urls = [
-          "https://1rpc.io/arb",
-          "https://arb1.arbitrum.io/rpc",
-          "https://arb-mainnet.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_ARBITRUM_KEY
+          "https://rpc.ankr.com/arbitrum",
         ];
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)
