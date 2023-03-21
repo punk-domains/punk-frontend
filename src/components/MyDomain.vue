@@ -2,7 +2,7 @@
   <td>
     <span>{{domain}}</span>
   </td>
-  <td v-if="!isDeprecatedWeb3">
+  <td v-if="!isDeprecatedWeb3 && !isDeprecatedPolygon">
     <span 
       class="text-click" 
       @click="this.$router.push({name: 'DomainDetails', params: {domainChain: getChainId, tld: domain.split('.')[1], domainName: domain.split('.')[0]}})"
@@ -14,6 +14,14 @@
     <span 
       class="text-click" 
       @click="this.$router.push({name: 'DeprecateWeb3'})"
+    >
+      ⚠️ Deprecated. Claim refund here.
+    </span>
+  </td>
+  <td v-if="isDeprecatedPolygon">
+    <span 
+      class="text-click" 
+      @click="this.$router.push({name: 'DeprecatePolygon'})"
     >
       ⚠️ Deprecated. Claim refund here.
     </span>
@@ -51,6 +59,14 @@ export default {
   computed: {
     ...mapGetters("network", ["getChainId"]),
     ...mapGetters("user", ["getUserSelectedName"]),
+
+    isDeprecatedPolygon() {
+      if (this.domain.endsWith(".polygon")) {
+        return true;
+      } else {
+        return false;
+      }
+    },
 
     isDeprecatedWeb3() {
       if (this.domain.endsWith(".web3")) {

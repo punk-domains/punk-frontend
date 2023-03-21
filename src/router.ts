@@ -4,6 +4,7 @@ import About from './views/About.vue'
 import BrowserExtension from './views/BrowserExtension.vue'
 
 import DeprecateWeb3 from './views/deprecate/DeprecateWeb3.vue'
+import DeprecatePolygon from './views/deprecate/DeprecatePolygon.vue'
 
 import DomainDetails from './views/DomainDetails.vue'
 import Home from './views/Home.vue'
@@ -43,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/browser',
     name: 'BrowserExtension',
     component: BrowserExtension,
+  },
+  {
+    path: '/deprecate/polygon',
+    name: 'DeprecatePolygon',
+    component: DeprecatePolygon,
   },
   {
     path: '/deprecate/web3',
@@ -91,7 +97,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/partners/udpolygon',
     name: 'UnstoppablePolygonRefund',
-    component: UnstoppablePolygonRefund,
+    component: DeprecatePolygon,
   },
   {
     path: '/partners/wildbunch',

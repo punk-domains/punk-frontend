@@ -1,18 +1,28 @@
 <template>
   <div class="container text-center">
 
-    <h1 class="mt-5">.web3 Domain Refund</h1>
+    <h1 class="mt-5">.polygon Domain Refund + $2k in UD credits</h1>
 
     <div class="row mt-5">
       <div class="col-md-8 offset-md-2">
         <p>
-          In order to avoid domain collisions, Punk Domains .web3 TLD is shutting down. All .web3 users can get a refund 
-          in the form of two new .poly domains (and MATIC refund if they paid for their .web3 domain).
+          In order to avoid domain collisions, Punk Domains .polygon TLD is shutting down. Each .polygon domain holder 
+          will receive 14 MATIC, a new .poly domain, and $2000 in credits from Unstoppable Domains.
         </p>
 
         <p>
-          Claim the refund by sending your .web3 domain to the burn contract using the form below. Also choose the new 
-          .poly domains that you'd like to have minted. If you've paid for your .web3 domain, you'll also receive a MATIC refund.
+          Claim these benefits by sending your .polygon domain to the burn contract using the form below. The 
+          refund of 14 MATIC will automatically be sent to you for each burned domain.
+        </p>
+
+        <p>
+          In addition, you will receive a .poly domain for free.
+        </p>
+
+        <p>
+          After claiming the refund, submit 
+          <a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdAR7BND4o7axj0PsFfDQyFyd2EItKKnjJek3kqCYnUe9naBA/viewform">the Google Form here</a> 
+          to claim $2000 in UD credits.
         </p>
       </div>
     </div>
@@ -23,36 +33,24 @@
       <div class="input-group mb-3 domain-input input-group-lg">
         <input
           v-model="domain" 
-          placeholder="Enter the .web3 domain to burn"
+          placeholder="Enter the .polygon domain to burn"
           type="text" 
           class="form-control text-center" 
         >
       </div>
     </div>
 
-    <h3 class="mt-4">Mint two new domains for free (<code>.poly</code>):</h3>
+    <h3 class="mt-4">Mint new .poly domain for free (.poly):</h3>
 
     <div class="d-flex justify-content-center domain-input-container">
       <div class="input-group mb-3 domain-input input-group-lg">
         <input
           v-model="newDomainOne" 
-          placeholder="Enter new domain #1"
+          placeholder="Enter new domain name"
           type="text" 
           class="form-control text-center"
         >
         <button class="btn btn-outline-light" @click="checkDomainAvailability(newDomainOne)" type="button" id="button-addon2">Check availability</button>
-      </div>
-    </div>
-
-    <div class="d-flex justify-content-center domain-input-container">
-      <div class="input-group mb-3 domain-input input-group-lg">
-        <input
-          v-model="newDomainTwo" 
-          placeholder="Enter new domain #2"
-          type="text" 
-          class="form-control text-center"
-        >
-        <button class="btn btn-outline-light" @click="checkDomainAvailability(newDomainTwo)" type="button" id="button-addon2">Check availability</button>
       </div>
     </div>
 
@@ -91,10 +89,10 @@ import { useToast, TYPE } from "vue-toastification";
 import WaitingToast from "../../components/toasts/WaitingToast.vue";
 import useChainHelpers from "../../hooks/useChainHelpers";
 import tldAbi from '../../abi/PunkTLD.json';
-import DeprecateTld from '../../abi/DeprecateTldTwo.json';
+import DeprecateTld from '../../abi/DeprecateTldOne.json';
 
 export default {
-  name: "DeprecateWeb3",
+  name: "DeprecatePolygon",
 
   data() {
     return {
@@ -105,11 +103,10 @@ export default {
       domainPrice: null,
       loading: false, // loading data
       newDomainOne: null,
-      newDomainTwo: null,
       newTldAddress: null,
       paused: true,
       refundAddress: null,
-      tld: ".web3",
+      tld: ".polygon",
       refundContract: null,
       tldAddress: null,
       waiting: false, // waiting for TX to complete
@@ -206,7 +203,7 @@ export default {
       // remove all whitespace
       const domainNoSpaces = this.domain.replace(/ /g,'');
 
-      // make string lowercase & replace the .web3 extension (only domain name need to be sent)
+      // make string lowercase & replace the .polygon extension (only domain name need to be sent)
       const domainNoExtension = domainNoSpaces.toLowerCase().replace(this.tld, "");
 
       const intfc = new ethers.utils.Interface(DeprecateTld);
@@ -215,13 +212,11 @@ export default {
       // get new domain names and extensions
       const newDomainOneNoSpaces = this.newDomainOne.replace(/ /g,'').toLowerCase();
       const domArrOne = newDomainOneNoSpaces.split(".");
-      const newDomainTwoNoSpaces = this.newDomainTwo.replace(/ /g,'').toLowerCase();
-      const domArrTwo = newDomainTwoNoSpaces.split(".");
 
       const tldIntfc = new ethers.utils.Interface(tldAbi);
       const contract = new ethers.Contract(this.tldAddress, tldIntfc, this.fProvider);
 
-      // check if user owns that .web3 domain
+      // check if user owns that .polygon domain
       const deprecatedDomainHolder = await contract.getDomainHolder(String(domainNoExtension).toLowerCase());
 
       if (deprecatedDomainHolder !== this.address) {
@@ -234,9 +229,7 @@ export default {
         const tx = await refundContractSigner.refund(
           domainNoExtension, // old domain name
           domArrOne[0], // new domain 1 name
-          "."+domArrOne[1], // new domain 1 TLD
-          domArrTwo[0], // new domain 2 name
-          "."+domArrTwo[1] // new domain 2 TLD
+          "."+domArrOne[1] // new domain 1 TLD
         );
 
         const toastWait = this.toast(
@@ -263,7 +256,6 @@ export default {
 
           this.removeDomainFromUserDomains(domainNoSpaces.toLowerCase());
           this.addDomainManually(newDomainOneNoSpaces);
-          this.addDomainManually(newDomainTwoNoSpaces);
           this.waiting = false;
           this.setContracts();
         } else {
@@ -322,10 +314,10 @@ export default {
       
       if (this.chainId === 137) { // Polygon Mainnet
         this.fProvider = this.getFallbackProvider(137);
-        this.tld = ".web3";
-        this.tldAddress = "0xb6Cf2874588d0fdFAf9d1b5E254ee6C49110C68B"; // .web3
+        this.tld = ".polygon";
+        this.tldAddress = "0xa450bc33d0940d25fB0961c592fb440Fa63ABE03"; // .polygon
         this.newTldAddress = "0x70Ac07C50131b7bb2c8Bd9466D8d2add30B7759f"; // .poly
-        this.refundAddress = "0x6724c95Af33e396d85D2Fc93609C60D23490878B";
+        this.refundAddress = "0x38f4D3D62DeC57F3CaeEAA4191e670A1034569b3";
       } else if (this.chainId === 77) { // Gnosis Chain Testnet (Sokol)
         this.fProvider = this.getFallbackProvider(77);
         this.tld = ".gnosis";
@@ -349,7 +341,7 @@ export default {
         const tldIntfc = new ethers.utils.Interface(tldAbi);
         this.tldContract = new ethers.Contract(this.tldAddress, tldIntfc, this.fProvider);
 
-        // check if address is .web3 holder
+        // check if address is .polygon holder
         const oldTldBalance = await this.tldContract.balanceOf(this.address);
 
         if (oldTldBalance > 0) {
