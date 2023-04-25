@@ -32,7 +32,8 @@
   "100": {
     ".gnosis": "0xC3E8922657686EC63eaaa9FC1Fe06826802e7e0f",
     ".xdai": "0xbca24d86e4ad1e011278faefc4ff191a731411ec",
-    ".bright": "0x3490c9817c45a2a394b11a3807f58a8325235ae0"
+    ".bright": "0x3490c9817c45a2a394b11a3807f58a8325235ae0",
+    ".giveth": "0xEEa3e593CDAf9D18780f9D58BAD142AF6Bd9522a"
   },
   "137": {
     ".poly": "0x70Ac07C50131b7bb2c8Bd9466D8d2add30B7759f",
@@ -45,6 +46,9 @@
   },
   "250": {
     ".fantom": "0xbdacf94ddcab51c39c2dd50bffee60bb8021949a"
+  },
+  "324": {
+    ".zksoul": "0xe36507aD67Ac0aE6D27D22b407A9338b136315df"
   },
   "4002": {
     ".testfantom": "0xbdacf94ddcab51c39c2dd50bffee60bb8021949a"
