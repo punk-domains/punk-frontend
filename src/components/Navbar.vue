@@ -78,6 +78,7 @@
                 <li class="dropdown-item" @click="openUrl('http://blog.punk.domains')">Blog</li>
                 <router-link tag="li" class="dropdown-item" to="/browser">Browser extension</router-link>
                 <li class="dropdown-item" @click="openUrl('http://docs.punk.domains')">Docs</li>
+                <li class="dropdown-item" @click="openUrl('https://github.com/orgs/punk-domains/discussions/1')">Contribute</li>
                 <li class="dropdown-item" @click="logout">Disconnect</li>
               </ul>
             </div>

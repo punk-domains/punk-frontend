@@ -35,12 +35,11 @@
     <span> | </span>
 
     <a target="_blank" href="https://punk-domains.4everland.app">Mirror site</a> 
-    
-    <!--
+
     <span> | </span>
 
-    <router-link to="/partners/udpolygon">UD .polygon refund</router-link>
-    -->
+    <a target="_blank" href="https://github.com/orgs/punk-domains/discussions/1">Contribute</a> 
+  
   </div>
 
   <div class="container-fluid text-center">
