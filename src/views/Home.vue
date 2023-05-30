@@ -50,6 +50,7 @@
           <li><span class="dropdown-item" @click="openUrl('http://flr.domains')">.flr <i class="bi bi-box-arrow-up-right" /></span></li>
           <li><span class="dropdown-item" @click="openUrl('http://songbird.domains')">.sgb <i class="bi bi-box-arrow-up-right" /></span></li>
           <li><span class="dropdown-item" @click="openUrl('http://giveth.punk.domains')">.giveth <i class="bi bi-box-arrow-up-right" /></span></li>
+          <li><span class="dropdown-item" @click="openUrl('http://dns.dopewars.gg')">.dope <i class="bi bi-box-arrow-up-right" /></span></li>
         </ul>
       </div>
     </div>

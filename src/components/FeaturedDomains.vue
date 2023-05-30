@@ -115,13 +115,13 @@
       </div>
 
       <div class="col-2">
-        <router-link tag="a" to="/partners/huwa">
+        <a target="_blank" href="https://dns.dopewars.gg">
           <div class="container text-center">
             <p class="text-break mt-3">
-              .huwa
+              .dope
             </p>
           </div>
-        </router-link>
+        </a>
       </div>
 
     </div>

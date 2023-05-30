@@ -21,6 +21,7 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                 
+                <li class="dropdown-item" @click="openUrl('https://dns.dopewars.gg')">Dope Name Service (.dope) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('https://id.zkchat.net')">zkSoul ID (.zksoul) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('https://optimistic.domains')">Optimistic Domains (.op) <i class="bi bi-box-arrow-up-right"></i></li>
                 <li class="dropdown-item" @click="openUrl('https://names.pooly.me')">PoolTogether Names (.pool) <i class="bi bi-box-arrow-up-right"></i></li>
