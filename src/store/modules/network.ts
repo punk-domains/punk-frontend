@@ -163,8 +163,7 @@ export default {
       } else if (networkId === 80001) {
         // Mumbai testnet (Polygon testnet)
         urls = [
-          "https://matic-mumbai.chainstacklabs.com",
-          "https://polygon-mumbai.g.alchemy.com/v2/" + import.meta.env.VITE_ALCHEMY_MUMBAI_KEY
+          "https://matic-mumbai.chainstacklabs.com"
         ]
       } else if (networkId === 421611) {
         // Arbitrum Rinkeby testnet

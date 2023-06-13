@@ -11,18 +11,6 @@ npm install
 npm run dev
 ```
 
-## .env
-
-Create the `.env` file with the following keys:
-
-```bash
-VITE_ALCHEMY_POLYGON_KEY=value
-VITE_ALCHEMY_MUMBAI_KEY=value
-VITE_ALCHEMY_OPTIMISM_KEY=value
-VITE_ALCHEMY_ARBITRUM_KEY=value
-VITE_ALCHEMY_ETHEREUM_KEY=value
-```
-
 ## Development
 
 Develop on the `develop` branch (or a temporary branch which is then merged to develop). Never develop directly on the `main` branch.
